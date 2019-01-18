@@ -1,7 +1,8 @@
-package nl.scouting.hit.kampinfo;
+package nl.scouting.hit.kampinfo.export;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.scouting.hit.kampinfo.export.KampInfoFormulierExportRegel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,13 +12,13 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.List;
 
-public final class KampInfo {
+public final class KampInfoHelper {
     private static final File file = new File("data.json");
 
     /**
      * Private constructor.
      */
-    private KampInfo() {
+    private KampInfoHelper() {
         super();
     }
 

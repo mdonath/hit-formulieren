@@ -1,7 +1,7 @@
 package nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen;
 
 import nl.scouting.hit.common.Datum;
-import nl.scouting.hit.kampinfo.KampInfoFormulierExportRegel;
+import nl.scouting.hit.kampinfo.export.KampInfoFormulierExportRegel;
 import nl.scouting.hit.sol.JaNee;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigSamenstellenPage;
 import org.openqa.selenium.By;

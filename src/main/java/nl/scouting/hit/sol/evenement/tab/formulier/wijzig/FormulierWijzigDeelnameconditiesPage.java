@@ -1,7 +1,7 @@
 package nl.scouting.hit.sol.evenement.tab.formulier.wijzig;
 
 import nl.scouting.hit.sol.JaNee;
-import nl.scouting.hit.sol.Valuable;
+import nl.scouting.hit.common.Valuable;
 import nl.scouting.hit.sol.evenement.tab.formulier.common.AbstractFormulierBasisPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

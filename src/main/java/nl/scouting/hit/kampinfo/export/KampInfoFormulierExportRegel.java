@@ -1,10 +1,10 @@
-package nl.scouting.hit.kampinfo;
+package nl.scouting.hit.kampinfo.export;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 /**
- * Een exportregel uit KampInfo met informatie voor een ScoutsOnline inschrijfformulier.
+ * Een exportregel uit KampInfoHelper met informatie voor een ScoutsOnline inschrijfformulier.
  */
 public class KampInfoFormulierExportRegel {
 

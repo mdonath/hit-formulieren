@@ -1,6 +1,6 @@
 package nl.scouting.hit.sol.evenement.tab.formulier.wijzig;
 
-import nl.scouting.hit.sol.Valuable;
+import nl.scouting.hit.common.Valuable;
 import nl.scouting.hit.sol.evenement.tab.formulier.common.AbstractFormulierPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.AbstractVeldWijzigen;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.DeelnamekostenWijzigen;

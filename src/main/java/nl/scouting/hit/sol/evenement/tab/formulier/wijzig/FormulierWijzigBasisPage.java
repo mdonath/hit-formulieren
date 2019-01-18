@@ -1,12 +1,9 @@
 package nl.scouting.hit.sol.evenement.tab.formulier.wijzig;
 
-import nl.scouting.hit.sol.AbstractPage;
 import nl.scouting.hit.sol.JaNee;
-import nl.scouting.hit.sol.Valuable;
-import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
+import nl.scouting.hit.common.Valuable;
 import nl.scouting.hit.sol.evenement.tab.formulier.common.AbstractFormulierBasisPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.verwijder.FormulierVerwijderenPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

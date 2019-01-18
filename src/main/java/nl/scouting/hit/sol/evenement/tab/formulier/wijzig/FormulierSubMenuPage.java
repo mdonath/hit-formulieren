@@ -1,6 +1,6 @@
 package nl.scouting.hit.sol.evenement.tab.formulier.wijzig;
 
-import nl.scouting.hit.sol.AbstractPage;
+import nl.scouting.hit.common.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

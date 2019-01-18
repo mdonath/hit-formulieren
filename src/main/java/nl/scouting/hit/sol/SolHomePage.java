@@ -2,7 +2,7 @@ package nl.scouting.hit.sol;
 
 import org.openqa.selenium.WebDriver;
 
-public class SolHomePage extends AbstractSolPage {
+public class SolHomePage extends AbstractSolMetHoofdMenuPage<SolHomePage> {
 
     public SolHomePage(WebDriver driver) {
         super(driver);

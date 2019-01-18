@@ -1,8 +1,10 @@
 .idea/
 target/
 *.iml
+configuration.properties
 mypassword.txt
 data.json
+screenshot.png
 
 # Compiled class file
 *.class

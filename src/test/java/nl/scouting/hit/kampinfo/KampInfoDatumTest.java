@@ -1,5 +1,6 @@
 package nl.scouting.hit.kampinfo;
 
+import nl.scouting.hit.kampinfo.export.KampInfoDatum;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

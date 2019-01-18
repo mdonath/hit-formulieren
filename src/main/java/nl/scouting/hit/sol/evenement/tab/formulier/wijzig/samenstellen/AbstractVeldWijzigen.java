@@ -1,11 +1,11 @@
 package nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen;
 
-import nl.scouting.hit.sol.AbstractSolPage;
+import nl.scouting.hit.sol.AbstractSolMetHoofdMenuPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public abstract class AbstractVeldWijzigen<T extends AbstractVeldWijzigen> extends AbstractSolPage {
+public abstract class AbstractVeldWijzigen<T extends AbstractVeldWijzigen> extends AbstractSolMetHoofdMenuPage<T> {
 
     @FindBy(name = "fld_text_before")
     private WebElement fieldKoptekst;

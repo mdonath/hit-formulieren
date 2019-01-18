@@ -1,4 +1,4 @@
-package nl.scouting.hit.sol;
+package nl.scouting.hit.common;
 
 public interface Valuable {
 

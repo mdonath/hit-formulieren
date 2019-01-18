@@ -1,4 +1,4 @@
-package nl.scouting.hit.kampinfo;
+package nl.scouting.hit.kampinfo.export;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import nl.scouting.hit.common.Datum;

@@ -1,14 +1,14 @@
 package nl.scouting.hit.sol.evenement.tab.formulier.common;
 
-import nl.scouting.hit.sol.AbstractPage;
-import nl.scouting.hit.sol.AbstractSolPage;
+import nl.scouting.hit.common.AbstractPage;
+import nl.scouting.hit.sol.AbstractSolMetHoofdMenuPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierSubMenuPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public abstract class AbstractFormulierPage<T extends AbstractFormulierPage> extends AbstractSolPage<T> {
+public abstract class AbstractFormulierPage<T extends AbstractFormulierPage> extends AbstractSolMetHoofdMenuPage<T> {
 
     public class MeerMenuPage extends AbstractPage {
         @FindBy(linkText = "Naar alle formulieren")

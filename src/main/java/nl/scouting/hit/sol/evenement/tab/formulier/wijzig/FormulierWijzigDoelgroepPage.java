@@ -1,13 +1,9 @@
 package nl.scouting.hit.sol.evenement.tab.formulier.wijzig;
 
-import nl.scouting.hit.sol.JaNee;
-import nl.scouting.hit.sol.Valuable;
 import nl.scouting.hit.sol.evenement.tab.formulier.common.AbstractFormulierPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import java.util.List;
 
 public class FormulierWijzigDoelgroepPage extends AbstractFormulierPage<FormulierWijzigDoelgroepPage> {
 

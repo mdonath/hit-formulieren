@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class HoofdMenu extends AbstractPage {
+public class HoofdMenu extends AbstractSolPage {
 
     @FindBy(id = "login_role_select")
     private WebElement rollenMenu;
@@ -15,10 +15,12 @@ public class HoofdMenu extends AbstractPage {
         super(driver);
     }
 
+    @Deprecated // Er is nu geen rollenmenu meer, maar een organisatiemenu
     public void openklappenRollenMenu() {
         activeerElement(rollenMenu);
     }
 
+    @Deprecated // Er is nu geen rollenmenu meer, maar een organisatiemenu
     public void wijzigRol(final String rolnaam) {
         openklappenRollenMenu();
         driver.findElement(By.linkText(rolnaam)).click();
@@ -31,9 +33,9 @@ public class HoofdMenu extends AbstractPage {
         return new EvenementenLijstPage(driver);
     }
 
-    public EvenementenLijstPage openSpelVanMijnSpeleenheid() {
+    public EvenementenLijstPage openSpelVanMijnSpeleenheid(String naamSpeleenheid) {
         openklappenMenuSpel();
-        klikMenuSubItem("Van mijn speleenheid");
+        klikMenuSubItem("Van speleenheid " + naamSpeleenheid);
         return new EvenementenLijstPage(driver);
     }
 

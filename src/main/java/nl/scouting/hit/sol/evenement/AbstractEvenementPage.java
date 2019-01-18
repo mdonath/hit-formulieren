@@ -1,31 +1,28 @@
 package nl.scouting.hit.sol.evenement;
 
-import nl.scouting.hit.sol.AbstractSolPage;
-import nl.scouting.hit.sol.HoofdMenu;
+import nl.scouting.hit.sol.AbstractSolMetHoofdMenuPage;
+import nl.scouting.hit.sol.evenement.tab.EvenementSubMenu;
 import nl.scouting.hit.sol.evenement.tab.basis.TabBasisWijzigenPage;
 import nl.scouting.hit.sol.evenement.tab.extra.TabExtraPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public abstract class AbstractEvenementPage extends AbstractSolPage {
+public abstract class AbstractEvenementPage<T extends AbstractEvenementPage> extends AbstractSolMetHoofdMenuPage<T> {
 
-    private HoofdMenu hoofdMenu;
-    private EvenementSubMenuPage evenementSubMenu;
+    private EvenementSubMenu evenementSubMenu;
 
     public AbstractEvenementPage(WebDriver driver) {
         super(driver);
-        hoofdMenu = new HoofdMenu(driver);
-        evenementSubMenu = new EvenementSubMenuPage(driver);
+        evenementSubMenu = new EvenementSubMenu(driver);
     }
 
-    public EvenementSubMenuPage submenu() {
+    public EvenementSubMenu submenu() {
         return evenementSubMenu;
     }
 
     public static <T extends AbstractEvenementPage> T build(final WebDriver driver) {
-        String activeTab = driver.findElement(By.xpath("//a[@class='active']")).getText();
-        System.out.println(activeTab);
+        final String activeTab = driver.findElement(By.xpath("//a[@class='active']")).getText();
         switch (activeTab) {
             case "basis":
                 return (T) new TabBasisWijzigenPage(driver);

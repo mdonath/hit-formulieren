@@ -1,6 +1,6 @@
-package nl.scouting.hit.sol.evenement;
+package nl.scouting.hit.sol.evenement.tab;
 
-import nl.scouting.hit.sol.AbstractPage;
+import nl.scouting.hit.common.AbstractPage;
 import nl.scouting.hit.sol.evenement.tab.basis.TabBasisWijzigenPage;
 import nl.scouting.hit.sol.evenement.tab.extra.TabExtraPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
@@ -11,7 +11,7 @@ import org.openqa.selenium.support.FindBy;
 /**
  * Kan alle tabs openen uit het submenu van een Evenement.
  */
-public class EvenementSubMenuPage extends AbstractPage {
+public class EvenementSubMenu extends AbstractPage {
 
     @FindBy(linkText = "basis")
     private WebElement tabBasis;
@@ -20,7 +20,7 @@ public class EvenementSubMenuPage extends AbstractPage {
     @FindBy(linkText = "formulieren")
     private WebElement tabFormulieren;
 
-    public EvenementSubMenuPage(WebDriver driver) {
+    public EvenementSubMenu(WebDriver driver) {
         super(driver);
     }
 

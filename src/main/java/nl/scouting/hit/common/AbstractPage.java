@@ -1,4 +1,4 @@
-package nl.scouting.hit.sol;
+package nl.scouting.hit.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
-public abstract class AbstractPage<T extends AbstractPage> implements SolPage {
+public abstract class AbstractPage<T extends AbstractPage> {
 
     protected final WebDriver driver;
 
@@ -19,22 +19,9 @@ public abstract class AbstractPage<T extends AbstractPage> implements SolPage {
         PageFactory.initElements(driver, this);
     }
 
-    public final T controleerMelding(final String expected) {
-        if (!verifyNoticeMessage(expected)) {
-            throw new RuntimeException(String.format("Onjuiste melding: '%s', maar verwachtte: '%s'.", logNoticeMessage(), expected));
-        }
-        return (T) this;
-    }
-
-    public final boolean verifyNoticeMessage(final String expected) {
-        final String text = driver.findElement(By.xpath("//div[@class=\"notice_msg\"]")).getText();
-        return expected.equals(text);
-    }
-
-    protected final String logNoticeMessage() {
-        final String text = driver.findElement(By.xpath("//div[@class=\"notice_msg\"]")).getText();
-        System.out.println(text);
-        return text;
+    protected final void scrollToTop() {
+        ((JavascriptExecutor) driver)
+                .executeScript("window.scrollTo(0, 0)");
     }
 
     protected final void scrollToBottom() {
@@ -60,8 +47,12 @@ public abstract class AbstractPage<T extends AbstractPage> implements SolPage {
         new Select(element).selectByValue(value);
     }
 
+    protected final void selectByValue(final WebElement element, final Valuable value) {
+        selectByValue(element, value.getId());
+    }
+
     protected final void selectRadio(final List<WebElement> elements, final Valuable value) {
-        scrollIntoView(elements.get(0));
+        scrollIntoView(elements.get(0), false);
         elements.stream()
                 .filter(element -> value.getId().equals(element.getAttribute("value")))
                 .findFirst().ifPresent(WebElement::click);
@@ -88,13 +79,29 @@ public abstract class AbstractPage<T extends AbstractPage> implements SolPage {
         new Actions(driver).moveToElement(element).perform();
     }
 
-    protected final void scrollIntoView(final WebElement element) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    protected final WebElement scrollIntoView(final WebElement element, final boolean centered) {
+        String args = centered ? "{behavior:'auto', block:'center', inline:'center'}" : "true";
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(" + args + ");", element);
+        return element;
     }
 
     protected void scrollIntoViewAndClick(final WebElement button) {
-        scrollIntoView(button);
+        scrollIntoView(button, false);
         button.click();
+    }
+
+    protected void scrollIntoViewCenteredAndClick(final WebElement button) {
+        scrollIntoView(button, true);
+        button.click();
+    }
+
+    public final T sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException ignore) {
+            // ignore
+        }
+        return (T) this;
     }
 
 }

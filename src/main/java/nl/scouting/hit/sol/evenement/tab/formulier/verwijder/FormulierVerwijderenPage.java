@@ -1,6 +1,6 @@
 package nl.scouting.hit.sol.evenement.tab.formulier.verwijder;
 
-import nl.scouting.hit.sol.AbstractSolPage;
+import nl.scouting.hit.sol.AbstractSolMetHoofdMenuPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigBasisPage;
 import org.openqa.selenium.WebDriver;
@@ -10,7 +10,7 @@ import org.openqa.selenium.support.FindBy;
 /**
  * Vraagt om bevestiging voor het verwijderen van een formulier.
  */
-public class FormulierVerwijderenPage extends AbstractSolPage {
+public class FormulierVerwijderenPage extends AbstractSolMetHoofdMenuPage<FormulierVerwijderenPage> {
 
     @FindBy(xpath = "//*[@id=\"buttonbar\"]/div/input[@name=\"yes_btn\"]")
     private WebElement buttonJa;

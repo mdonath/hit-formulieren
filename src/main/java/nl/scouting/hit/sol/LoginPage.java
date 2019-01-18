@@ -1,10 +1,11 @@
 package nl.scouting.hit.sol;
 
+import nl.scouting.hit.common.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class LoginPage extends AbstractSolPage {
+public class LoginPage extends AbstractPage {
 
     private WebElement usernameField;
     private WebElement passwordField;
@@ -21,4 +22,12 @@ public class LoginPage extends AbstractSolPage {
         scrollIntoViewAndClick(submitButton);
         return new SolHomePage(driver);
     }
+
+    public <T extends AbstractPage> T login(String username, String password, T returnPage) {
+//        usernameField.sendKeys(username);
+        passwordField.sendKeys(password);
+        scrollIntoViewAndClick(submitButton);
+        return returnPage;
+    }
+
 }
