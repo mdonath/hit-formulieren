@@ -79,9 +79,9 @@ public class FormulierWijzigDeelnameconditiesPage extends AbstractFormulierBasis
     private WebElement fieldMaximumAantalExterneDeelnemers;
 
     /**
-     * Button Wijzigingen opslaan.
+     * Button Wijzigingen apply.
      */
-    @FindBy(xpath = "//input[@value=\"Wijzigingen opslaan\"]")
+    @FindBy(xpath = "//input[@value=\"Wijzigingen apply\"]")
     private WebElement buttonWijzigingenOpslaan;
 
     public FormulierWijzigDeelnameconditiesPage(WebDriver driver) {

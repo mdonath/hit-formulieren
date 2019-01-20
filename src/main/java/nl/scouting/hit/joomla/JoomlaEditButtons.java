@@ -6,21 +6,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 /**
- *
  * @param <C> Type of Current Page
  * @param <P> Type of Previous Page
  */
 public class JoomlaEditButtons<C extends AbstractPage, P extends AbstractPage> extends AbstractPage {
 
-    @FindBy(xpath= "//*[@id=\"toolbar-apply\"]/button")
+    @FindBy(xpath = "//*[@id=\"toolbar-apply\"]/button")
     private WebElement buttonApply; // Opslaan
-    @FindBy(xpath= "//*[@id=\"toolbar-save\"]/button")
-    private WebElement buttonSave; // Opslaan & sluiten
-    @FindBy(xpath= "//*[@id=\"toolbar-save-new\"]/button")
+    @FindBy(xpath = "//*[@id=\"toolbar-save\"]/button")
+    private WebElement buttonSave; // Opslaan & cancel
+    @FindBy(xpath = "//*[@id=\"toolbar-save-new\"]/button")
     private WebElement buttonSaveNew; // Opslaan & nieuw
-    @FindBy(xpath= "//*[@id=\"toolbar-popup-preview\"]/button")
+    @FindBy(xpath = "//*[@id=\"toolbar-popup-preview\"]/button")
     private WebElement buttonPreview; // Preview
-    @FindBy(xpath= "//*[@id=\"toolbar-cancel\"]/button")
+    @FindBy(xpath = "//*[@id=\"toolbar-cancel\"]/button")
     private WebElement buttonCancel; // Sluiten
 
     private final P previousPage;
@@ -31,17 +30,17 @@ public class JoomlaEditButtons<C extends AbstractPage, P extends AbstractPage> e
         this.previousPage = previousPage;
     }
 
-    public C opslaan() {
+    public C apply() {
         scrollIntoViewCenteredAndClick(buttonApply);
         return (C) this;
     }
 
-    public P opslaanEnSluiten() {
+    public P save() {
         scrollIntoViewCenteredAndClick(buttonSave);
         return previousPage;
     }
 
-    public C opslaanEnNieuw() {
+    public C saveAndNew() {
         scrollIntoViewCenteredAndClick(buttonSaveNew);
         return (C) this;
     }
@@ -51,7 +50,7 @@ public class JoomlaEditButtons<C extends AbstractPage, P extends AbstractPage> e
         return (C) this;
     }
 
-    public P sluiten() {
+    public P cancel() {
         scrollIntoViewCenteredAndClick(buttonCancel);
         return previousPage;
     }

@@ -1,10 +1,17 @@
 package nl.scouting.hit.kampinfo.kamp;
 
+import nl.scouting.hit.joomla.JoomlaPublished;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class HitKampBewerkAdminPage extends AbstractKampInfoBewerkPage<HitKampBewerkGegevensPage, HitKampenPage> {
+/**
+ * Manipuleert de velden in KampInfo » HIT Kamp » Admin.
+ */
+public class HitKampBewerkAdminPage extends AbstractKampInfoBewerkPage<HitKampBewerkAdminPage> {
+
+    @FindBy(id = "jform_published")
+    private WebElement fieldsetGepubliceerd;
 
     @FindBy(id = "jform_shantiFormuliernummer")
     private WebElement fieldShantiFormuliernummer;
@@ -22,26 +29,30 @@ public class HitKampBewerkAdminPage extends AbstractKampInfoBewerkPage<HitKampBe
         super(driver);
     }
 
-    public HitKampBewerkAdminPage setFieldShantiFormuliernummer(String formuliernummer) {
+    public HitKampBewerkAdminPage setFieldGepubliceerd(final JoomlaPublished jaNee) {
+        return setRadioButtonByLabelClick(this.fieldsetGepubliceerd, jaNee);
+    }
+
+    public HitKampBewerkAdminPage setFieldShantiFormuliernummer(final String formuliernummer) {
         return setFieldShantiFormuliernummer(Integer.parseInt(formuliernummer));
     }
 
-    public HitKampBewerkAdminPage setFieldShantiFormuliernummer(int formuliernummer) {
+    public HitKampBewerkAdminPage setFieldShantiFormuliernummer(final int formuliernummer) {
         clearAndSendKeys(fieldShantiFormuliernummer, formuliernummer);
         return this;
     }
 
-    public HitKampBewerkAdminPage setFieldAantalDeelnemers(int aantalDeelnemers) {
+    public HitKampBewerkAdminPage setFieldAantalDeelnemers(final int aantalDeelnemers) {
         clearAndSendKeys(fieldAantalDeelnemers, aantalDeelnemers);
         return this;
     }
 
-    public HitKampBewerkAdminPage setFieldGereserveerd(int aantalGereserveerd) {
+    public HitKampBewerkAdminPage setFieldGereserveerd(final int aantalGereserveerd) {
         clearAndSendKeys(fieldGereserveerd, aantalGereserveerd);
         return this;
     }
 
-    public HitKampBewerkAdminPage setFieldAantalSubgroepen(int aantalSubgroepen) {
+    public HitKampBewerkAdminPage setFieldAantalSubgroepen(final int aantalSubgroepen) {
         clearAndSendKeys(fieldAantalSubgroepen, aantalSubgroepen);
         return this;
     }

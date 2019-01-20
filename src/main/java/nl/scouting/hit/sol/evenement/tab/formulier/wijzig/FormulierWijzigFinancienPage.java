@@ -131,7 +131,7 @@ public class FormulierWijzigFinancienPage extends AbstractFormulierPage<Formulie
         return this;
     }
 
-    @FindBy(xpath = "//div[@id!=\"bottom_menu\"]//input[@name=\"submitBtn\" and @value=\"Wijzigingen opslaan\"]")
+    @FindBy(xpath = "//div[@id!=\"bottom_menu\"]//input[@name=\"submitBtn\" and @value=\"Wijzigingen apply\"]")
     private WebElement buttonWijzigingenOpslaan;
 
     public FormulierWijzigFinancienPage setFieldAnnuleringsPercentage(final String s) {

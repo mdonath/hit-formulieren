@@ -38,7 +38,7 @@ public class KampInfoVuller {
                                     .openHitKamp(formulier.kamp)
                                     .tabs().admin()
                                     .setFieldShantiFormuliernummer(formulier.shantiID)
-                                    .editButtons().opslaanEnSluiten()
+                                    .editButtons().save()
                     );
         }
     }

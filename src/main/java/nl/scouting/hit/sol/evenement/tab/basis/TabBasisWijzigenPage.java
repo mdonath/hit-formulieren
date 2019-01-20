@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class TabBasisWijzigenPage extends AbstractTabBasisPage {
 
-    @FindBy(linkText = "Wijzigingen opslaan")
+    @FindBy(linkText = "Wijzigingen apply")
     private WebElement buttonWijzigingenOpslaan;
 
     public TabBasisWijzigenPage(WebDriver driver) {

@@ -1,10 +1,10 @@
 package nl.scouting.hit.kampinfo.kamp;
 
 import nl.scouting.hit.joomla.AbstractJoomlaEditPage;
-import nl.scouting.hit.kampinfo.AbstractKampInfoPage;
 import org.openqa.selenium.WebDriver;
 
-public abstract class AbstractKampInfoBewerkPage<C extends AbstractKampInfoBewerkPage, P extends AbstractKampInfoPage> extends AbstractJoomlaEditPage {
+public abstract class AbstractKampInfoBewerkPage<C extends AbstractKampInfoBewerkPage>
+        extends AbstractJoomlaEditPage<C, HitKampenPage> {
 
     private HitKampBewerkTabs tabs;
 

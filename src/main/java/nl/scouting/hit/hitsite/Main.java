@@ -2,6 +2,7 @@ package nl.scouting.hit.hitsite;
 
 import nl.scouting.hit.common.AbstractWebApplication;
 import nl.scouting.hit.common.Util;
+import nl.scouting.hit.joomla.JoomlaJaNee;
 import nl.scouting.hit.joomla.JoomlaPublished;
 import nl.scouting.hit.kampinfo.kamp.HitKampenPage;
 
@@ -18,15 +19,23 @@ public class Main extends AbstractWebApplication {
         final String solUsername = Util.readUsernameFromFile();
         final String solPassword = Util.readPasswordFromFile();
 
-        KampInfoVuller.neemShantiIdOverInKampInfo(jaar, kiBaseUrl, solBaseUrl, solUsername, solPassword);
+        // KampInfoVuller.neemShantiIdOverInKampInfo(jaar, kiBaseUrl, solBaseUrl, solUsername, solPassword);
 
-        try (final HitWebsiteAdmin ki = new HitWebsiteAdmin(kiBaseUrl, solUsername, solPassword)) {
-            final HitKampenPage kampenLijst = ki.openKampInfo().submenu().openHitKampen();
+        try (final HitWebsiteAdmin hitwebsite = new HitWebsiteAdmin(kiBaseUrl, solUsername, solPassword)) {
+            final HitKampenPage kampenLijst = hitwebsite.openKampInfo().submenu().openHitKampen();
             kampenLijst
-                    .unsetFilterJaar()
-                    .setFilterJaar(2019)
-                    .setFilterPublished(JoomlaPublished.UNPUBLISHED)
-                    .unsetFilterStatus()
+                    .setFilterPlaats("Alphen", 2019)
+                    .openHitKamp("Alphen Hakt! [GAAT NIET DOOR]")
+                    .tabs().gegevensVanEenHitKamp()
+                    .setFieldHitPlaats("Alphen", 2019)
+                    .setFieldStartDatumTijd("19-04-2019 19:00")
+                    .setFieldEindDatumTijd("22-04-2019 15:00")
+                    .setFieldDeelnamekosten(42)
+                    .setFieldIsOuderKind(false)
+                    .setFieldAfwijkendeStartlokatie(false)
+                    .setFieldSublocatie("")
+                    .setAkkoordKamp(JoomlaJaNee.JA)
+                    .setAkkoordPlaats(JoomlaJaNee.JA)
             ;
             System.out.println("Done!");
         }
