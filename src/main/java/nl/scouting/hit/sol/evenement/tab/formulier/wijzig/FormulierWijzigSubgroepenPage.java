@@ -25,7 +25,7 @@ public class FormulierWijzigSubgroepenPage extends AbstractFormulierPage<Formuli
         super(driver);
     }
 
-    public boolean heeftSubgroepCategorie(final String s) {
+    public boolean hasSubgroepCategorie(final String s) {
         return !driver.findElements(By.linkText(s)).isEmpty();
     }
 

@@ -35,7 +35,7 @@ public class FormulierWijzigDoelgroepPage extends AbstractFormulierPage<Formulie
         super(driver);
     }
 
-    public FormulierWijzigDoelgroepPage wijzigingenOpslaan() {
+    public FormulierWijzigDoelgroepPage opslaanWijzigingenß() {
         scrollIntoViewAndClick(buttonWijzigingenOpslaan);
         return this;
     }

@@ -72,7 +72,7 @@ public class FormulierWijzigAanpassenMailsPage extends AbstractFormulierPage<For
         super(driver);
     }
 
-    public FormulierWijzigAanpassenMailsPage setFieldSelecteerBericht(Bericht bericht) {
+    public FormulierWijzigAanpassenMailsPage withSelecteerBericht(Bericht bericht) {
         selectByValue(fieldSelecteerBericht, bericht.id);
         return this;
     }
@@ -82,12 +82,12 @@ public class FormulierWijzigAanpassenMailsPage extends AbstractFormulierPage<For
         return this;
     }
 
-    public FormulierWijzigAanpassenMailsPage setSoortBericht(SoortBericht bericht) {
+    public FormulierWijzigAanpassenMailsPage withSoortBericht(SoortBericht bericht) {
         selectRadio(fieldSoortBericht, bericht);
         return this;
     }
 
-    public FormulierWijzigAanpassenMailsPage setFieldGewijzigdBericht(String s) {
+    public FormulierWijzigAanpassenMailsPage withGewijzigdBericht(String s) {
         clearAndSendKeys(fieldGewijzigdBericht, s);
         return this;
     }

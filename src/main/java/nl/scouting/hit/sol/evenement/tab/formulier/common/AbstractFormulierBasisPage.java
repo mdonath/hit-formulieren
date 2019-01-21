@@ -66,42 +66,42 @@ public abstract class AbstractFormulierBasisPage<T extends AbstractFormulierBasi
         super(driver);
     }
 
-    public T setFieldNaamFormulier(final String s) {
+    public T withNaamFormulier(final String s) {
         clearAndSendKeys(fieldNaamFormulier, s);
         return (T) this;
     }
 
 
-    public T setfieldProjectCode(final String s) {
+    public T withProjectCode(final String s) {
         clearAndSendKeys(fieldProjectCode, s);
         return (T) this;
     }
 
-    public T setFieldMailadresEvenement(String s) {
+    public T withMailadresEvenement(String s) {
         clearAndSendKeys(fieldMailadresEvenement, s);
         return (T) this;
     }
 
-    public T setFieldMailBijAanmelding(final JaNee jaNee) {
+    public T withMailBijAanmelding(final JaNee jaNee) {
         selectRadio(fieldMailBijAanmelding, jaNee);
         return (T) this;
     }
 
-    public T setFieldMailBijWijziging(final JaNee jaNee) {
+    public T withMailBijWijziging(final JaNee jaNee) {
         selectRadio(fieldMailBijWijziging, jaNee);
         return (T) this;
     }
 
-    public T setFieldMailadresVoorInschrijfvragen(final String s) {
+    public T withMailadresVoorInschrijfvragen(final String s) {
         clearAndSendKeys(fieldMailadresVoorInschrijfvragen, s);
         return (T) this;
     }
 
-    public T setFieldsEvenementStart(Datum datum, String tijd) {
-        return setFieldsEvenementStart(datum.getDag(), datum.getMaand(), datum.getJaar(), tijd);
+    public T withEvenementStart(Datum datum, String tijd) {
+        return withEvenementStart(datum.getDag(), datum.getMaand(), datum.getJaar(), tijd);
     }
 
-    public T setFieldsEvenementStart(int dag, int maand, int jaar, String tijd) {
+    public T withEvenementStart(int dag, int maand, int jaar, String tijd) {
         setFieldsDatumTijd(fieldEvenementStartDag, dag
                 , fieldEvenementStartMaand, maand
                 , fieldEvenementStartJaar, jaar
@@ -109,11 +109,11 @@ public abstract class AbstractFormulierBasisPage<T extends AbstractFormulierBasi
         return (T) this;
     }
 
-    public T setFieldsEvenementEind(Datum datum, String tijd) {
-        return setFieldsEvenementEind(datum.getDag(), datum.getMaand(), datum.getJaar(), tijd);
+    public T withEvenementEind(Datum datum, String tijd) {
+        return withEvenementEind(datum.getDag(), datum.getMaand(), datum.getJaar(), tijd);
     }
 
-    public T setFieldsEvenementEind(int dag, int maand, int jaar, String tijd) {
+    public T withEvenementEind(int dag, int maand, int jaar, String tijd) {
         setFieldsDatumTijd(fieldEvenementEindDag, dag
                 , fieldEvenementEindMaand, maand
                 , fieldEvenementEindJaar, jaar
@@ -121,11 +121,11 @@ public abstract class AbstractFormulierBasisPage<T extends AbstractFormulierBasi
         return (T) this;
     }
 
-    public T setFieldsInschrijvingStart(Datum datum, String tijd) {
-        return setFieldsInschrijvingStart(datum.getDag(), datum.getMaand(), datum.getJaar(), tijd);
+    public T withInschrijvingStart(Datum datum, String tijd) {
+        return withInschrijvingStart(datum.getDag(), datum.getMaand(), datum.getJaar(), tijd);
     }
 
-    public T setFieldsInschrijvingStart(int dag, int maand, int jaar, String tijd) {
+    public T withInschrijvingStart(int dag, int maand, int jaar, String tijd) {
         setFieldsDatumTijd(fieldInschrijvingStartDag, dag
                 , fieldInschrijvingStartMaand, maand
                 , fieldInschrijvingStartJaar, jaar
@@ -133,11 +133,11 @@ public abstract class AbstractFormulierBasisPage<T extends AbstractFormulierBasi
         return (T) this;
     }
 
-    public T setFieldsInschrijvingEind(Datum datum) {
-        return setFieldsInschrijvingEind(datum.getDag(), datum.getMaand(), datum.getJaar());
+    public T withInschrijvingEind(Datum datum) {
+        return withInschrijvingEind(datum.getDag(), datum.getMaand(), datum.getJaar());
     }
 
-    public T setFieldsInschrijvingEind(int dag, int maand, int jaar) {
+    public T withInschrijvingEind(int dag, int maand, int jaar) {
         setFieldsDatum(fieldInschrijvingEindDag, dag
                 , fieldInschrijvingEindMaand, maand
                 , fieldInschrijvingEindJaar, jaar);

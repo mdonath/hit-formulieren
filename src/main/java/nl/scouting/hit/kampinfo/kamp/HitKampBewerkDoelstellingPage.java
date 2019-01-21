@@ -8,5 +8,5 @@ public class HitKampBewerkDoelstellingPage extends AbstractKampInfoBewerkPage<Hi
         super(driver);
     }
 
-
+    // TODO
 }

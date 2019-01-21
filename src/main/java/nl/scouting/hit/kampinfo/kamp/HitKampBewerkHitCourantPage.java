@@ -8,4 +8,5 @@ public class HitKampBewerkHitCourantPage extends AbstractKampInfoBewerkPage<HitK
         super(driver);
     }
 
+    // TODO
 }

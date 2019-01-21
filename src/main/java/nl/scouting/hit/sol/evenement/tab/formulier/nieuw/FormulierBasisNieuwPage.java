@@ -32,7 +32,7 @@ public class FormulierBasisNieuwPage extends AbstractFormulierBasisPage<Formulie
     }
 
 
-    public FormulierBasisNieuwPage setFieldSoortDeelnemers(final SoortDeelnemers s) {
+    public FormulierBasisNieuwPage withSoortDeelnemers(final SoortDeelnemers s) {
         selectByValue(fieldSoortDeelnemers, s.id);
         return this;
     }

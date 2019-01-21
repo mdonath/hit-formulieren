@@ -29,30 +29,30 @@ public class HitKampBewerkAdminPage extends AbstractKampInfoBewerkPage<HitKampBe
         super(driver);
     }
 
-    public HitKampBewerkAdminPage setFieldGepubliceerd(final JoomlaPublished jaNee) {
+    public HitKampBewerkAdminPage withGepubliceerd(final JoomlaPublished jaNee) {
         return setRadioButtonByLabelClick(this.fieldsetGepubliceerd, jaNee);
     }
 
-    public HitKampBewerkAdminPage setFieldShantiFormuliernummer(final String formuliernummer) {
-        return setFieldShantiFormuliernummer(Integer.parseInt(formuliernummer));
+    public HitKampBewerkAdminPage withShantiFormuliernummer(final String formuliernummer) {
+        return withShantiFormuliernummer(Integer.parseInt(formuliernummer));
     }
 
-    public HitKampBewerkAdminPage setFieldShantiFormuliernummer(final int formuliernummer) {
+    public HitKampBewerkAdminPage withShantiFormuliernummer(final int formuliernummer) {
         clearAndSendKeys(fieldShantiFormuliernummer, formuliernummer);
         return this;
     }
 
-    public HitKampBewerkAdminPage setFieldAantalDeelnemers(final int aantalDeelnemers) {
+    public HitKampBewerkAdminPage withAantalDeelnemers(final int aantalDeelnemers) {
         clearAndSendKeys(fieldAantalDeelnemers, aantalDeelnemers);
         return this;
     }
 
-    public HitKampBewerkAdminPage setFieldGereserveerd(final int aantalGereserveerd) {
+    public HitKampBewerkAdminPage withGereserveerd(final int aantalGereserveerd) {
         clearAndSendKeys(fieldGereserveerd, aantalGereserveerd);
         return this;
     }
 
-    public HitKampBewerkAdminPage setFieldAantalSubgroepen(final int aantalSubgroepen) {
+    public HitKampBewerkAdminPage withAantalSubgroepen(final int aantalSubgroepen) {
         clearAndSendKeys(fieldAantalSubgroepen, aantalSubgroepen);
         return this;
     }

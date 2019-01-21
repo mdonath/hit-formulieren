@@ -32,12 +32,12 @@ public class FormulierSubgroepenCategorieWijzigPage extends AbstractFormulierSub
         super(driver);
     }
 
-    public FormulierSubgroepenCategorieWijzigPage setFieldZichtbaarVoorDeelnemer(JaNee jaNee) {
+    public FormulierSubgroepenCategorieWijzigPage withZichtbaarVoorDeelnemer(JaNee jaNee) {
         selectRadio(fieldZichtbaarVoorDeelnemer, jaNee);
         return this;
     }
 
-    public FormulierSubgroepenCategorieWijzigPage gegevensOpslaan() {
+    public FormulierSubgroepenCategorieWijzigPage opslaanGegevens() {
         scrollIntoViewAndClick(buttonGegevensOpslaan);
         return this;
     }

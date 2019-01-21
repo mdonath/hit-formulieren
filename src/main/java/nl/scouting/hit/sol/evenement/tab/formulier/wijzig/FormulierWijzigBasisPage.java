@@ -1,7 +1,7 @@
 package nl.scouting.hit.sol.evenement.tab.formulier.wijzig;
 
-import nl.scouting.hit.sol.JaNee;
 import nl.scouting.hit.common.Valuable;
+import nl.scouting.hit.sol.JaNee;
 import nl.scouting.hit.sol.evenement.tab.formulier.common.AbstractFormulierBasisPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.verwijder.FormulierVerwijderenPage;
 import org.openqa.selenium.WebDriver;
@@ -71,59 +71,61 @@ public class FormulierWijzigBasisPage extends AbstractFormulierBasisPage<Formuli
 
     /**
      * Constructor.
+     *
      * @param driver
      */
     public FormulierWijzigBasisPage(final WebDriver driver) {
         super(driver);
     }
 
-    public FormulierWijzigBasisPage setFieldFormulierActief(final JaNee jaNee) {
+    public FormulierWijzigBasisPage withFormulierActief(final JaNee jaNee) {
         selectRadio(fieldFormulierActief, jaNee);
         return this;
     }
 
-    public FormulierWijzigBasisPage setFieldLocatie(final String s) {
+    public FormulierWijzigBasisPage withLocatie(final String s) {
         clearAndSendKeys(fieldLocatie, s);
         return this;
     }
 
-    public FormulierWijzigBasisPage setFieldWebsite(final String s) {
+    public FormulierWijzigBasisPage withWebsite(final String s) {
         clearAndSendKeys(fieldWebsite, s);
         return this;
     }
 
-    public FormulierWijzigBasisPage setFieldWebsiteLocatie(final String s) {
+    public FormulierWijzigBasisPage withWebsiteLocatie(final String s) {
         clearAndSendKeys(fieldWebsiteLocatie, s);
         return this;
     }
 
-    public FormulierWijzigBasisPage setFieldLinkDeelnemersvoorwaarden(final String s) {
+    public FormulierWijzigBasisPage withLinkDeelnemersvoorwaarden(final String s) {
         clearAndSendKeys(fieldLinkDeelnemersvoorwaarden, s);
         return this;
     }
 
-    public FormulierWijzigBasisPage setFieldStuurTicket(final JaNee jaNee) {
+    public FormulierWijzigBasisPage withStuurTicket(final JaNee jaNee) {
         selectRadio(fieldStuurTicket, jaNee);
         return this;
     }
 
-    public FormulierWijzigBasisPage setFieldTypeBarcode(final TypeBarcode typeBarcode) {
+    public FormulierWijzigBasisPage withTypeBarcode(final TypeBarcode typeBarcode) {
         selectRadio(fieldTypeBarcode, typeBarcode);
         return this;
     }
 
-    public FormulierWijzigBasisPage setFieldTicketTekst() {
+    public FormulierWijzigBasisPage withTicketTekst() {
+        // TODO
         return this;
     }
 
-    public FormulierWijzigBasisPage setFieldsInschrijvingWijzigen(final int dag, final int maand, final int jaar) {
+    public FormulierWijzigBasisPage withInschrijvingWijzigen(final int dag, final int maand, final int jaar) {
         selectByValue(fieldInschrijvingWijzigenDag, String.format("%02d", dag));
         selectByValue(fieldInschrijvingWijzigenMaand, String.format("%02d", maand));
         selectByValue(fieldInschrijvingWijzigenJaar, String.format("%04d", jaar));
         return this;
     }
 
-    public FormulierWijzigBasisPage wijzigingenOpslaan() {
+    public FormulierWijzigBasisPage opslaanWijzigingen() {
         scrollIntoViewAndClick(buttonWijzigingenOpslaan);
         // Je komt weer terug op deze pagina
         return this;

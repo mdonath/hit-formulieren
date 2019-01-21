@@ -41,48 +41,48 @@ public class DeelnamekostenWijzigen extends AbstractVeldWijzigen<DeelnamekostenW
     // UTIL //
 
     public DeelnamekostenWijzigen createAndChangeTermijn(final KampInfoFormulierExportRegel regel, final String termijn) {
-        if (!heeftBetalingstermijn(termijn)) {
-            setFieldBetalingstermijn(termijn);
-            betalingstermijnToevoegen();
+        if (!hasBetalingstermijn(termijn)) {
+            withBetalingstermijn(termijn);
+            toevoegenBetalingstermijn();
         }
-        setFieldBedrag(termijn, String.valueOf(regel.getDeelnemersprijs()));
-        setFieldsBetaalDatum(termijn, regel.getInschrijvingStart());
+        withBedrag(termijn, String.valueOf(regel.getDeelnemersprijs()));
+        withBetaalDatum(termijn, regel.getInschrijvingStart());
         return this;
     }
 
     //
 
-    public DeelnamekostenWijzigen setFieldGrootboek(String s) {
+    public DeelnamekostenWijzigen withGrootboek(String s) {
         selectByVisibleText(fieldGrootboek, s);
         return this;
     }
 
-    public boolean heeftBetalingstermijn(String betalingstermijn) {
+    public boolean hasBetalingstermijn(String betalingstermijn) {
         return !driver.findElements(By.xpath("//table//input[@value='" + betalingstermijn + "']")).isEmpty();
     }
 
-    public DeelnamekostenWijzigen setFieldBetalingstermijn(String s) {
+    public DeelnamekostenWijzigen withBetalingstermijn(String s) {
         clearAndSendKeys(fieldBetalingstermijn, s);
         return this;
     }
 
-    public DeelnamekostenWijzigen betalingstermijnToevoegen() {
+    public DeelnamekostenWijzigen toevoegenBetalingstermijn() {
         scrollIntoViewAndClick(buttonBetalingstermijnToevoegen);
         return this;
     }
 
-    public DeelnamekostenWijzigen setFieldBedrag(String betalingstermijn, String bedrag) {
+    public DeelnamekostenWijzigen withBedrag(String betalingstermijn, String bedrag) {
         By by = By.xpath("//table//input[@value='" + betalingstermijn + "']/../following-sibling::td/input[contains(@name, 'opt_am')]");
         clearAndSendKeys(driver.findElement(by), bedrag);
         return this;
     }
 
 
-    public DeelnamekostenWijzigen setFieldsBetaalDatum(String betalingstermijn, Datum datum) {
-        return setFieldsBetaalDatum(betalingstermijn, datum.getDag(), datum.getMaand(), datum.getJaar());
+    public DeelnamekostenWijzigen withBetaalDatum(String betalingstermijn, Datum datum) {
+        return withBetaalDatum(betalingstermijn, datum.getDag(), datum.getMaand(), datum.getJaar());
     }
 
-    public DeelnamekostenWijzigen setFieldsBetaalDatum(String betalingstermijn, int dag, int maand, int jaar) {
+    public DeelnamekostenWijzigen withBetaalDatum(String betalingstermijn, int dag, int maand, int jaar) {
         By byDag = By.xpath("//table//input[@value='" + betalingstermijn + "']/../following-sibling::td[2]//select[1]");
         By byMaand = By.xpath("//table//input[@value='" + betalingstermijn + "']/../following-sibling::td[2]//select[2]");
         By byJaar = By.xpath("//table//input[@value='" + betalingstermijn + "']/../following-sibling::td[2]//select[3]");
@@ -92,22 +92,22 @@ public class DeelnamekostenWijzigen extends AbstractVeldWijzigen<DeelnamekostenW
         return this;
     }
 
-    public DeelnamekostenWijzigen setFieldGebruikOmslagdatum(JaNee jaNee) {
+    public DeelnamekostenWijzigen withGebruikOmslagdatum(JaNee jaNee) {
         selectRadio(fieldGebruikOmslagdatum, jaNee);
         return this;
     }
 
-    public DeelnamekostenWijzigen setFieldAnderBedragPerSoortLid(JaNee jaNee) {
+    public DeelnamekostenWijzigen withAnderBedragPerSoortLid(JaNee jaNee) {
         selectRadio(fieldAnderBedragPerSoortLid, jaNee);
         return this;
     }
 
-    public DeelnamekostenWijzigen setFieldMinimumBedrag(String s) {
+    public DeelnamekostenWijzigen withMinimumBedrag(String s) {
         clearAndSendKeys(fieldMinimumBedrag, s);
         return this;
     }
 
-    public FormulierWijzigSamenstellenPage wijzigingenOpslaan() {
+    public FormulierWijzigSamenstellenPage opslaanWijzigingen() {
         scrollIntoViewAndClick(buttonWijzigingenOpslaan);
         return new FormulierWijzigSamenstellenPage(driver);
     }

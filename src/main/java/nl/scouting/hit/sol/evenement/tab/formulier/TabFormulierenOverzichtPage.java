@@ -63,7 +63,7 @@ public class TabFormulierenOverzichtPage extends AbstractEvenementPage {
     public List<Formulier> getFormulieren() {
         final List<Formulier> result = new ArrayList<>();
         driver.findElements(By.xpath("//table[@class='filter']/tbody/tr"))
-                .forEach(row -> result.add(Formulier.create(row)));
+                .forEach(row -> result.add(new Formulier(row)));
         return result;
     }
 }

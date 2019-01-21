@@ -13,8 +13,8 @@ public class PreLoginPage extends AbstractSolPage {
         driver.get(baseUrl);
     }
 
-    public LoginPage login() {
+    public LoginScoutingPage login() {
         btnLogin.click();
-        return new LoginPage(driver);
+        return new LoginScoutingPage(driver);
     }
 }

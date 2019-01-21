@@ -22,7 +22,7 @@ public class CheckboxWijzigen extends AbstractVeldWijzigen<CheckboxWijzigen> {
         super(driver);
     }
 
-    public CheckboxWijzigen setFieldNieuweOptie(String s) {
+    public CheckboxWijzigen withNieuweOptie(String s) {
         clearAndSendKeys(fieldNieuweOptie, s);
         return this;
     }
@@ -32,33 +32,33 @@ public class CheckboxWijzigen extends AbstractVeldWijzigen<CheckboxWijzigen> {
         return this;
     }
 
-    public CheckboxWijzigen setFieldVolgorde(String naamOptie, int volgorde) {
-        return setFieldOptionValue(naamOptie, String.valueOf(volgorde), "opt_order_no");
+    public CheckboxWijzigen withVolgorde(String naamOptie, int volgorde) {
+        return withOptionValue(naamOptie, String.valueOf(volgorde), "opt_order_no");
     }
 
-    public CheckboxWijzigen setFieldNaam(String naamOptie, String naam) {
-        return setFieldOptionValue(naamOptie, naam, "opt_order_no");
+    public CheckboxWijzigen withNaam(String naamOptie, String naam) {
+        return withOptionValue(naamOptie, naam, "opt_order_no");
     }
 
-    public CheckboxWijzigen setFieldActief(String naamOptie, JaNee jaNee) {
-        return setFieldOptionValue(naamOptie, jaNee, "opt_active_yn");
+    public CheckboxWijzigen withActief(String naamOptie, JaNee jaNee) {
+        return withOptionValue(naamOptie, jaNee, "opt_active_yn");
     }
 
-    public CheckboxWijzigen setFieldOpenVraag(String naamOptie, JaNee jaNee) {
-        return setFieldOptionValue(naamOptie, jaNee, "opt_reaction_yn");
+    public CheckboxWijzigen withOpenVraag(String naamOptie, JaNee jaNee) {
+        return withOptionValue(naamOptie, jaNee, "opt_reaction_yn");
     }
 
-    public CheckboxWijzigen setFieldMaximum(String naamOptie, int maximum) {
-        return setFieldOptionValue(naamOptie, String.valueOf(maximum), "opt_max_ct");
+    public CheckboxWijzigen withMaximum(String naamOptie, int maximum) {
+        return withOptionValue(naamOptie, String.valueOf(maximum), "opt_max_ct");
     }
 
-    private CheckboxWijzigen setFieldOptionValue(final String naamOptie, final String value, final String fieldName) {
+    private CheckboxWijzigen withOptionValue(final String naamOptie, final String value, final String fieldName) {
         final By by = By.xpath("//table//input[@value='" + naamOptie + "']/../following-sibling::td/input[contains(@name, '" + fieldName + "')]");
         clearAndSendKeys(driver.findElement(by), value);
         return this;
     }
 
-    private CheckboxWijzigen setFieldOptionValue(final String naamOptie, final JaNee value, final String fieldName) {
+    private CheckboxWijzigen withOptionValue(final String naamOptie, final JaNee value, final String fieldName) {
         final By by = By.xpath("//table//input[@value='" + naamOptie + "']/../following-sibling::td/input[contains(@name, '" + fieldName + "')]");
         final WebElement checkboxField = driver.findElement(by);
         if (value.asBoolean() != checkboxField.isSelected()) {

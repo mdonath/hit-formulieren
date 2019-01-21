@@ -25,27 +25,27 @@ public abstract class AbstractVeldWijzigen<T extends AbstractVeldWijzigen> exten
         super(driver);
     }
 
-    public T setFieldKoptekst(String s) {
+    public T withKoptekst(String s) {
         clearAndSendKeys(fieldKoptekst, s);
         return (T) this;
     }
 
-    public T setFieldHelptekst(String s) {
+    public T withHelptekst(String s) {
         clearAndSendKeys(fieldHelptekst, s);
         return (T) this;
     }
 
-    public T setLocatieVanVeld(String s) {
+    public T withLocatieVanVeld(String s) {
         selectByVisibleText(fieldLocatieVanVeld, s);
         return (T) this;
     }
 
-    public T setfieldVerplichtVeld(final JaNee jaNee) {
+    public T withVerplichtVeld(final JaNee jaNee) {
         selectRadio(fieldVerplichtVeld, jaNee);
         return (T) this;
     }
 
-    public T setfieldZichtbaarVoorGebruiker(final JaNee jaNee) {
+    public T withZichtbaarVoorGebruiker(final JaNee jaNee) {
         selectRadio(fieldZichtbaarVoorGebruiker, jaNee);
         return (T) this;
     }

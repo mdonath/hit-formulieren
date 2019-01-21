@@ -106,6 +106,9 @@ public class FormulierWijzigFinancienPage extends AbstractFormulierPage<Formulie
     //
     // Button
     //
+    @FindBy(xpath = "//div[@id!=\"bottom_menu\"]//input[@name=\"submitBtn\" and @value=\"Wijzigingen apply\"]")
+    private WebElement buttonWijzigingenOpslaan;
+
     /**
      * Constructor.
      *
@@ -115,62 +118,59 @@ public class FormulierWijzigFinancienPage extends AbstractFormulierPage<Formulie
         super(driver);
     }
 
-    public FormulierWijzigFinancienPage setFieldsKosteloosAnnulerenTot(final Datum datum) {
-        return setFieldsKosteloosAnnulerenTot(datum.getDag(), datum.getMaand(), datum.getJaar());
+    public FormulierWijzigFinancienPage withKosteloosAnnulerenTot(final Datum datum) {
+        return withKosteloosAnnulerenTot(datum.getDag(), datum.getMaand(), datum.getJaar());
     }
 
-    public FormulierWijzigFinancienPage setFieldsKosteloosAnnulerenTot(final int dag, final int maand, final int jaar) {
+    public FormulierWijzigFinancienPage withKosteloosAnnulerenTot(final int dag, final int maand, final int jaar) {
         setFieldsDatum(fieldKosteloosAnnulerenTotDag, dag
                 , fieldKosteloosAnnulerenTotMaand, maand
                 , fieldKosteloosAnnulerenTotJaar, jaar);
         return this;
     }
 
-    public FormulierWijzigFinancienPage setFieldAnnuleringstype(final Annuleringstype type) {
+    public FormulierWijzigFinancienPage withAnnuleringstype(final Annuleringstype type) {
         selectRadio(fieldAnnuleringstype, type);
         return this;
     }
 
-    @FindBy(xpath = "//div[@id!=\"bottom_menu\"]//input[@name=\"submitBtn\" and @value=\"Wijzigingen apply\"]")
-    private WebElement buttonWijzigingenOpslaan;
-
-    public FormulierWijzigFinancienPage setFieldAnnuleringsPercentage(final String s) {
+    public FormulierWijzigFinancienPage withAnnuleringsPercentage(final String s) {
         clearAndSendKeys(fieldAnnuleringsPercentage, s);
         return this;
     }
 
-    public FormulierWijzigFinancienPage setFieldAnnuleringsBedrag(final String s) {
+    public FormulierWijzigFinancienPage withAnnuleringsBedrag(final String s) {
         clearAndSendKeys(fieldAnnuleringsBedrag, s);
         return this;
     }
 
-    public FormulierWijzigFinancienPage setFieldsVolledigeKostenAnnulerenVanaf(final Datum datum) {
-        return setFieldsVolledigeKostenAnnulerenVanaf(datum.getDag(), datum.getMaand(), datum.getJaar());
+    public FormulierWijzigFinancienPage withVolledigeKostenAnnulerenVanaf(final Datum datum) {
+        return withVolledigeKostenAnnulerenVanaf(datum.getDag(), datum.getMaand(), datum.getJaar());
     }
 
-    public FormulierWijzigFinancienPage setFieldsVolledigeKostenAnnulerenVanaf(final int dag, final int maand, final int jaar) {
+    public FormulierWijzigFinancienPage withVolledigeKostenAnnulerenVanaf(final int dag, final int maand, final int jaar) {
         setFieldsDatum(fieldVolledigeKostenAnnulerenVanafDag, dag
                 , fieldVolledigeKostenAnnulerenVanafaand, maand
                 , fieldVolledigeKostenAnnulerenVanafJaar, jaar);
         return this;
     }
 
-    public FormulierWijzigFinancienPage setFieldAnnuleringsredenVerplicht(final JaNee jaNee) {
+    public FormulierWijzigFinancienPage withAnnuleringsredenVerplicht(final JaNee jaNee) {
         selectRadio(fieldAnnuleringsredenVerplicht, jaNee);
         return this;
     }
 
-    public FormulierWijzigFinancienPage setFieldGebruikGroepsrekening(final GebruikGroepsrekening type) {
+    public FormulierWijzigFinancienPage withGebruikGroepsrekening(final GebruikGroepsrekening type) {
         selectRadio(fieldGebruikGroepsrekening, type);
         return this;
     }
 
-    public FormulierWijzigFinancienPage setFieldGebruikPersoonlijkeRekening(final JaNee jaNee) {
+    public FormulierWijzigFinancienPage withGebruikPersoonlijkeRekening(final JaNee jaNee) {
         selectRadio(fieldGebruikPersoonlijkeRekening, jaNee);
         return this;
     }
 
-    public FormulierWijzigFinancienPage setFieldBetalingswijze(final Betalingswijze type) {
+    public FormulierWijzigFinancienPage withBetalingswijze(final Betalingswijze type) {
         if (Betalingswijze.IDEAL.equals(type)) {
             if (!fieldBetalingswijzeIdeal.isSelected()) {
                 fieldBetalingswijzeIdeal.click();
@@ -179,7 +179,7 @@ public class FormulierWijzigFinancienPage extends AbstractFormulierPage<Formulie
         return this;
     }
 
-    public FormulierWijzigFinancienPage wijzigingenOpslaan() {
+    public FormulierWijzigFinancienPage opslaanWijzigingen() {
         scrollToBottom();
         scrollIntoViewAndClick(buttonWijzigingenOpslaan);
         return this;

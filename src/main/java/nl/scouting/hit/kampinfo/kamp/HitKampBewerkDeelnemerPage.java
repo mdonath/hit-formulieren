@@ -8,5 +8,5 @@ public class HitKampBewerkDeelnemerPage extends AbstractKampInfoBewerkPage<HitKa
         super(driver);
     }
 
-
+    // TODO
 }

@@ -31,12 +31,12 @@ public class FormulierSoortAanmeldingNieuwPage extends AbstractSolMetHoofdMenuPa
         super(driver);
     }
 
-    public FormulierSoortAanmeldingNieuwPage setFieldSoortAanmelding(String s) {
+    public FormulierSoortAanmeldingNieuwPage withSoortAanmelding(String s) {
         new Select(fieldSoortAanmelding).selectByVisibleText(s);
         return this;
     }
 
-    public FormulierSoortAanmeldingNieuwPage setFieldSoortAanmelding(SoortAanmelding soortAanmelding) {
+    public FormulierSoortAanmeldingNieuwPage withSoortAanmelding(SoortAanmelding soortAanmelding) {
         new Select(fieldSoortAanmelding).selectByValue(String.valueOf(soortAanmelding.id));
         return this;
     }

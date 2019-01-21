@@ -41,53 +41,53 @@ public class HitKampBewerkGegevensPage extends AbstractKampInfoBewerkPage<HitKam
         super(driver);
     }
 
-    public HitKampBewerkGegevensPage setFieldHitPlaats(final String hitPlaats, final int jaar) {
+    public HitKampBewerkGegevensPage withHitPlaats(final String hitPlaats, final int jaar) {
         selectByValue(fieldHitPlaats, String.format("%s (%d)", hitPlaats, jaar));
         return this;
     }
 
-    public HitKampBewerkGegevensPage setFieldNaam(final String naam) {
+    public HitKampBewerkGegevensPage withNaam(final String naam) {
         clearAndSendKeys(fieldNaam, naam);
         return this;
     }
 
-    public HitKampBewerkGegevensPage setFieldStartDatumTijd(final LocalDateTime startDatumTijd) {
-        return setFieldStartDatumTijd(startDatumTijd.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+    public HitKampBewerkGegevensPage withStartDatumTijd(final LocalDateTime startDatumTijd) {
+        return withStartDatumTijd(startDatumTijd.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
     }
 
-    public HitKampBewerkGegevensPage setFieldStartDatumTijd(final String startDatumTijd) {
+    public HitKampBewerkGegevensPage withStartDatumTijd(final String startDatumTijd) {
         clearAndSendKeys(fieldStartDatumTijd, startDatumTijd);
         return this;
     }
 
-    public HitKampBewerkGegevensPage setFieldEindDatumTijd(final String eindDatumTijd) {
+    public HitKampBewerkGegevensPage withEindDatumTijd(final String eindDatumTijd) {
         clearAndSendKeys(fieldEindDatumTijd, eindDatumTijd);
         return this;
     }
 
-    public HitKampBewerkGegevensPage setFieldDeelnamekosten(final int deelnamekosten) {
+    public HitKampBewerkGegevensPage withDeelnamekosten(final int deelnamekosten) {
         // FIXME
         return this;
     }
 
-    public HitKampBewerkGegevensPage setFieldIsOuderKind(final JoomlaJaNee jaNee) {
+    public HitKampBewerkGegevensPage withIsOuderKind(final JoomlaJaNee jaNee) {
         return setRadioButtonByLabelClick(this.fieldsetIsOuderKind, jaNee);
     }
 
-    public HitKampBewerkGegevensPage setFieldAfwijkendeStartlokatie(final JoomlaJaNee jaNee) {
+    public HitKampBewerkGegevensPage withAfwijkendeStartlokatie(final JoomlaJaNee jaNee) {
         return setRadioButtonByLabelClick(this.fieldsetAfwijkendeStartlokatie, jaNee);
     }
 
-    public HitKampBewerkGegevensPage setFieldSublocatie(final String sublocatie) {
+    public HitKampBewerkGegevensPage withSublocatie(final String sublocatie) {
         clearAndSendKeys(fieldSublocatie, sublocatie);
         return this;
     }
 
-    public HitKampBewerkGegevensPage setAkkoordKamp(final JoomlaJaNee jaNee) {
+    public HitKampBewerkGegevensPage withAkkoordKamp(final JoomlaJaNee jaNee) {
         return setRadioButtonByLabelClick(this.fieldsetAkkoordKamp, jaNee);
     }
 
-    public HitKampBewerkGegevensPage setAkkoordPlaats(final JoomlaJaNee jaNee) {
+    public HitKampBewerkGegevensPage withAkkoordPlaats(final JoomlaJaNee jaNee) {
         return setRadioButtonByLabelClick(this.fieldsetAkkoordPlaats, jaNee);
     }
 }

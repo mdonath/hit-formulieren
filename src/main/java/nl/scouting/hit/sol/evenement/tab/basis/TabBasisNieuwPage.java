@@ -23,7 +23,7 @@ public class TabBasisNieuwPage extends AbstractTabBasisPage {
         super(driver);
     }
 
-    public TabBasisNieuwPage setFieldBankrekening(final int index) {
+    public TabBasisNieuwPage withBankrekening(final int index) {
         Select select = new Select(fieldBankrekening);
         List<WebElement> options = select.getOptions();
         if (!options.isEmpty()) {

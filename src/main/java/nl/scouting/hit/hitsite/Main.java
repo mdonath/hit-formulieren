@@ -3,7 +3,6 @@ package nl.scouting.hit.hitsite;
 import nl.scouting.hit.common.AbstractWebApplication;
 import nl.scouting.hit.common.Util;
 import nl.scouting.hit.joomla.JoomlaJaNee;
-import nl.scouting.hit.joomla.JoomlaPublished;
 import nl.scouting.hit.kampinfo.kamp.HitKampenPage;
 
 /**
@@ -19,23 +18,27 @@ public class Main extends AbstractWebApplication {
         final String solUsername = Util.readUsernameFromFile();
         final String solPassword = Util.readPasswordFromFile();
 
-        // KampInfoVuller.neemShantiIdOverInKampInfo(jaar, kiBaseUrl, solBaseUrl, solUsername, solPassword);
+        KampInfoVuller.neemShantiIdOverInKampInfo(jaar, kiBaseUrl, solBaseUrl, solUsername, solPassword);
 
+//        testje(kiBaseUrl, solUsername, solPassword);
+    }
+
+    private static void testje(String kiBaseUrl, String solUsername, String solPassword) throws Exception {
         try (final HitWebsiteAdmin hitwebsite = new HitWebsiteAdmin(kiBaseUrl, solUsername, solPassword)) {
             final HitKampenPage kampenLijst = hitwebsite.openKampInfo().submenu().openHitKampen();
             kampenLijst
                     .setFilterPlaats("Alphen", 2019)
                     .openHitKamp("Alphen Hakt! [GAAT NIET DOOR]")
                     .tabs().gegevensVanEenHitKamp()
-                    .setFieldHitPlaats("Alphen", 2019)
-                    .setFieldStartDatumTijd("19-04-2019 19:00")
-                    .setFieldEindDatumTijd("22-04-2019 15:00")
-                    .setFieldDeelnamekosten(42)
-                    .setFieldIsOuderKind(JoomlaJaNee.JA)
-                    .setFieldAfwijkendeStartlokatie(JoomlaJaNee.NEE)
-                    .setFieldSublocatie("")
-                    .setAkkoordKamp(JoomlaJaNee.JA)
-                    .setAkkoordPlaats(JoomlaJaNee.JA)
+                    .withHitPlaats("Alphen", 2019)
+                    .withStartDatumTijd("19-04-2019 19:00")
+                    .withEindDatumTijd("22-04-2019 15:00")
+                    .withDeelnamekosten(42)
+                    .withIsOuderKind(JoomlaJaNee.JA)
+                    .withAfwijkendeStartlokatie(JoomlaJaNee.NEE)
+                    .withSublocatie("")
+                    .withAkkoordKamp(JoomlaJaNee.JA)
+                    .withAkkoordPlaats(JoomlaJaNee.JA)
             ;
             System.out.println("Done!");
         }

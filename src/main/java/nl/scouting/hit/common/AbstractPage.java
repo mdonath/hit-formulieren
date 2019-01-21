@@ -96,6 +96,7 @@ public abstract class AbstractPage<T extends AbstractPage> {
     }
 
     public final T sleep(long millis) {
+
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ignore) {

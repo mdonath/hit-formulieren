@@ -69,7 +69,7 @@ public class FormulierWijzigSamenstellenPage extends AbstractFormulierPage<Formu
         return !driver.findElements(By.linkText(gekoppeldFormulierNaam)).isEmpty();
     }
 
-    public boolean heeftVeld(String veldnaam) {
+    public boolean hasVeld(String veldnaam) {
         return !driver.findElements(By.linkText(veldnaam)).isEmpty();
     }
 
@@ -83,7 +83,7 @@ public class FormulierWijzigSamenstellenPage extends AbstractFormulierPage<Formu
         return this;
     }
 
-    public FormulierWijzigSamenstellenPage setFieldSelecteerNieuwVeld(final NieuwVeld nieuwVeld) {
+    public FormulierWijzigSamenstellenPage withSelecteerNieuwVeld(final NieuwVeld nieuwVeld) {
         selectByValue(fieldSelecteerNieuwVeld, nieuwVeld.getId());
         return this;
     }

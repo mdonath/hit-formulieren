@@ -4,6 +4,7 @@ import nl.scouting.hit.common.AbstractWebApplication;
 import nl.scouting.hit.joomla.JoomlaAdminHomePage;
 import nl.scouting.hit.joomla.JoomlaAdminLoginPage;
 import nl.scouting.hit.kampinfo.KampInfoInfoPage;
+import nl.scouting.hit.sol.LoginScoutingPage;
 
 public class HitWebsiteAdmin extends AbstractWebApplication {
 
@@ -17,7 +18,11 @@ public class HitWebsiteAdmin extends AbstractWebApplication {
 
     private JoomlaAdminHomePage getJoomlaAdminPage(final String baseUrl, final String username, final String password) {
         return new JoomlaAdminLoginPage(driver, baseUrl)
-                .login(username, password);
+                .withUsername(username)
+                .loginSOL(() ->
+                        new LoginScoutingPage(driver)
+                                .withPassword(password)
+                                .login(new JoomlaAdminHomePage(driver)));
     }
 
     public KampInfoInfoPage openKampInfo() {

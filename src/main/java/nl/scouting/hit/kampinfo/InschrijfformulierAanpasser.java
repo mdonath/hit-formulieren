@@ -40,22 +40,22 @@ public final class InschrijfformulierAanpasser {
                 .submenu().openTabSamenstellen();
 
         CheckboxWijzigen checkbox = (CheckboxWijzigen) samenstellen
-                .setFieldSelecteerNieuwVeld(FormulierWijzigSamenstellenPage.NieuwVeld.CHECKBOX)
+                .withSelecteerNieuwVeld(FormulierWijzigSamenstellenPage.NieuwVeld.CHECKBOX)
                 .toevoegen();
 
-        checkbox.setFieldKoptekst("Dieet")
-                .setLocatieVanVeld("Gezondheid en Voeding") // FIXME: Dit gaat nog mis, hij kan ze niet vinden
-                .setfieldVerplichtVeld(JaNee.NEE)
-                .setfieldZichtbaarVoorGebruiker(JaNee.JA)
-                .setFieldNieuweOptie("Geen dieet").toevoegen()
-                .setFieldNieuweOptie("Veganistisch").toevoegen()
-                .setFieldNieuweOptie("Vegetarisch").toevoegen()
-                .setFieldNieuweOptie("Melk allergie").toevoegen()
-                .setFieldNieuweOptie("Lactose intolerantie").toevoegen()
-                .setFieldNieuweOptie("Noten allergie").toevoegen()
-                .setFieldNieuweOptie("Glutenvrij").toevoegen()
-                .setFieldNieuweOptie("Dieet gebaseerd op godsdienst, namelijk").toevoegen().setFieldOpenVraag("Dieet gebaseerd op godsdienst, namelijk", JaNee.JA)
-                .setFieldNieuweOptie("Anders, namelijk").toevoegen().setFieldOpenVraag("Anders, namelijk", JaNee.JA)
+        checkbox.withKoptekst("Dieet")
+                .withLocatieVanVeld("Gezondheid en Voeding") // FIXME: Dit gaat nog mis, hij kan ze niet vinden
+                .withVerplichtVeld(JaNee.NEE)
+                .withZichtbaarVoorGebruiker(JaNee.JA)
+                .withNieuweOptie("Geen dieet").toevoegen()
+                .withNieuweOptie("Veganistisch").toevoegen()
+                .withNieuweOptie("Vegetarisch").toevoegen()
+                .withNieuweOptie("Melk allergie").toevoegen()
+                .withNieuweOptie("Lactose intolerantie").toevoegen()
+                .withNieuweOptie("Noten allergie").toevoegen()
+                .withNieuweOptie("Glutenvrij").toevoegen()
+                .withNieuweOptie("Dieet gebaseerd op godsdienst, namelijk").toevoegen().withOpenVraag("Dieet gebaseerd op godsdienst, namelijk", JaNee.JA)
+                .withNieuweOptie("Anders, namelijk").toevoegen().withOpenVraag("Anders, namelijk", JaNee.JA)
                 .wijzigingenOpslaan()
         ;
 

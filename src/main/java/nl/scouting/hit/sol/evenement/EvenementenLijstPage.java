@@ -16,7 +16,7 @@ public class EvenementenLijstPage extends AbstractSolMetHoofdMenuPage<Evenemente
         super(driver);
     }
 
-    public boolean heeftEvenement(final String naamEvenement) {
+    public boolean hasEvenement(final String naamEvenement) {
         return !driver.findElements(By.ById.partialLinkText(naamEvenement)).isEmpty();
     }
 
@@ -27,7 +27,7 @@ public class EvenementenLijstPage extends AbstractSolMetHoofdMenuPage<Evenemente
         return AbstractEvenementPage.build(driver);
     }
 
-    public TabBasisNieuwPage evenementToevoegen() {
+    public TabBasisNieuwPage toevoegenEvenement() {
         scrollIntoViewAndClick(buttonEvenementToevoegen);
         return new TabBasisNieuwPage(driver);
     }

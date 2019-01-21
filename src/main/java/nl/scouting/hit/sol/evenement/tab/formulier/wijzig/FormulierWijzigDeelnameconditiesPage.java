@@ -88,78 +88,78 @@ public class FormulierWijzigDeelnameconditiesPage extends AbstractFormulierBasis
         super(driver);
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldEenmaalInschrijven(JaNee jaNee) {
+    public FormulierWijzigDeelnameconditiesPage withEenmaalInschrijven(JaNee jaNee) {
         selectRadio(fieldEenmaalInschrijven, jaNee);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldDeelnemerMoetEmailadresHebben(JaNee jaNee) {
+    public FormulierWijzigDeelnameconditiesPage withDeelnemerMoetEmailadresHebben(JaNee jaNee) {
         selectRadio(fieldDeelnemerMoetEmailadresHebben, jaNee);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldDeelnemerMoetInDoelgroepZitten(JaNee jaNee) {
+    public FormulierWijzigDeelnameconditiesPage withDeelnemerMoetInDoelgroepZitten(JaNee jaNee) {
         selectRadio(fieldDeelnemerMoetInDoelgroepZitten, jaNee);
         return this;
     }
 
 
-    public FormulierWijzigDeelnameconditiesPage setFieldMinimumLeeftijd(int i) {
+    public FormulierWijzigDeelnameconditiesPage withMinimumLeeftijd(int i) {
         clearAndSendKeys(fieldMinimumLeeftijd, i);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldMaximumLeeftijd(int i) {
+    public FormulierWijzigDeelnameconditiesPage withMaximumLeeftijd(int i) {
         clearAndSendKeys(fieldMaximumLeeftijd, i);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldMinimumLeeftijdMarge(int i) {
+    public FormulierWijzigDeelnameconditiesPage withMinimumLeeftijdMarge(int i) {
         clearAndSendKeys(fieldMinimumLeeftijdMarge, i);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldMaximumLeeftijdMarge(int i) {
+    public FormulierWijzigDeelnameconditiesPage withMaximumLeeftijdMarge(int i) {
         clearAndSendKeys(fieldMaximumLeeftijdMarge, i);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldInschrijvingToegestaanDoor(InschrijvingToegstaanDoor door) {
+    public FormulierWijzigDeelnameconditiesPage withInschrijvingToegestaanDoor(InschrijvingToegstaanDoor door) {
         selectRadio(fieldInschrijvingToegestaanDoor, door);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldInschrijvingToegestaanDoorFuncties() {
+    public FormulierWijzigDeelnameconditiesPage withInschrijvingToegestaanDoorFuncties() {
         // TODO
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldMinimumDeelnemersaantal(int i) {
+    public FormulierWijzigDeelnameconditiesPage withMinimumDeelnemersaantal(int i) {
         clearAndSendKeys(fieldMinimumDeelnemersaantal, i);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldMaximumDeelnemersaantal(int i) {
+    public FormulierWijzigDeelnameconditiesPage withMaximumDeelnemersaantal(int i) {
         clearAndSendKeys(fieldMaximumDeelnemersaantal, i);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldWachtlijst(JaNee jaNee) {
+    public FormulierWijzigDeelnameconditiesPage withWachtlijst(JaNee jaNee) {
         selectRadio(fieldWachtlijst, jaNee);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldMaximumAantalUitEengroep(int i) {
+    public FormulierWijzigDeelnameconditiesPage withMaximumAantalUitEengroep(int i) {
         clearAndSendKeys(fieldMaximumAantalUitEengroep, i);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage setFieldMaximumAantalExterneDeelnemers(int i) {
+    public FormulierWijzigDeelnameconditiesPage withMaximumAantalExterneDeelnemers(int i) {
         clearAndSendKeys(fieldMaximumAantalExterneDeelnemers, i);
         return this;
     }
 
-    public FormulierWijzigDeelnameconditiesPage wijzigingenOpslaan() {
+    public FormulierWijzigDeelnameconditiesPage opslaanWijzigingen() {
         scrollIntoViewAndClick(buttonWijzigingenOpslaan);
         // Je komt weer terug op deze pagina
         return this;

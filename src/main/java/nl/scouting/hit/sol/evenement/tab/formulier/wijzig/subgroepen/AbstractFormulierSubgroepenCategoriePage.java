@@ -3,7 +3,6 @@ package nl.scouting.hit.sol.evenement.tab.formulier.wijzig.subgroepen;
 import nl.scouting.hit.common.Range;
 import nl.scouting.hit.sol.JaNee;
 import nl.scouting.hit.sol.evenement.tab.formulier.common.AbstractFormulierPage;
-import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigSubgroepenPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -55,82 +54,82 @@ public abstract class AbstractFormulierSubgroepenCategoriePage<T extends Abstrac
         super(driver);
     }
 
-    public T setFieldAanduiding(final String s) {
+    public T withAanduiding(final String s) {
         clearAndSendKeys(fieldAanduiding, s);
         return (T) this;
     }
 
-    public T setFieldToelichting(final String s) {
+    public T withToelichting(final String s) {
         clearAndSendKeys(fieldToelichting, s);
         return (T) this;
     }
 
-    public T setFieldsAantalSubgroepen(final Range range) {
-        return (T) setFieldMinimumAantalSubgroepen(range.getMinimum())
-                .setFieldMaximumAantalSubgroepen(range.getMaximum());
+    public T withAantalSubgroepen(final Range range) {
+        return (T) withMinimumAantalSubgroepen(range.getMinimum())
+                .withMaximumAantalSubgroepen(range.getMaximum());
     }
 
-    public T setFieldMinimumAantalSubgroepen(final int i) {
+    public T withMinimumAantalSubgroepen(final int i) {
         clearAndSendKeys(fieldMinimumAantalSubgroepen, i);
         return (T) this;
     }
 
-    public T setFieldMaximumAantalSubgroepen(final int i) {
+    public T withMaximumAantalSubgroepen(final int i) {
         clearAndSendKeys(fieldMaximumAantalSubgroepen, i);
         return (T) this;
     }
 
-    public T setFieldsAantalDeelnemers(final Range range) {
-        return (T) setFieldMinimumAantalDeelnemers(range.getMinimum())
-                .setFieldMaximumAantalDeelnemers(range.getMaximum());
+    public T withAantalDeelnemers(final Range range) {
+        return (T) withMinimumAantalDeelnemers(range.getMinimum())
+                .withMaximumAantalDeelnemers(range.getMaximum());
     }
 
-    public T setFieldMinimumAantalDeelnemers(final int i) {
+    public T withMinimumAantalDeelnemers(final int i) {
         clearAndSendKeys(fieldMinimumAantalDeelnemers, i);
         return (T) this;
     }
 
-    public T setFieldMaximumAantalDeelnemers(final int i) {
+    public T withMaximumAantalDeelnemers(final int i) {
         clearAndSendKeys(fieldMaximumAantalDeelnemers, i);
         return (T) this;
     }
 
-    public T setFieldMagSubgroepAanmaken(final JaNee jaNee) {
+    public T withMagSubgroepAanmaken(final JaNee jaNee) {
         selectRadio(fieldMagSubgroepAanmaken, jaNee);
         return (T) this;
     }
 
-    public T setFieldSubgroepVerplicht(final JaNee jaNee) {
+    public T withSubgroepVerplicht(final JaNee jaNee) {
         selectRadio(fieldSubgroepVerplicht, jaNee);
         return (T) this;
     }
 
-    public T setFieldTeltHetMaxAantalMee(final JaNee jaNee) {
+    public T withTeltHetMaxAantalMee(final JaNee jaNee) {
         selectRadio(fieldTeltHetMaxAantalMee, jaNee);
         return (T) this;
     }
 
-    public T setFieldContactpersoonVermelden(final JaNee jaNee) {
+    public T withContactpersoonVermelden(final JaNee jaNee) {
         selectRadio(fieldContactpersoonVermelden, jaNee);
         return (T) this;
     }
 
-    public T setFieldDeelbaarDoor(final int i) {
+    public T withDeelbaarDoor(final int i) {
         clearAndSendKeys(fieldDeelbaarDoor, i == 0 ? 1 : i);
         return (T) this;
     }
 
-    public T setFieldAantalDagenIncompleet(final int i) {
+    public T withAantalDagenIncompleet(final int i) {
         clearAndSendKeys(fieldAantalDagenIncompleet, i);
         return (T) this;
     }
 
-    public T setFieldAutomatischeIncompleetMailDeelnemers(final JaNee jaNee) {
+    public T withAutomatischeIncompleetMailDeelnemers(final JaNee jaNee) {
         selectRadio(fieldAutomatischeIncompleetMailDeelnemers, jaNee);
         return (T) this;
     }
 
-    public T setFieldAutomatischeIncompleetMailOrganisatie(final JaNee jaNee) {
+    public T withAutomatischeIncompleetMailOrganisatie(final JaNee jaNee) {
         selectRadio(fieldAutomatischeIncompleetMailOrganisatie, jaNee);
         return (T) this;
     }
