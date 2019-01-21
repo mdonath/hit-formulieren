@@ -3,6 +3,7 @@ package nl.scouting.hit.sol.evenement.tab.formulier.wijzig;
 import nl.scouting.hit.common.Valuable;
 import nl.scouting.hit.sol.evenement.tab.formulier.common.AbstractFormulierPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.AbstractVeldWijzigen;
+import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.CheckboxWijzigen;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.DeelnamekostenWijzigen;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -52,7 +53,7 @@ public class FormulierWijzigSamenstellenPage extends AbstractFormulierPage<Formu
     @FindBy(name = "fld_type_cd")
     private WebElement fieldSelecteerNieuwVeld;
 
-    @FindBy(xpath = "//*[@id=\"buttonbar\"]/div[1]/input")
+    @FindBy(xpath = "//*[@id=\"main_content\"]//input[@value ='Toevoegen']")
     private WebElement buttonToevoegen;
 
     /**
@@ -82,7 +83,7 @@ public class FormulierWijzigSamenstellenPage extends AbstractFormulierPage<Formu
         return this;
     }
 
-    public FormulierWijzigSamenstellenPage setFieldSelecteerNieuwVeld(NieuwVeld nieuwVeld) {
+    public FormulierWijzigSamenstellenPage setFieldSelecteerNieuwVeld(final NieuwVeld nieuwVeld) {
         selectByValue(fieldSelecteerNieuwVeld, nieuwVeld.getId());
         return this;
     }
@@ -92,7 +93,7 @@ public class FormulierWijzigSamenstellenPage extends AbstractFormulierPage<Formu
         return bepaalVeldPage();
     }
 
-    public AbstractVeldWijzigen<?> selecteerVeld(String veldnaam) {
+    public AbstractVeldWijzigen<?> selecteerVeld(final String veldnaam) {
         driver.findElement(By.linkText(veldnaam)).click();
         return bepaalVeldPage();
     }
@@ -101,6 +102,8 @@ public class FormulierWijzigSamenstellenPage extends AbstractFormulierPage<Formu
         switch (bepaalVeldType()) {
             case "deelnamekosten":
                 return new DeelnamekostenWijzigen(driver);
+            case "selectieveld(en) (checkbox)":
+                return new CheckboxWijzigen(driver);
             default:
                 throw new IllegalArgumentException("Onbekend of (nog) niet ondersteund veldtype");
         }

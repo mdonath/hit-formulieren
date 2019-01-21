@@ -380,9 +380,7 @@ public final class ScoutsOnlineVuller {
                                 "%per_fullname% heeft zich opgegeven als deelnemer voor %frm_nm% tijdens de HIT " + regel.getJaar() + ".\n" +
                                 "Deze mail dient uitsluitend om u te informeren over deze inschrijving. Alle verdere correspondentie zal via het in Scouts Online geregistreerde e-mailadres %per_email% van %per_fullname% verlopen.\n" +
                                 "Deze activiteit start op %frm_from_dt% om %frm_from_time% uur en duurt tot %frm_till_dt% tot %frm_till_time% uur.\n" +
-                                "De deelnamekosten voor deze activiteit zijn " +
-                                (regel.isOuderKindKamp() ? "twee maal" : "") +
-                                "%frm_price% euro.\n\n" +
+                                "De deelnamekosten voor deze activiteit zijn " + (regel.isOuderKindKamp() ? "twee maal" : "") + "%frm_price% euro.\n\n" +
                                 "De deelnemer heeft na inschrijving 10 dagen bedenktijd en kan binnen deze 10 dagen kosteloos annuleren. Binnen deze tijd kun je kosteloos annuleren. Je krijgt dan het deelnamegeld helemaal teruggestort. Dit is ook de termijn waarbinnen het groepje compleet moet zijn. Na 10 dagen kan er nog wel geannuleerd worden maar krijg de deelnemer het deelnamegeld terug verminderd met € 10 administratiekosten. Na de sluiting van de inschrijving kan er niet meer geannuleerd worden en krijgt de deelnemer geen geld meer terug.\n\n" +
                                 "Zijn er problemen met inschrijven of heeft u een andere vraag? Kijk dan op http://hit.scouting.nl bij het onderdeel ’inschrijven’.\n\n" +
                                 "Met vriendelijke groet,\n\n" +
