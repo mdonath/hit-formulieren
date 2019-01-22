@@ -3,6 +3,7 @@ package nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen;
 import nl.scouting.hit.sol.JaNee;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigSamenstellenPage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -53,16 +54,20 @@ public class CheckboxWijzigen extends AbstractVeldWijzigen<CheckboxWijzigen> {
     }
 
     private CheckboxWijzigen withOptionValue(final String naamOptie, final String value, final String fieldName) {
-        final By by = By.xpath("//table//input[@value='" + naamOptie + "']/../following-sibling::td/input[contains(@name, '" + fieldName + "')]");
+        final By by = By.xpath("//table//input[@value='" + naamOptie + "']/../following-sibling::td//input[contains(@name, '" + fieldName + "')]");
         clearAndSendKeys(driver.findElement(by), value);
         return this;
     }
 
+    /**
+     * //table//input[@value='Dieet gebaseerd op godsdienst, namelijk']/../following-sibling::td/input[@type='checkbox' and contains(@name, 'opt_reaction_yn')]
+     */
     private CheckboxWijzigen withOptionValue(final String naamOptie, final JaNee value, final String fieldName) {
-        final By by = By.xpath("//table//input[@value='" + naamOptie + "']/../following-sibling::td/input[contains(@name, '" + fieldName + "')]");
+        final By by = By.xpath("//table//input[@value='" + naamOptie + "']/../following-sibling::td//input[@type='checkbox' and contains(@name, '" + fieldName + "')]");
         final WebElement checkboxField = driver.findElement(by);
         if (value.asBoolean() != checkboxField.isSelected()) {
-            checkboxField.click();
+            scrollIntoView(checkboxField, false);
+            checkboxField.sendKeys(Keys.SPACE); // click();
         }
         return this;
     }

@@ -43,6 +43,15 @@ public abstract class AbstractPage<T extends AbstractPage> {
         new Select(element).selectByVisibleText(value);
     }
 
+    public final void selectByPartialVisibleText(final WebElement element, final String value) {
+        final Select select = new Select(element);
+        select.getOptions().forEach(option -> {
+            if (option.getText().contains(value)) {
+                select.selectByVisibleText(option.getText());
+            }
+        });
+    }
+
     protected final void selectByValue(final WebElement element, final String value) {
         new Select(element).selectByValue(value);
     }
@@ -80,7 +89,7 @@ public abstract class AbstractPage<T extends AbstractPage> {
     }
 
     protected final WebElement scrollIntoView(final WebElement element, final boolean centered) {
-        String args = centered ? "{behavior:'auto', block:'center', inline:'center'}" : "true";
+        final String args = centered ? "{behavior:'auto', block:'center', inline:'center'}" : "true";
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(" + args + ");", element);
         return element;
     }
@@ -95,11 +104,11 @@ public abstract class AbstractPage<T extends AbstractPage> {
         button.click();
     }
 
-    public final T sleep(long millis) {
+    public final T sleep(final long millis) {
 
         try {
             Thread.sleep(millis);
-        } catch (InterruptedException ignore) {
+        } catch (final InterruptedException ignore) {
             // ignore
         }
         return (T) this;

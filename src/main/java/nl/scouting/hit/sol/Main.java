@@ -17,7 +17,9 @@ public class Main {
         // vulScoutsOnline(baseUrl, username, password);
         try (final ScoutsOnline sol = new ScoutsOnline(baseUrl, username, password)) {
             final InschrijfformulierAanpasser aanpasser = new InschrijfformulierAanpasser(sol.solHomePage, "HIT 2019", "HIT Helpdeskgroep");
-            aanpasser.maakDieet();
+//            aanpasser.maakDieet();
+//            aanpasser.maakDieetKind();
+            aanpasser.maakDieetOuder();
         }
     }
 

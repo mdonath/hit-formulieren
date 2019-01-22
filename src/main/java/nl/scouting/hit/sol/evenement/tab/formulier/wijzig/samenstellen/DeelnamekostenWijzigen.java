@@ -31,9 +31,6 @@ public class DeelnamekostenWijzigen extends AbstractVeldWijzigen<DeelnamekostenW
     @FindBy(name = "fld_minimum_pay_am_inputValue")
     private WebElement fieldMinimumBedrag;
 
-    @FindBy(xpath = "//*[@id=\"buttonbar\"]/div[1]/input")
-    private WebElement buttonWijzigingenOpslaan;
-
     public DeelnamekostenWijzigen(WebDriver driver) {
         super(driver);
     }
@@ -107,8 +104,4 @@ public class DeelnamekostenWijzigen extends AbstractVeldWijzigen<DeelnamekostenW
         return this;
     }
 
-    public FormulierWijzigSamenstellenPage opslaanWijzigingen() {
-        scrollIntoViewAndClick(buttonWijzigingenOpslaan);
-        return new FormulierWijzigSamenstellenPage(driver);
-    }
 }
