@@ -54,6 +54,31 @@ public final class ScoutsOnlineVuller {
     }
 
     /**
+     * Fixt de kosteloos annuleringsdatum.
+     */
+    public void fixAnnuleringsdatum() {
+        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
+                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
+                .openEvenement(naamEvenement)
+                .submenu().openTabFormulieren();
+
+        // Activeer eerst de basisformulieren
+        final List<HitFormulier> alleFormulieren = tabFormulieren.getFormulieren().stream().map(HitFormulier::new).collect(Collectors.toList());
+        alleFormulieren.stream()
+                .filter(formulier -> formulier.isInschrijfFormulier())
+                .forEach(formulier -> {
+                    System.out.println(formulier.naam);
+                    tabFormulieren.openFormulier(formulier.naam)
+                            .submenu().openTabFinancien()
+                            .withVolledigeKostenAnnulerenVanaf(10, 3, 2019)
+                            .opslaanWijzigingen()
+                            .controleerMelding("Formulier gewijzigd")
+                    ;
+                    tabFormulieren.clickLink("HIT 2019 (Nr. 21139)");
+                });
+    }
+
+    /**
      * Maak alle formulieren actief of inactief.
      * <p>
      * Als alles actief moet worden gemaakt, maak dan eerst de basisformulieren actief. Bij deactiveren moeten eerst de

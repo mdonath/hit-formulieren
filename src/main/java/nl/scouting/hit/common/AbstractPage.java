@@ -104,6 +104,10 @@ public abstract class AbstractPage<T extends AbstractPage> {
         button.click();
     }
 
+    public void clickLink(final String linkText) {
+        driver.findElement(By.linkText(linkText)).click();
+    }
+
     public final T sleep(final long millis) {
 
         try {

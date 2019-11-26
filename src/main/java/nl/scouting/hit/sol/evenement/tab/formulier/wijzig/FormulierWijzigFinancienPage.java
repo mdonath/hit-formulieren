@@ -106,7 +106,7 @@ public class FormulierWijzigFinancienPage extends AbstractFormulierPage<Formulie
     //
     // Button
     //
-    @FindBy(xpath = "//div[@id!=\"bottom_menu\"]//input[@name=\"submitBtn\" and @value=\"Wijzigingen apply\"]")
+    @FindBy(xpath = "//div[@id!=\"bottom_menu\"]//input[@name=\"submitBtn\" and @value=\"Wijzigingen opslaan\"]")
     private WebElement buttonWijzigingenOpslaan;
 
     /**
