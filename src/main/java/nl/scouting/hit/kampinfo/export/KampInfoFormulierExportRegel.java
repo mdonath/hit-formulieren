@@ -10,104 +10,120 @@ public class KampInfoFormulierExportRegel {
 
     //"kampinfo_project_jaar": 2019
     @JsonProperty("kampinfo_project_jaar")
-    private int jaar;
+    protected int jaar;
 
     //, "kampinfo_camp_id": 555
     @JsonProperty("kampinfo_camp_id")
-    private int kampID;
+    protected int kampID;
 
     //, "kampinfo_project_evenement_id": 0
     @JsonProperty("kampinfo_project_evenement_id")
-    private int shantiID;
+    protected int shantiID;
 
     //, "frm_location_nm": "Alphen"
     @JsonProperty("frm_location_nm")
-    private String locatie;
+    protected String locatie;
 
     //, "projectcode": "HIT ALPHEN 2019"
     @JsonProperty("projectcode")
-    private String projectcode;
+    protected String projectcode;
 
     //, "frm_nm": "Alphen Hakt!"
     @JsonProperty("frm_nm")
-    private String kampnaam;
+    protected String kampnaam;
 
     //, "kampinfo_camp_isouder": 0
     @JsonProperty("kampinfo_camp_isouder")
-    private boolean isOuderKindKamp;
+    protected boolean isOuderKindKamp;
 
     //, "frm_price": 42
     @JsonProperty("frm_price")
-    private int deelnemersprijs;
+    protected int deelnemersprijs;
 
     //, "frm_min_age": 14
     //, "frm_max_age": 17
     @JsonUnwrapped(prefix = "frm_", suffix = "_age")
-    private KampInfoRange leeftijd;
+    protected KampInfoRange leeftijd;
 
     //, "frm_min_age_margin_days": 30
     //, "frm_max_age_margin_days": 90
     @JsonUnwrapped(prefix = "frm_", suffix = "_age_margin_days")
-    private KampInfoRange leeftijdMarge;
+    protected KampInfoRange leeftijdMarge;
 
     //, "frm_part_min_ct": 10
     //, "frm_part_max_ct": 20
     @JsonUnwrapped(prefix = "frm_part_", suffix = "_ct")
-    private KampInfoRange aantalDeelnemers;
+    protected KampInfoRange aantalDeelnemers;
 
     //, "frm_max_outof_group": 0
     @JsonProperty("frm_max_outof_group")
-    private int maximumAantalUitEenGroep;
+    protected int maximumAantalUitEenGroep;
 
     //, "fte_teams_min_ct": 0
     //, "fte_teams_max_ct": 0
     @JsonUnwrapped(prefix = "fte_teams_", suffix = "_ct")
-    private KampInfoRange aantalSubgroepen;
+    protected KampInfoRange aantalSubgroepen;
 
     //, "fte_parts_min_ct": 1
     //, "fte_parts_max_ct": 3
     @JsonUnwrapped(prefix = "fte_parts_", suffix = "_ct")
-    private KampInfoRange aantalDeelnemersInSubgroep;
+    protected KampInfoRange aantalDeelnemersInSubgroep;
 
     //, "fte_modulo": 1
     @JsonProperty("fte_modulo")
-    private int deelbaarDoor;
+    protected int deelbaarDoor;
 
     @JsonUnwrapped(prefix = "frm_cancel_dt1_")
-    private KampInfoDatum kosteloosAnnulerenTot;
+    protected KampInfoDatum kosteloosAnnulerenTot;
 
     @JsonUnwrapped(prefix = "frm_cancel_dt2_")
-    private KampInfoDatum volledigeKostenAnnulerenVanaf;
+    protected KampInfoDatum volledigeKostenAnnulerenVanaf;
 
     @JsonUnwrapped(prefix = "kampinfo_project_inningsdatum_")
-    private KampInfoDatum projectInningsdatum;
+    protected KampInfoDatum projectInningsdatum;
 
 
     @JsonUnwrapped(prefix = "frm_from_dt_")
-    private KampInfoDatum evenementStart;
+    protected KampInfoDatum evenementStart;
     //, "frm_from_time": "19:00"
     @JsonProperty("frm_from_time")
-    private String evenementStartTijd;
+    protected String evenementStartTijd;
 
 
     @JsonUnwrapped(prefix = "frm_till_dt_")
-    private KampInfoDatum evenementEind;
+    protected KampInfoDatum evenementEind;
     //, "frm_till_time": "15:00"
     @JsonProperty("frm_till_time")
-    private String evenementEindTijd;
+    protected String evenementEindTijd;
 
 
     @JsonUnwrapped(prefix = "frm_book_from_dt_")
-    private KampInfoDatum inschrijvingStart;
+    protected KampInfoDatum inschrijvingStart;
 
     @JsonUnwrapped(prefix = "frm_book_till_dt_")
-    private KampInfoDatum inschrijvingEind;
+    protected KampInfoDatum inschrijvingEind;
 
-    public final String getFormulierNaam() {
-        return String.format("HIT %s %s (%d)"
+    public String getFormulierNaam() {
+        return buildKampNaam(locatie, kampnaam, kampID);
+    }
+
+    static String buildKampNaam(final String locatie, final String kampnaam, final int kampID) {
+        final String idPart = String.format(" (%d)", kampID);
+        final String firstPart = String.format("HIT %s %s"
                 , locatie
-                , kampnaam
-                , kampID);
+                , cleanKampnaam(kampnaam));
+        if (firstPart.length() + idPart.length() > 70) {
+            final String truncatedFirstPart = firstPart.substring(0, 70 - idPart.length());
+            return (truncatedFirstPart + idPart).replace("  ", " ");
+        }
+        return firstPart + idPart;
+    }
+
+    static String cleanKampnaam(final String naam) {
+        return naam.replaceAll("[^a-zA-Z0-9\\-\\(\\)\\?,\\. \\pL]", "")
+                .replace("â", "a")
+                .replace("ë", "e")
+                .replace("  ", " ");
     }
 
     public final String getBasisformulierNaam() {

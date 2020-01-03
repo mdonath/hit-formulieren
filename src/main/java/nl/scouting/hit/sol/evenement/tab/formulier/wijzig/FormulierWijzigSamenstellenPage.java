@@ -2,10 +2,7 @@ package nl.scouting.hit.sol.evenement.tab.formulier.wijzig;
 
 import nl.scouting.hit.common.Valuable;
 import nl.scouting.hit.sol.evenement.tab.formulier.common.AbstractFormulierPage;
-import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.AbstractVeldWijzigen;
-import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.CheckboxWijzigen;
-import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.DeelnamekostenWijzigen;
-import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.MeerdereTekstRegelsWijzigen;
+import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -121,6 +118,14 @@ public class FormulierWijzigSamenstellenPage extends AbstractFormulierPage<Formu
                 return new CheckboxWijzigen(driver);
             case TEKSTREGELS:
                 return new MeerdereTekstRegelsWijzigen(driver);
+            case KOPTEKST1:
+            case KOPTEKST2:
+            case KOPTEKST3:
+                return new KoptekstWijzigen(driver);
+            case TOELICHTING:
+                return new ToelichtendeTekstWijzigen(driver);
+            case RADIOBUTTON:
+                return new RadioButtonWijzigen(driver);
             default:
                 throw new IllegalArgumentException("Onbekend of (nog) niet ondersteund veldtype");
         }

@@ -11,7 +11,7 @@ import nl.scouting.hit.kampinfo.kamp.HitKampenPage;
 public class Main extends AbstractWebApplication {
 
     public static void main(final String[] args) throws Exception {
-        final int jaar = 2019;
+        final int jaar = 2020;
 
         final String kiBaseUrl = "https://hit.scouting.nl";
         final String solBaseUrl = "https://sol.scouting.nl";

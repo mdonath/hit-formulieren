@@ -73,8 +73,8 @@ public class FormulierWijzigFinancienPage extends AbstractFormulierPage<Formulie
     @FindBy(name = "frm_cancel_type")
     private List<WebElement> fieldAnnuleringstype;
 
-    @FindBy(name = "frm_on_part_cancel_note_required_yn")
-    private List<WebElement> fieldAnnuleringsredenVerplicht;
+//    @FindBy(name = "frm_on_part_cancel_note_required_yn")
+//    private List<WebElement> fieldAnnuleringsredenVerplicht;
 
     @FindBy(name = "frm_cancel_perc")
     private WebElement fieldAnnuleringsPercentage;
@@ -155,10 +155,10 @@ public class FormulierWijzigFinancienPage extends AbstractFormulierPage<Formulie
         return this;
     }
 
-    public FormulierWijzigFinancienPage withAnnuleringsredenVerplicht(final JaNee jaNee) {
-        selectRadio(fieldAnnuleringsredenVerplicht, jaNee);
-        return this;
-    }
+//    public FormulierWijzigFinancienPage withAnnuleringsredenVerplicht(final JaNee jaNee) {
+//        selectRadio(fieldAnnuleringsredenVerplicht, jaNee);
+//        return this;
+//    }
 
     public FormulierWijzigFinancienPage withGebruikGroepsrekening(final GebruikGroepsrekening type) {
         selectRadio(fieldGebruikGroepsrekening, type);

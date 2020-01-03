@@ -12,16 +12,41 @@ public class FormulierWijzigAanpassenMailsPage extends AbstractFormulierPage<For
 
 
     public enum Bericht implements Valuable {
+
+        // Annuleringsmail van deelnemer aan organisatie
+        BEVESTIGING_ANNULERING_VAN_DEELNEMER_AAN_ORGANISATIE("frm_txt_cancelmail_by_participant"),
+
+        @Deprecated
         BEVESTIGING_ANNULERING_AAN_DEELNEMER_DOOR_ORGANISATIE("frm_txt_cancelconfirmmail_by_staff"),
+
+        // Bevestiging van inschrijving aan deelnemer
         BEVESTIGING_INSCHRIJVING_AAN_DEELNEMER("frm_txt_confirmationmail_member"),
+
+        // Bevestiging van inschrijving aan organisator
         BEVESTIGING_INSCHRIJVING_AAN_ORGANISATIE("frm_txt_registration_mail_for_organisator"),
+
+        // Bevestiging van inschrijving aan ouders/verzorgers
         BEVESTIGING_INSCHRIJVING_AAN_OUDERS("frm_txt_confirmationmail_parent"),
+
+        // Bevestiging van wachtlijst aan deelnemer
         BEVESTIGING_WACHTLIJST_AAN_DEELNEMER("frm_txt_confirmationmail_member_waitinglist"),
+
+        // Bij groepsinschrijving als nog niet alle individuele deelnemers geregistreerd zijn
         GROEP_NOG_INCOMPLEET("frm_txt_group_incomplete_for_contact"),
+
+        // Mail bij statuswijziging inschrijving aan deelnemer en organisator
         STATUSWIJZIGING_AAN_DEELNEMER_EN_ORGANISATOR("frm_txt_state_part_changed"),
+
+        // Mail bij statuswijziging naar 'kosteloos geannuleerd'
         STATUSWIJZIGING_NAAR_KOSTELOOS_GEANNULEERD("frm_txt_as_mail_state_part_refused"),
+
+        // Mail naar organisator bij wijziging van inschrijving
         WIJZIGING_AAN_ORGANISATOR("frm_txt_registration_edit_mail_for_organisator"),
+
+        // mail naar deelnemer als de inschrijving niet door de penningmeester is goedgekeurd
         AFKEURING_DOOR_PENNINGMEESTER_AAN_DEELNEMER("frm_txt_as_mail_group_account_refused"),
+
+        // mail naar penningmeester bij wijziging bedrag groepsrekening
         BEDRAGWIJZIGING_AAN_PENNINGMEESTER("frm_txt_form_change_treasurer");
 
         private final String id;

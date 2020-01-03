@@ -29,6 +29,11 @@ public abstract class AbstractPage<T extends AbstractPage> {
                 .executeScript("window.scrollTo(0, document.body.scrollHeight)");
     }
 
+    protected final void scrollToBottomRight() {
+        ((JavascriptExecutor) driver)
+                .executeScript("window.scrollTo(document.body.scrollWidth, document.body.scrollHeight)");
+    }
+
     protected final void clearAndSendKeys(final WebElement element, final String value) {
         element.clear();
         element.sendKeys(value);

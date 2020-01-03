@@ -11,6 +11,8 @@ import java.util.List;
 
 public abstract class AbstractVeldWijzigen<T extends AbstractVeldWijzigen> extends AbstractSolMetHoofdMenuPage<T> {
 
+    public static final String VELD_GEWIJZIGD = "Veld gewijzigd";
+
     @FindBy(name = "move_fld_after_options")
     private WebElement fieldLocatieVanVeld;
     @FindBy(name = "fld_req_yn")

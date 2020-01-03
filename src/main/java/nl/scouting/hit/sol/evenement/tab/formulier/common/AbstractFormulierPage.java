@@ -40,7 +40,7 @@ public abstract class AbstractFormulierPage<T extends AbstractFormulierPage> ext
 
 
     public MeerMenuPage meer() {
-        scrollToBottom();
+        scrollToBottomRight();
         activeerElement(buttonMeer);
         return new MeerMenuPage(driver);
     }

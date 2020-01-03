@@ -81,7 +81,7 @@ public class FormulierWijzigDeelnameconditiesPage extends AbstractFormulierBasis
     /**
      * Button Wijzigingen apply.
      */
-    @FindBy(xpath = "//input[@value=\"Wijzigingen apply\"]")
+    @FindBy(xpath = "//input[@value=\"Wijzigingen opslaan\"]")
     private WebElement buttonWijzigingenOpslaan;
 
     public FormulierWijzigDeelnameconditiesPage(WebDriver driver) {
