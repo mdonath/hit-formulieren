@@ -438,13 +438,13 @@ public final class ScoutsOnlineVuller {
             volgnummer = "5";
             final RadioButtonWijzigen radiobutton;
             if (samenstellen.hasVeld(volgnummer)) {
-                radiobutton = (RadioButtonWijzigen) samenstellen.selecteerVeld(volgnummer)
+                radiobutton = (RadioButtonWijzigen) samenstellen.selecteerVeld(volgnummer);
             } else {
                 radiobutton = (RadioButtonWijzigen) samenstellen
                         .withSelecteerNieuwVeld(FormulierWijzigSamenstellenPage.NieuwVeld.RADIOBUTTON)
                         .toevoegen();
             }
-            radiobutton.
+            // FIXME: radiobutton.
         }
 
 
