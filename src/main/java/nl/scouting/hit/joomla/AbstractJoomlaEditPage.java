@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 
 public abstract class AbstractJoomlaEditPage<C extends AbstractJoomlaEditPage, P extends AbstractKampInfoPage> extends AbstractPage<C> {
 
-    private JoomlaEditButtons<C, P> editButtons;
+    private final JoomlaEditButtons<C, P> editButtons;
 
     public AbstractJoomlaEditPage(final WebDriver driver, final P previousPage) {
         super(driver);

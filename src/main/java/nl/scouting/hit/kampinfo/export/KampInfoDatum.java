@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class KampInfoDatum implements Datum {
+
     public static final List<String> MAANDEN = Arrays.asList("januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december");
 
     @JsonProperty("day")
@@ -26,7 +27,7 @@ public class KampInfoDatum implements Datum {
         super();
     }
 
-    public KampInfoDatum(int dag, String maand, int jaar) {
+    public KampInfoDatum(final int dag, final String maand, final int jaar) {
         super();
         this.dag = dag;
         this.maand = maand;
@@ -45,4 +46,5 @@ public class KampInfoDatum implements Datum {
     public int getJaar() {
         return jaar;
     }
+
 }

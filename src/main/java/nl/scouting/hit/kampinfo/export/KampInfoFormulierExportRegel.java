@@ -36,6 +36,10 @@ public class KampInfoFormulierExportRegel {
     @JsonProperty("kampinfo_camp_isouder")
     protected boolean isOuderKindKamp;
 
+    //, "kampinfo_camp_ouderislid": 0
+    @JsonProperty("kampinfo_camp_ouderislid")
+    protected boolean isOuderLid;
+
     //, "frm_price": 42
     @JsonProperty("frm_price")
     protected int deelnemersprijs;
@@ -128,8 +132,9 @@ public class KampInfoFormulierExportRegel {
 
     public final String getBasisformulierNaam() {
         final String okk = "HIT %d Basisformulier Ouder-Kind (niet wijzigen)";
+        final String okkOuderIsLid = "HIT %d Basisformulier Ouder-Kind (optie OUDER) (niet wijzigen)";
         final String normaal = "HIT %d Basisformulier (niet wijzigen)";
-        return String.format(isOuderKindKamp ? okk : normaal, jaar);
+        return String.format(isOuderKindKamp ? (isOuderLid ? okkOuderIsLid : okk) : normaal, jaar);
     }
 
     public int getJaar() {
@@ -158,6 +163,10 @@ public class KampInfoFormulierExportRegel {
 
     public boolean isOuderKindKamp() {
         return isOuderKindKamp;
+    }
+
+    public boolean isOuderLid() {
+        return isOuderLid;
     }
 
     public int getDeelnemersprijs() {
@@ -227,4 +236,5 @@ public class KampInfoFormulierExportRegel {
     public KampInfoDatum getInschrijvingEind() {
         return inschrijvingEind;
     }
+
 }

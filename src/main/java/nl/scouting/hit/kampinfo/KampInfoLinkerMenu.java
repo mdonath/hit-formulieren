@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class KampInfoLinkerMenu extends AbstractPage {
+public class KampInfoLinkerMenu extends AbstractPage<KampInfoLinkerMenu> {
 
     @FindBy(linkText = "Info")
     private WebElement menuInfo;

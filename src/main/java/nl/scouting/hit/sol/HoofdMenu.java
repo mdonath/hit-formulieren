@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class HoofdMenu extends AbstractSolPage {
+public class HoofdMenu extends AbstractSolPage<HoofdMenu> {
 
     @FindBy(id = "login_role_select")
     private WebElement rollenMenu;
@@ -33,7 +33,7 @@ public class HoofdMenu extends AbstractSolPage {
         return new EvenementenLijstPage(driver);
     }
 
-    public EvenementenLijstPage openSpelVanMijnSpeleenheid(String naamSpeleenheid) {
+    public EvenementenLijstPage openSpelVanMijnSpeleenheid(final String naamSpeleenheid) {
         openklappenMenuSpel();
         klikMenuSubItem("Van speleenheid " + naamSpeleenheid);
         return new EvenementenLijstPage(driver);
@@ -43,8 +43,7 @@ public class HoofdMenu extends AbstractSolPage {
         openklappenMenu("Spel");
     }
 
-
-    private void klikMenuSubItem(String naam) {
+    private void klikMenuSubItem(final String naam) {
         driver.findElement(By.partialLinkText(naam)).click();
     }
 }

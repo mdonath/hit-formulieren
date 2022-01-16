@@ -73,6 +73,8 @@ public class FormulierWijzigDeelnameconditiesPage extends AbstractFormulierBasis
     private WebElement fieldMaximumDeelnemersaantal;
     @FindBy(name = "frm_waiting_list_yn")
     private List<WebElement> fieldWachtlijst;
+    @FindBy(name = "frm_standard_waiting_list_yn")
+    private List<WebElement> fieldStandaardWachtlijst;
     @FindBy(name = "frm_max_outof_group")
     private WebElement fieldMaximumAantalUitEengroep;
     @FindBy(name = "frm_max_outside_cooperate_orgs_ct")
@@ -146,6 +148,11 @@ public class FormulierWijzigDeelnameconditiesPage extends AbstractFormulierBasis
 
     public FormulierWijzigDeelnameconditiesPage withWachtlijst(JaNee jaNee) {
         selectRadio(fieldWachtlijst, jaNee);
+        return this;
+    }
+
+    public FormulierWijzigDeelnameconditiesPage withStandaardWachtlijst(JaNee jaNee) {
+        selectRadio(fieldStandaardWachtlijst, jaNee);
         return this;
     }
 

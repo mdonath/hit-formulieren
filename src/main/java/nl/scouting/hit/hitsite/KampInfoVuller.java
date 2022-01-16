@@ -15,12 +15,12 @@ public class KampInfoVuller {
      * Haalt de inschrijfformulieren in ScoutsOnline op van een specifiek jaar en vult het formulier-id (shantiId) in bij
      * elk kamponderdeel in KampInfo.
      *
-     * @param jaar
-     * @param kiBaseUrl
-     * @param solBaseUrl
-     * @param solUsername
-     * @param solPassword
-     * @throws Exception
+     * @param jaar        HIT jaar
+     * @param kiBaseUrl   Basis url voor KampInfo
+     * @param solBaseUrl  Basis url voor SOL
+     * @param solUsername Gebruikersnaam voor SOL
+     * @param solPassword Wachtwoord voor SOL
+     * @throws Exception Als er iets mis gaat
      */
     public static void neemShantiIdOverInKampInfo(final int jaar, final String kiBaseUrl, final String solBaseUrl, final String solUsername, final String solPassword) throws Exception {
         try (final HitWebsiteAdmin hitwebsite = new HitWebsiteAdmin(kiBaseUrl, solUsername, solPassword)) {
@@ -34,7 +34,7 @@ public class KampInfoVuller {
                             kampenLijst
                                     .setFilterJaar(jaar)
                                     .setFilterPlaats(formulier.plaats, jaar)
-                                    .openHitKamp(formulier.kamp)
+                                    .openHitKamp(Integer.valueOf(formulier.kampinfoID))
                                     .tabs().admin()
                                     .withShantiFormuliernummer(formulier.shantiID)
                                     .editButtons().save()
@@ -51,4 +51,5 @@ public class KampInfoVuller {
                     .getFormulieren().stream().map(HitFormulier::new);
         }
     }
+
 }

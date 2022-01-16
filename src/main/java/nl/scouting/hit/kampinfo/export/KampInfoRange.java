@@ -9,6 +9,10 @@ public class KampInfoRange implements Range {
     @JsonProperty("max")
     private int maximum;
 
+    public KampInfoRange() {
+        super();
+    }
+
     public KampInfoRange(final int minimum, final int maximum) {
         this.minimum = minimum;
         this.maximum = maximum;

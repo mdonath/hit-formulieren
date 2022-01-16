@@ -3,7 +3,7 @@ package nl.scouting.hit.kampinfo;
 import nl.scouting.hit.common.AbstractPage;
 import org.openqa.selenium.WebDriver;
 
-public abstract class AbstractKampInfoPage<T extends AbstractPage> extends AbstractPage<T> {
+public abstract class AbstractKampInfoPage<T extends AbstractPage> extends AbstractPage {
 
     private final KampInfoLinkerMenu submenu;
 

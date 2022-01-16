@@ -10,13 +10,17 @@ import nl.scouting.hit.sol.evenement.tab.formulier.common.AbstractFormulierPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.nieuw.FormulierBasisNieuwPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.nieuw.FormulierSoortAanmeldingNieuwPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.*;
-import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.*;
+import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.AbstractVeldWijzigen;
+import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.DeelnamekostenWijzigen;
+import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.RadioButtonWijzigen;
+import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.ToelichtendeTekstWijzigen;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.subgroepen.AbstractFormulierSubgroepenCategoriePage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.subgroepen.FormulierSubgroepenCategorieNieuwPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.subgroepen.FormulierSubgroepenCategorieWijzigPage;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -49,7 +53,7 @@ public final class ScoutsOnlineVuller {
      * @param sol             de connectie naar ScoutsOnline
      * @param naamEvenement   de naam van het evenement zoals dat te zien is in het overzicht, bijvoorbeeld "HIT 2019"
      * @param naamSpeleenheid de naam van de organiserende speleenheid
-     * @throws IOException
+     * @throws IOException Als er iets mis gaat
      */
     public ScoutsOnlineVuller(final SolHomePage sol, final String naamEvenement, final String naamSpeleenheid) throws IOException {
         this.solHomePage = sol;
@@ -61,31 +65,6 @@ public final class ScoutsOnlineVuller {
 
     public void setDatumDeelnemersinformatie(final String datumDeelnemersinformatie) {
         this.datumDeelnemersinformatie = datumDeelnemersinformatie;
-    }
-
-    /**
-     * Fixt de kosteloos annuleringsdatum.
-     */
-    public void fixAnnuleringsdatum() {
-        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
-                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement)
-                .submenu().openTabFormulieren();
-
-        // Activeer eerst de basisformulieren
-        final List<HitFormulier> alleFormulieren = tabFormulieren.getFormulieren().stream().map(HitFormulier::new).collect(Collectors.toList());
-        alleFormulieren.stream()
-                .filter(formulier -> formulier.isInschrijfFormulier())
-                .forEach(formulier -> {
-                    System.out.println(formulier.naam);
-                    tabFormulieren.openFormulier(formulier.naam)
-                            .submenu().openTabFinancien()
-                            .withVolledigeKostenAnnulerenVanaf(10, 3, 2019)
-                            .opslaanWijzigingen()
-                            .controleerMelding("Formulier gewijzigd")
-                    ;
-                    tabFormulieren.clickLink("HIT 2020 (Nr. 23246)");
-                });
     }
 
     /**
@@ -101,8 +80,11 @@ public final class ScoutsOnlineVuller {
                 .openEvenement(naamEvenement)
                 .submenu().openTabFormulieren();
 
+        final List<HitFormulier> alleFormulieren = tabFormulieren.getFormulieren().stream()
+                .map(HitFormulier::new)
+                .collect(Collectors.toList());
+
         // Activeer eerst de basisformulieren
-        final List<HitFormulier> alleFormulieren = tabFormulieren.getFormulieren().stream().map(HitFormulier::new).collect(Collectors.toList());
         maakActief(tabFormulieren, alleFormulieren, actief
                 , formulier -> actief.asBoolean() == formulier.isBasisFormulier());
         // Activeer daarna de inschrijfformulieren
@@ -110,17 +92,18 @@ public final class ScoutsOnlineVuller {
                 , formulier -> actief.asBoolean() != formulier.isBasisFormulier());
     }
 
-    protected void maakActief(final TabFormulierenOverzichtPage tabFormulieren, final List<HitFormulier> alleFormulieren, final JaNee actief, final Predicate<HitFormulier> formulierPredicate) {
+    private void maakActief(final TabFormulierenOverzichtPage tabFormulieren, final List<HitFormulier> alleFormulieren, final JaNee actief, final Predicate<HitFormulier> formulierPredicate) {
         alleFormulieren.stream()
                 // .limit(4)
                 .filter(formulierPredicate)
                 .forEach(formulier -> {
-                    System.out.println(formulier.naam);
+                    System.out.printf("Actief maken: %s ", formulier.naam);
                     tabFormulieren.openFormulier(formulier.naam)
                             .withFormulierActief(actief)
                             .opslaanWijzigingen()
-                            .controleerMelding("Formulier gewijzigd")
+                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
                             .meer().naarAlleFormulieren();
+                    System.out.println("[OK]");
                 });
     }
 
@@ -152,7 +135,7 @@ public final class ScoutsOnlineVuller {
                 .openEvenement(naamEvenement);
 
         final List<String> bestaandeBasisFormulierNamen = retrieveBestaandeFormulierNamen(
-                formulierenOverzicht, formulier -> formulier.isBasisFormulier());
+                formulierenOverzicht, HitFormulier::isBasisFormulier);
 
         System.out.println("Gevonden basisformulieren:");
         bestaandeBasisFormulierNamen.forEach(formulierNaam -> System.out.println("- " + formulierNaam));
@@ -168,7 +151,7 @@ public final class ScoutsOnlineVuller {
                 .withInschrijvingEind(29, "februari", 2020)
                 .build();
 
-        final List<BasisFormulierRegel> nieuweBasisFormulieren = Arrays.asList(
+        final List<BasisFormulierRegel> nieuweBasisFormulieren = Collections.singletonList(
                 basisFormulierEnkelvoudig
         );
 
@@ -213,18 +196,17 @@ public final class ScoutsOnlineVuller {
         final TabFormulierenOverzichtPage formulierenOverzicht = solHomePage.hoofdmenu()
                 .openSpelVanMijnSpeleenheid(naamSpeleenheid)
                 .openEvenement(naamEvenement);
-
         final List<String> bestaandeFormulierNamen = retrieveBestaandeFormulierNamen(
                 formulierenOverzicht,
-                formulier -> formulier.kampinfoID != null
+                HitFormulier::isInschrijfFormulier
         );
 
-        data.forEach(regel -> {
-            maakInitieelFormulier(formulierenOverzicht, bestaandeFormulierNamen, regel);
-        });
+        data.forEach(regel ->
+                maakInitieelFormulier(formulierenOverzicht, bestaandeFormulierNamen, regel)
+        );
     }
 
-    protected void maakInitieelFormulier(final TabFormulierenOverzichtPage formulierenOverzicht, final List<String> bestaandeFormulierNamen, final KampInfoFormulierExportRegel regel) {
+    private void maakInitieelFormulier(final TabFormulierenOverzichtPage formulierenOverzicht, final List<String> bestaandeFormulierNamen, final KampInfoFormulierExportRegel regel) {
         final String formulierNaam = regel.getFormulierNaam();
         if (bestaandeFormulierNamen.contains(formulierNaam)) {
             System.out.printf("Formulier %s bestaat al!\n", formulierNaam);
@@ -244,9 +226,9 @@ public final class ScoutsOnlineVuller {
                     .withInschrijvingEind(regel.getInschrijvingEind())
                     .volgende()
                     .voltooien()
-                    .controleerMelding("Formulier toegevoegd")
+                    .controleerMelding(BevestigingsTekst.FORMULIER_TOEGEVOEGD)
                     .meer().naarAlleFormulieren();
-            System.out.printf(" [OK]\n");
+            System.out.println(" [OK]");
         }
     }
 
@@ -257,11 +239,10 @@ public final class ScoutsOnlineVuller {
         final TabFormulierenOverzichtPage formulierenOverzicht = solHomePage.hoofdmenu()
                 .openSpelVanMijnSpeleenheid(naamSpeleenheid)
                 .openEvenement(naamEvenement);
-        data.stream()
-                .forEach(regel -> vulFormulierMetDeRest(formulierenOverzicht, regel));
+        data.forEach(regel -> vulFormulierMetDeRest(formulierenOverzicht, regel));
     }
 
-    protected void vulFormulierMetDeRest(final TabFormulierenOverzichtPage formulierenOverzicht, final KampInfoFormulierExportRegel regel) {
+    private void vulFormulierMetDeRest(final TabFormulierenOverzichtPage formulierenOverzicht, final KampInfoFormulierExportRegel regel) {
         final String formulierNaam = regel.getFormulierNaam();
         if (!formulierenOverzicht.hasFormulier(regel)) {
             throw new RuntimeException(String.format("Formulier %s bestaat niet!", formulierNaam));
@@ -294,7 +275,7 @@ public final class ScoutsOnlineVuller {
                 .withInschrijvingEind(regel.getInschrijvingEind())
                 .withStuurTicket(JaNee.NEE)
                 .opslaanWijzigingen()
-                .controleerMelding("Formulier gewijzigd")
+                .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
                 ;
     }
 
@@ -311,10 +292,11 @@ public final class ScoutsOnlineVuller {
                 .withMinimumDeelnemersaantal(delenDoorTweeBijOuderKindKamp(regel, regel.getAantalDeelnemers().getMinimum()))
                 .withMaximumDeelnemersaantal(delenDoorTweeBijOuderKindKamp(regel, regel.getAantalDeelnemers().getMaximum()))
                 .withMaximumAantalUitEengroep(delenDoorTweeBijOuderKindKamp(regel, regel.getMaximumAantalUitEenGroep()))
-                .withWachtlijst(JaNee.NEE)
+                .withWachtlijst(JaNee.JA)
+                .withStandaardWachtlijst(JaNee.JA)
                 .withMaximumAantalExterneDeelnemers(0)
                 .opslaanWijzigingen()
-                .controleerMelding("Formulier gewijzigd")
+                .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
                 ;
     }
 
@@ -333,7 +315,7 @@ public final class ScoutsOnlineVuller {
                 .withGebruikPersoonlijkeRekening(JaNee.JA)
                 .withBetalingswijze(FormulierWijzigFinancienPage.Betalingswijze.IDEAL)
                 .opslaanWijzigingen()
-                .controleerMelding("Formulier gewijzigd")
+                .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
                 ;
     }
 
@@ -345,7 +327,7 @@ public final class ScoutsOnlineVuller {
             samenstellen
                     .setFieldSelecteerFormulier(basisformulierNaam)
                     .gebruikVeldenVanGeselecteerdFormulier()
-                    .controleerMelding("Formulier gewijzigd");
+                    .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);
         }
 
         // Selecteer veld 'deelnamekosten' of maak deze eerst aan indien dat nog niet zo was
@@ -375,7 +357,7 @@ public final class ScoutsOnlineVuller {
         }
         return deelnamekosten
                 .opslaanWijzigingen()
-                .controleerMelding("Veld gewijzigd");
+                .controleerMelding(BevestigingsTekst.VELD_GEWIJZIGD);
     }
 
     private static class FormulierVelden {
@@ -405,14 +387,14 @@ public final class ScoutsOnlineVuller {
         public static FormulierWijzigSamenstellenPage createOrUpdateToelichting(final int volgnummer, final String tekst, final FormulierWijzigSamenstellenPage samenstellen) {
             return opslaan(
                     ((ToelichtendeTekstWijzigen) naarVeld(samenstellen, volgnummer, FormulierWijzigSamenstellenPage.NieuwVeld.TOELICHTING))
-                    .withInhoud(tekst));
+                            .withInhoud(tekst));
         }
     }
 
     private FormulierWijzigSamenstellenPage vulTabSamenstellenBasisformulier(final AbstractFormulierPage<?> geopendFormulier, final KampInfoFormulierExportRegel regel) {
         final FormulierWijzigSamenstellenPage samenstellen = geopendFormulier.submenu().openTabSamenstellen();
 
-        String volgnummer;
+        final String volgnummer;
 
         // veld 1: koptekst1
         FormulierVelden.createOrUpdateKoptekst(1
@@ -475,13 +457,13 @@ public final class ScoutsOnlineVuller {
         }
         return deelnamekosten
                 .opslaanWijzigingen()
-                .controleerMelding("Veld gewijzigd");
+                .controleerMelding(BevestigingsTekst.VELD_GEWIJZIGD);
     }
 
     private FormulierWijzigSubgroepenPage vulTabSubgroepen(final AbstractFormulierPage<?> geopendFormulier, final KampInfoFormulierExportRegel regel) {
         FormulierWijzigSubgroepenPage subgroepenOverzicht = geopendFormulier.submenu().openTabSubgroepen();
 
-        AbstractFormulierSubgroepenCategoriePage nieuwOfWijzig;
+        AbstractFormulierSubgroepenCategoriePage<?> nieuwOfWijzig;
         if (subgroepenOverzicht.hasSubgroepCategorie(KOPPELGROEPJE)) {
             nieuwOfWijzig = subgroepenOverzicht.openSubgroepCategorie(KOPPELGROEPJE);
         } else {
@@ -526,78 +508,50 @@ public final class ScoutsOnlineVuller {
         if (nieuwOfWijzig instanceof FormulierSubgroepenCategorieNieuwPage) {
             subgroepenOverzicht = ((FormulierSubgroepenCategorieNieuwPage) nieuwOfWijzig)
                     .gegevensOpslaan()
-                    .controleerMelding("Subgroepcategorie is opgeslagen.");
+                    .controleerMelding(BevestigingsTekst.SUBGROEPCATEGORIE_OPGESLAGEN);
         } else if (nieuwOfWijzig instanceof FormulierSubgroepenCategorieWijzigPage) {
             subgroepenOverzicht = ((FormulierSubgroepenCategorieWijzigPage) nieuwOfWijzig)
                     .opslaanGegevens()
-                    .controleerMelding("Wijzigen subgroepcategorie gelukt")
+                    .controleerMelding(BevestigingsTekst.SUBGROEPCATEGORIE_GEWIJZIGD)
                     .terugNaarSubgroepoverzicht();
         }
         return subgroepenOverzicht;
     }
 
-    private FormulierWijzigAanpassenMailsPage vulTabAanpassenMails(final AbstractFormulierPage<?> geopendFormulier, final KampInfoFormulierExportRegel regel, final String datumDeelnemersInformatie) {
+    private FormulierWijzigAanpassenMailsPage vulTabAanpassenMails(
+            final AbstractFormulierPage<?> geopendFormulier,
+            final KampInfoFormulierExportRegel regel,
+            final String datumDeelnemersInformatie
+    ) {
         return geopendFormulier.submenu().openTabAanpassenMails()
+
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.BEVESTIGING_ANNULERING_VAN_DEELNEMER_AAN_ORGANISATIE)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht("Deelnemer %per_fullname% heeft de inschrijving voor %evt_nm% (%frm_nm%) geannuleerd.\n\n" +
-                        "Deze persoon is  nu afgemeld voor dit evenement.\n\n")
+                .withGewijzigdBericht(MailTekstGenerator.bevestigingAnnuleringVanDeelnemerAanOrganisatie(this.hitJaar))
                 .wijzigingenOpslaan()
-                .controleerMelding("Mail gewijzigd")
+                .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
 
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.BEVESTIGING_INSCHRIJVING_AAN_DEELNEMER)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht(
-                        "Betreft: Bevestiging inschrijving HIT " + regel.getJaar() + "\n" +
-                                "(bewaar dit mailtje goed)\n\n" +
-                                "Beste %per_fullname%,\n\n" +
-                                "Wat leuk! Je hebt je opgegeven voor een spectaculair weekend tijdens de HIT " + regel.getJaar() +
-                                " voor het onderdeel %frm_nm%. Deze activiteit start op %frm_from_dt% om %frm_from_time% uur en duurt tot %frm_till_dt% tot %frm_till_time% uur.\n\n" +
-                                "De deelnamekosten voor deze activiteit zijn " + (regel.isOuderKindKamp() ? "twee maal" : "") +
-                                "%frm_price% euro. Als je deze via iDEAL voldaan hebt, is je inschrijving compleet. Als er iets mis ging met de betaling of je bent door iemand anders, zoals je teamleider, ingeschreven is jouw betaling nog niet compleet. Je ontvangt dan een aparte mail met een betalingsverzoek en een iDEAL-link om je betaling te voldoen. Pas dan ben je officieel ingeschreven.\n\n" +
-                                "Na je inschrijving heb je 10 dagen bedenktijd. Binnen deze tijd kun je kosteloos annuleren. Je krijgt dan het deelnamegeld helemaal teruggestort. Dit is ook de termijn waarbinnen jouw groepje compleet moet zijn. Na 10 dagen kun je nog wel annuleren maar krijg je het deelnamegeld terug verminderd met € 10 administratiekosten. Na de sluiting van de inschrijving kun je niet meer annuleren en krijg je geen geld meer terug.\n\n" +
-                                "Annuleren kan alleen door in te loggen op sol.scouting.nl en in het ‘Mijn Scouting’-menu bij ‘Mijn inschrijvingen’ naar de HIT-inschrijving te gaan. Daar kun je in het tabblad ‘deelnamestatus’ jouw inschrijving annuleren. Vul altijd een reden in. Is er sprake van bijzondere omstandigheden waardoor je moet annuleren, neem dan altijd contact op met de HIT-Helpdesk. Na de sluiting vaan de inschrijving is het niet meer mogelijk om te annuleren! Wel is het mogelijk om een andere deelnemer voor jou in de plaats te laten deelnemen.\n\n" +
-                                "We willen je er ook op attenderen dat het soms voorkomt dat een HIT-onderdeel niet doorgaat. We geven dit dan natuurlijk zo snel mogelijk aan je door. Je krijgt dan een aantal alternatieve activiteiten aangeboden of je kunt kosteloos annuleren.\n\n" +
-                                "Via Scouts Online (https://sol.scouting.nl) kun je de inschrijving van jouw groepje bekijken. Klik na het inloggen op ‘Mijn Scouting’ – ‘Mijn inschrijvingen’ en kies daar de inschrijving van de HIT. Onder ‘subgroep(en)’ zie je wie zich al voor jouw groepje heeft aangemeld. Dit aanmelden moet binnen 10 dagen. Dus schud je groepje wakker en zorg dat ze zich op tijd inschrijven! \n\n" +
-                                "Zijn er problemen met inschrijven of heb je een andere vraag? Kijk dan op http://hit.scouting.nl bij het onderdeel ‘Inschrijven’ of mail de helpdesk via helpdesk@hit.scouting.nl. \n" +
-                                "Rond " + datumDeelnemersInformatie + " zal de deelnemersinformatie van %frm_nm% beschikbaar zijn op de HIT-website. Daarin staat o.a. waar je moet zijn en wat je mee moet nemen. We sturen je een mail als de informatie van jouw HIT onderdeel beschikbaar is.\n\n" +
-                                "Tot ziens op de HIT.\n\n" +
-                                "De HIT organisatie\n" +
-                                "Scouting Nederland\n\n" +
-                                "PS: Je lidnummer is: %per_id%\n" +
-                                "En je inschrijfnummer is: %prt_id%")
+                .withGewijzigdBericht(MailTekstGenerator.bevestigingInschrijvingAanDeelnemer(datumDeelnemersInformatie))
                 .wijzigingenOpslaan()
-                .controleerMelding("Mail gewijzigd")
+                .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
 
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.BEVESTIGING_INSCHRIJVING_AAN_OUDERS)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht(
-                        "Beste ouder/verzorger van %per_fullname%,\n\n" +
-                                "%per_fullname% heeft zich opgegeven als deelnemer voor %frm_nm% tijdens de HIT " + regel.getJaar() + ".\n" +
-                                "Deze mail dient uitsluitend om u te informeren over deze inschrijving. Alle verdere correspondentie zal via het in Scouts Online geregistreerde e-mailadres %per_email% van %per_fullname% verlopen.\n" +
-                                "Deze activiteit start op %frm_from_dt% om %frm_from_time% uur en duurt tot %frm_till_dt% tot %frm_till_time% uur.\n" +
-                                "De deelnamekosten voor deze activiteit zijn " + (regel.isOuderKindKamp() ? "twee maal" : "") + "%frm_price% euro.\n\n" +
-                                "De deelnemer heeft na inschrijving 10 dagen bedenktijd en kan binnen deze 10 dagen kosteloos annuleren. Binnen deze tijd kun je kosteloos annuleren. Je krijgt dan het deelnamegeld helemaal teruggestort. Dit is ook de termijn waarbinnen het groepje compleet moet zijn. Na 10 dagen kan er nog wel geannuleerd worden maar krijg de deelnemer het deelnamegeld terug verminderd met € 10 administratiekosten. Na de sluiting van de inschrijving kan er niet meer geannuleerd worden en krijgt de deelnemer geen geld meer terug.\n\n" +
-                                "Zijn er problemen met inschrijven of heeft u een andere vraag? Kijk dan op http://hit.scouting.nl bij het onderdeel ’inschrijven’.\n\n" +
-                                "Met vriendelijke groet,\n\n" +
-                                "De HIT-organisatie\n" +
-                                "Scouting Nederland")
+                .withGewijzigdBericht(MailTekstGenerator.bevestigingInschrijvingAanOuders())
                 .wijzigingenOpslaan()
-                .controleerMelding("Mail gewijzigd")
+                .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
 
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.STATUSWIJZIGING_NAAR_KOSTELOOS_GEANNULEERD)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht(
-                        "Beste %per_fullname%,\n\n" +
-                                "Je inschrijving voor het evenement %evt_nm% (%frm_nm%) is kosteloos geannuleerd.\n" +
-                                "Je bent niet meer ingeschreven voor dit evenement.\n\n" +
-                                "De HIT organisatie")
+                .withGewijzigdBericht(MailTekstGenerator.statuswijzigingNaarKosteloosGeannuleerd())
                 .wijzigingenOpslaan()
-                .controleerMelding("Mail gewijzigd")
+                .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
                 ;
     }
 

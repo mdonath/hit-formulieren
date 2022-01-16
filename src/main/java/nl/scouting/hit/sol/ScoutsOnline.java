@@ -15,7 +15,6 @@ public class ScoutsOnline extends AbstractWebApplication {
 
     public final SolHomePage solHomePage;
 
-
     /**
      * Constructor.
      *

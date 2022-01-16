@@ -25,7 +25,7 @@ public class JoomlaEditButtons<C extends AbstractPage, P extends AbstractPage> e
     private final P previousPage;
 
 
-    public JoomlaEditButtons(final WebDriver driver, P previousPage) {
+    public JoomlaEditButtons(final WebDriver driver, final P previousPage) {
         super(driver);
         this.previousPage = previousPage;
     }

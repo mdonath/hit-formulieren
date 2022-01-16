@@ -12,7 +12,7 @@ public class Formulier {
         this(extractId(row), extractNaam(row));
     }
 
-    protected Formulier(final String naam, final String shantiID) {
+    public Formulier(final String shantiID, final String naam) {
         this.shantiID = shantiID;
         this.naam = naam;
     }
@@ -27,6 +27,10 @@ public class Formulier {
     private static String extractNaam(final WebElement row) {
         final WebElement link = row.findElement(By.tagName("a"));
         return link.getText();
+    }
+
+    public String inschrijfLink(String linkFormat) {
+        return String.format(linkFormat, this.shantiID);
     }
 
 }

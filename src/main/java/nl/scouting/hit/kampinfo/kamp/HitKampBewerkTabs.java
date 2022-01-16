@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 /**
  * De tabs van het bewerken van de gegevens van een HIT kamponderdeel.
  */
-public class HitKampBewerkTabs extends AbstractPage {
+public class HitKampBewerkTabs extends AbstractPage<HitKampBewerkTabs> {
 
     @FindBy(linkText = "Gegevens van een HIT Kamp")
     private WebElement tabGegevens;

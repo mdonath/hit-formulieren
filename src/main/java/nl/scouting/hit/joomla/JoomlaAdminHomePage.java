@@ -21,16 +21,16 @@ public class JoomlaAdminHomePage extends AbstractPage<JoomlaAdminHomePage> {
         super(driver);
     }
 
-    public <T extends AbstractPage> T openComponent(String componentName) {
+    public <T extends AbstractPage<?>> T openComponent(final String componentName) {
         menuComponenten.click();
         driver.findElement(By.linkText(componentName)).click();
         return (T) instantiateComponent(componentName);
     }
 
-    private AbstractPage instantiateComponent(final String componentName) {
+    private AbstractPage<?> instantiateComponent(final String componentName) {
         try {
             return register.get(componentName).getConstructor(WebDriver.class).newInstance(driver);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (final InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
             throw new IllegalArgumentException("Kan component '" + componentName + "' niet vinden");
         }
@@ -42,4 +42,5 @@ public class JoomlaAdminHomePage extends AbstractPage<JoomlaAdminHomePage> {
         }
         register.put(componentName, componentPageClass);
     }
+
 }

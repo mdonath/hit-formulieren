@@ -19,14 +19,53 @@ public class TabFormulierenOverzichtPage extends AbstractEvenementPage {
 
     @FindBy(linkText = "Formulier toevoegen")
     private WebElement buttonFormulierToevoegen;
+    @FindBy(css = ".filter_toggle_text")
+    private WebElement filterToggle;
+
+    @FindBy(css = "div#buttonbar div.filter_pagination input.filterFirst")
+    private WebElement eerstePagina;
+    @FindBy(css = "div#buttonbar div.filter_pagination input.filterPrevious")
+    private WebElement vorigePagina;
+    @FindBy(css = "div#buttonbar div.filter_pagination input.filterNext")
+    private WebElement volgendePagina;
+    @FindBy(css = "div#buttonbar div.filter_pagination input.filterLast")
+    private WebElement laatstePagina;
 
     public TabFormulierenOverzichtPage(final WebDriver driver) {
         super(driver);
     }
 
+    public boolean hasPaginering() {
+        return !this.driver.findElements(By.className("filter_pagination_text")).isEmpty();
+    }
+
     public FormulierSoortAanmeldingNieuwPage toevoegenFormulier() {
         scrollIntoViewAndClick(buttonFormulierToevoegen);
         return new FormulierSoortAanmeldingNieuwPage(driver);
+    }
+
+    public TabFormulierenOverzichtPage eerstePagina() {
+        scrollIntoViewAndClick(eerstePagina);
+        return this;
+    }
+
+    public boolean heeftVolgendePagina() {
+        return volgendePagina.isEnabled();
+    }
+
+    public TabFormulierenOverzichtPage volgendePagina() {
+        scrollIntoViewAndClick(volgendePagina);
+        return this;
+    }
+
+    public TabFormulierenOverzichtPage vorigePagina() {
+        scrollIntoViewAndClick(vorigePagina);
+        return this;
+    }
+
+    public TabFormulierenOverzichtPage laatstePagina() {
+        scrollIntoViewAndClick(laatstePagina);
+        return this;
     }
 
     public boolean hasFormulier(final KampInfoFormulierExportRegel regel) {
@@ -64,6 +103,34 @@ public class TabFormulierenOverzichtPage extends AbstractEvenementPage {
         final List<Formulier> result = new ArrayList<>();
         driver.findElements(By.xpath("//table[@class='filter']/tbody/tr"))
                 .forEach(row -> result.add(new Formulier(row)));
+        if (hasPaginering()) {
+            while (heeftVolgendePagina()) {
+                volgendePagina();
+                driver.findElements(By.xpath("//table[@class='filter']/tbody/tr"))
+                        .forEach(row -> result.add(new Formulier(row)));
+            }
+            eerstePagina();
+        }
         return result;
     }
+
+    public TabFormulierenOverzichtZoekModusPage zetZoekFilterAan() {
+        final String huidigeStaat = filterToggle.getText();
+        if ("Toon filter".equals(huidigeStaat)) {
+            // zoekbalk is nu verborgen => zet 'm aan
+            scrollIntoViewAndClick(filterToggle);
+        }
+        return new TabFormulierenOverzichtZoekModusPage(driver);
+    }
+
+    public TabFormulierenOverzichtPage zetZoekFilterUit() {
+        final String huidigeStaat = filterToggle.getText();
+        if ("Verberg filter".equals(huidigeStaat)) {
+            // zoekbalk is nu zichtbaar => zet 'm uit
+            scrollIntoViewAndClick(filterToggle);
+        }
+        // Was al uit
+        return this;
+    }
+
 }

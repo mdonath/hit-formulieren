@@ -70,6 +70,13 @@ public class HitKampenPage extends AbstractKampInfoPage<HitKampenPage> {
         return new HitKampBewerkGegevensPage(driver);
     }
 
+    public HitKampBewerkGegevensPage openHitKamp(final Integer kampinfoID) {
+        scrollIntoViewCenteredAndClick(driver.findElement(
+                By.xpath(String.format("//a[contains(@href,'hitcamp.edit&id=%d')]", kampinfoID))
+        ));
+        return new HitKampBewerkGegevensPage(driver);
+    }
+
     private HitKampenPage unsetFilter(final WebElement field, final Valuable valuable) {
         scrollToTop();
         selectByValue(field, valuable == null ? "-1" : valuable.getId());

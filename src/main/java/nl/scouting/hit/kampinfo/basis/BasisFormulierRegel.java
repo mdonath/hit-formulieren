@@ -9,7 +9,7 @@ public class BasisFormulierRegel extends KampInfoFormulierExportRegel {
     // Builder pattern
     public static class BasisFormulierRegelBuilder {
 
-        private BasisFormulierRegel instance;
+        private final BasisFormulierRegel instance;
 
         public BasisFormulierRegelBuilder() {
             this.instance = new BasisFormulierRegel();
@@ -29,7 +29,6 @@ public class BasisFormulierRegel extends KampInfoFormulierExportRegel {
             instance.setShantiID(shantiID);
             return this;
         }
-
 
         public BasisFormulierRegelBuilder withLocatie(final String locatie) {
             instance.setLocatie(locatie);

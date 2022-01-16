@@ -11,16 +11,16 @@ import nl.scouting.hit.kampinfo.kamp.HitKampenPage;
 public class Main extends AbstractWebApplication {
 
     public static void main(final String[] args) throws Exception {
-        final int jaar = 2020;
+        final int jaar = 2022;
 
         final String kiBaseUrl = "https://hit.scouting.nl";
         final String solBaseUrl = "https://sol.scouting.nl";
         final String solUsername = Util.readUsernameFromFile();
         final String solPassword = Util.readPasswordFromFile();
 
-        KampInfoVuller.neemShantiIdOverInKampInfo(jaar, kiBaseUrl, solBaseUrl, solUsername, solPassword);
+        // KampInfoVuller.neemShantiIdOverInKampInfo(jaar, kiBaseUrl, solBaseUrl, solUsername, solPassword);
 
-//        testje(kiBaseUrl, solUsername, solPassword);
+        testje(kiBaseUrl, solUsername, solPassword);
     }
 
     private static void testje(String kiBaseUrl, String solUsername, String solPassword) throws Exception {

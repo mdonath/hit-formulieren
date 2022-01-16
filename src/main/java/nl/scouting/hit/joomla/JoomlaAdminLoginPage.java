@@ -16,22 +16,22 @@ public class JoomlaAdminLoginPage extends AbstractPage<JoomlaAdminLoginPage> {
     @FindBy(className = "login-button")
     private WebElement submitButton;
 
-    public JoomlaAdminLoginPage(WebDriver driver, String baseUrl) {
+    public JoomlaAdminLoginPage(final WebDriver driver, final String baseUrl) {
         super(driver);
         driver.get(baseUrl + "/administrator");
     }
 
-    public JoomlaAdminLoginPage withUsername(String username) {
+    public JoomlaAdminLoginPage withUsername(final String username) {
         fieldUsername.sendKeys(username);
         return this;
     }
 
-    public JoomlaAdminLoginPage withPassword(String password) {
+    public JoomlaAdminLoginPage withPassword(final String password) {
         fieldPassword.sendKeys(password);
         return this;
     }
 
-    public JoomlaAdminHomePage login(String username, String password) {
+    public JoomlaAdminHomePage login(final String username, final String password) {
         return withUsername(username)
                 .withPassword(password)
                 .login();
@@ -42,7 +42,7 @@ public class JoomlaAdminLoginPage extends AbstractPage<JoomlaAdminLoginPage> {
         return new JoomlaAdminHomePage(driver);
     }
 
-    public JoomlaAdminHomePage loginSOL(Supplier<JoomlaAdminHomePage> supplier) {
+    public JoomlaAdminHomePage loginSOL(final Supplier<JoomlaAdminHomePage> supplier) {
         scrollIntoViewAndClick(submitButton);
         return supplier.get();
     }

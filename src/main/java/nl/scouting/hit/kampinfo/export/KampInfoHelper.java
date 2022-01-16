@@ -2,7 +2,6 @@ package nl.scouting.hit.kampinfo.export;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.scouting.hit.kampinfo.export.KampInfoFormulierExportRegel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,7 +12,8 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.List;
 
 public final class KampInfoHelper {
-    private static final File file = new File("data.json");
+
+    private static final File FILE = new File("data-2022.json");
 
     /**
      * Private constructor.
@@ -23,14 +23,15 @@ public final class KampInfoHelper {
     }
 
     public static void download() {
-        if (!file.exists()) {
+        if (!FILE.exists()) {
             try {
-                URL url = new URL("https://hit.scouting.nl/index.php?option=com_kampinfo&view=shanti&format=raw");
-                try (ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-                     FileOutputStream fos = new FileOutputStream(file);) {
+                final URL url = new URL("https://hit.scouting.nl/index.php?option=com_kampinfo&view=shanti&format=raw");
+                try (final ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+                     final FileOutputStream fos = new FileOutputStream(FILE)
+                ) {
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                 }
-            } catch (java.io.IOException e) {
+            } catch (final java.io.IOException e) {
                 e.printStackTrace();
             }
         }
@@ -38,7 +39,8 @@ public final class KampInfoHelper {
 
     public static List<KampInfoFormulierExportRegel> readData() throws IOException {
         final ObjectMapper om = new ObjectMapper();
-        return om.readValue(file, new TypeReference<List<KampInfoFormulierExportRegel>>() {
+        return om.readValue(FILE, new TypeReference<List<KampInfoFormulierExportRegel>>() {
         });
     }
+
 }
