@@ -18,7 +18,7 @@ public abstract class AbstractWebApplication implements AutoCloseable {
     /**
      * Constructor.
      */
-    public AbstractWebApplication() {
+    protected AbstractWebApplication() {
         this.driver = Util.getWebDriver();
     }
 

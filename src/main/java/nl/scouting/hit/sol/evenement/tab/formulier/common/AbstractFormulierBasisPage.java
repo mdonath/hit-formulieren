@@ -125,6 +125,11 @@ public abstract class AbstractFormulierBasisPage<T extends AbstractFormulierBasi
         return withInschrijvingStart(datum.getDag(), datum.getMaand(), datum.getJaar(), tijd);
     }
 
+    public T withInschrijvingStarttijd(String tijd) {
+        clearAndSendKeys(fieldInschrijvingStartTijd, tijd);
+        return (T) this;
+    }
+
     public T withInschrijvingStart(int dag, int maand, int jaar) {
         setFieldsDatum(fieldInschrijvingStartDag, dag
                 , fieldInschrijvingStartMaand, maand

@@ -11,6 +11,10 @@ import java.util.stream.Stream;
  */
 public class KampInfoVuller {
 
+    private KampInfoVuller() {
+        // Private Utility Constructor
+    }
+
     /**
      * Haalt de inschrijfformulieren in ScoutsOnline op van een specifiek jaar en vult het formulier-id (shantiId) in bij
      * elk kamponderdeel in KampInfo.
@@ -33,7 +37,7 @@ public class KampInfoVuller {
                     .forEach(formulier ->
                             kampenLijst
                                     .setFilterJaar(jaar)
-                                    .setFilterPlaats(formulier.plaats, jaar)
+                              .setFilterPlaats(formulier.plaats, jaar)
                                     .openHitKamp(Integer.valueOf(formulier.kampinfoID))
                                     .tabs().admin()
                                     .withShantiFormuliernummer(formulier.shantiID)

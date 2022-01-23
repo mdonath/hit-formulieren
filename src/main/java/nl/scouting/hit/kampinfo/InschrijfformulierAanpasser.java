@@ -1,5 +1,6 @@
 package nl.scouting.hit.kampinfo;
 
+import nl.scouting.hit.sol.HitContext;
 import nl.scouting.hit.sol.JaNee;
 import nl.scouting.hit.sol.SolHomePage;
 import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
@@ -9,9 +10,6 @@ import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigBasisPa
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigSamenstellenPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.CheckboxWijzigen;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.MeerdereTekstRegelsWijzigen;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Vult ScoutsOnline met de gegevens uit KampInfo.
@@ -33,12 +31,18 @@ public final class InschrijfformulierAanpasser {
      * @param naamEvenement   de naam van het evenement zoals dat te zien is in het overzicht, bijvoorbeeld "HIT 2019"
      * @param naamSpeleenheid de naam van de organiserende speleenheid
      */
+
     public InschrijfformulierAanpasser(final SolHomePage sol, final String idEvenement, final String naamEvenement, final String naamSpeleenheid) {
         this.solHomePage = sol;
         this.idEvenement = idEvenement;
         this.naamEvenement = naamEvenement;
         this.jaar = naamEvenement.split(" ")[1];
         this.naamSpeleenheid = naamSpeleenheid;
+    }
+
+    public InschrijfformulierAanpasser(final SolHomePage sol, final HitContext context) {
+        this(sol, context.idEvenement, context.naamEvenement, context.naamSpeleenheid);
+        setDatumDeelnemersinformatie(context.datumDeelnemersinformatie);
     }
 
     public void setDatumDeelnemersinformatie(final String datumDeelnemersinformatie) {
@@ -60,8 +64,8 @@ public final class InschrijfformulierAanpasser {
                 .openEvenement(naamEvenement)
                 .submenu().openTabFormulieren();
 
-        final List<HitFormulier> alleFormulieren = tabFormulieren.getFormulieren().stream().map(HitFormulier::new).collect(Collectors.toList());
-        alleFormulieren.stream()
+        tabFormulieren.getFormulieren().stream()
+                .map(HitFormulier::new)
                 .filter(formulier -> formulier.isInschrijfFormulier() || formulier.isGekoppeldFormulier())
                 .forEach(formulier -> {
                     System.out.printf("Fixing formulier %s", formulier.naam);
@@ -90,8 +94,8 @@ public final class InschrijfformulierAanpasser {
                 .openEvenement(naamEvenement)
                 .submenu().openTabFormulieren();
 
-        final List<HitFormulier> alleFormulieren = tabFormulieren.getFormulieren().stream().map(HitFormulier::new).collect(Collectors.toList());
-        alleFormulieren.stream()
+        tabFormulieren.getFormulieren().stream()
+                .map(HitFormulier::new)
                 .filter(formulier -> formulier.isInschrijfFormulier() || formulier.isGekoppeldFormulier())
                 // .filter(formulier -> formulier.naam.startsWith("HIT Zeeland") || formulier.naam.startsWith("HIT Zeewolde"))
                 .forEach(formulier -> {
@@ -115,7 +119,7 @@ public final class InschrijfformulierAanpasser {
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.BEVESTIGING_ANNULERING_VAN_DEELNEMER_AAN_ORGANISATIE)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht(MailTekstGenerator.bevestigingAnnuleringVanDeelnemerAanOrganisatie(Integer.valueOf(this.jaar)))
+                .withGewijzigdBericht(MailTekstGenerator.annuleringsmailVanDeelnemerAanOrganisatie(Integer.valueOf(this.jaar)))
                 .wijzigingenOpslaan()
                 .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
                 ;
@@ -126,7 +130,7 @@ public final class InschrijfformulierAanpasser {
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.STATUSWIJZIGING_NAAR_KOSTELOOS_GEANNULEERD)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht(MailTekstGenerator.statusWijzigingNaarKosteloosGeannuleerdHIT2020(Integer.valueOf(this.jaar)))
+                .withGewijzigdBericht(MailTekstGenerator.hit2020MailBijStatuswijzigingNaarKosteloosGeannuleerd(Integer.valueOf(this.jaar)))
                 .wijzigingenOpslaan()
                 .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
                 ;
@@ -137,7 +141,7 @@ public final class InschrijfformulierAanpasser {
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.BEVESTIGING_ANNULERING_VAN_DEELNEMER_AAN_ORGANISATIE)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht(MailTekstGenerator.bevestigingAnnuleringVanDeelnemerAanOrganisatie(Integer.valueOf(this.jaar)))
+                .withGewijzigdBericht(MailTekstGenerator.annuleringsmailVanDeelnemerAanOrganisatie(Integer.valueOf(this.jaar)))
                 .wijzigingenOpslaan()
                 .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
 
@@ -167,28 +171,37 @@ public final class InschrijfformulierAanpasser {
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.BEVESTIGING_INSCHRIJVING_AAN_OUDERS)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht(
-                        "Beste ouder/verzorger van %per_fullname%,\n\n" +
-                                "%per_fullname% heeft zich opgegeven als deelnemer voor %frm_nm% tijdens de %evt_nm%.\n" +
-                                "Deze mail dient uitsluitend om u te informeren over deze inschrijving. Alle verdere correspondentie zal via het in Scouts Online geregistreerde e-mailadres %per_email% van %per_fullname% verlopen.\n" +
-                                "Deze activiteit start op %frm_from_dt% om %frm_from_time% uur en duurt tot %frm_till_dt% tot %frm_till_time% uur.\n" +
-                                "De deelnamekosten voor deze activiteit zijn %frm_price% euro.\n\n" +
-                                "De deelnemer heeft na inschrijving 10 dagen bedenktijd en kan binnen deze 10 dagen kosteloos annuleren. Binnen deze tijd kun je kosteloos annuleren. Je krijgt dan het deelnamegeld helemaal teruggestort. Dit is ook de termijn waarbinnen het groepje compleet moet zijn. Na 10 dagen kan er nog wel geannuleerd worden maar krijg de deelnemer het deelnamegeld terug verminderd met € 10 administratiekosten. Na de sluiting van de inschrijving kan er niet meer geannuleerd worden en krijgt de deelnemer geen geld meer terug.\n\n" +
-                                "Zijn er problemen met inschrijven of heeft u een andere vraag? Kijk dan op http://hit.scouting.nl bij het onderdeel ’inschrijven’.\n\n" +
-                                "Met vriendelijke groet,\n\n" +
-                                "De HIT-organisatie\n" +
-                                "Scouting Nederland")
+                .withGewijzigdBericht("""
+                        Beste ouder/verzorger van %per_fullname%,
+
+                        %per_fullname% heeft zich opgegeven als deelnemer voor %frm_nm% tijdens de %evt_nm%.
+                        Deze mail dient uitsluitend om u te informeren over deze inschrijving. Alle verdere correspondentie zal via het in Scouts Online geregistreerde e-mailadres %per_email% van %per_fullname% verlopen.
+                        Deze activiteit start op %frm_from_dt% om %frm_from_time% uur en duurt tot %frm_till_dt% tot %frm_till_time% uur.
+                        De deelnamekosten voor deze activiteit zijn %frm_price% euro.
+
+                        De deelnemer heeft na inschrijving 10 dagen bedenktijd en kan binnen deze 10 dagen kosteloos annuleren. Binnen deze tijd kun je kosteloos annuleren. Je krijgt dan het deelnamegeld helemaal teruggestort. Dit is ook de termijn waarbinnen het groepje compleet moet zijn. Na 10 dagen kan er nog wel geannuleerd worden maar krijg de deelnemer het deelnamegeld terug verminderd met € 10 administratiekosten. Na de sluiting van de inschrijving kan er niet meer geannuleerd worden en krijgt de deelnemer geen geld meer terug.
+
+                        Zijn er problemen met inschrijven of heeft u een andere vraag? Kijk dan op http://hit.scouting.nl bij het onderdeel ’inschrijven’.
+
+                        Met vriendelijke groet,
+
+                        De HIT-organisatie
+                        Scouting Nederland
+                        """)
                 .wijzigingenOpslaan()
                 .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
 
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.STATUSWIJZIGING_NAAR_KOSTELOOS_GEANNULEERD)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht(
-                        "Beste %per_fullname%,\n\n" +
-                                "Je inschrijving voor het evenement %evt_nm% (%frm_nm%) is kosteloos geannuleerd.\n" +
-                                "Je bent niet meer ingeschreven voor dit evenement.\n\n" +
-                                "De HIT organisatie")
+                .withGewijzigdBericht("""
+                        Beste %per_fullname%,
+
+                        Je inschrijving voor het evenement %evt_nm% (%frm_nm%) is kosteloos geannuleerd.
+                        Je bent niet meer ingeschreven voor dit evenement.
+
+                        De HIT organisatie
+                        """)
                 .wijzigingenOpslaan()
                 .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
                 ;
@@ -307,5 +320,31 @@ public final class InschrijfformulierAanpasser {
                 .withBreedte(MeerdereTekstRegelsWijzigen.Breedte.BREED)
                 .opslaanWijzigingen()
         ;
+    }
+
+    public void setStartTijdInschrijvingOpTwaalfEnKosteloosAnnulerenOpEindeInschrijving(final String startTijdInschrijving) {
+        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
+                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
+                .openEvenement(naamEvenement)
+                .submenu().openTabFormulieren();
+
+        tabFormulieren.getFormulieren().stream()
+                .map(HitFormulier::new)
+                .filter(formulier -> formulier.isInschrijfFormulier() || formulier.isGekoppeldFormulier())
+                .forEach(formulier -> {
+                    System.out.printf("Fixing formulier %s", formulier.naam);
+                    tabFormulieren.openFormulier(formulier.naam)
+                            .withInschrijvingStarttijd(startTijdInschrijving)
+                            .opslaanWijzigingen()
+                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
+
+                            .submenu().openTabFinancien()
+                            .withVolledigeKostenAnnulerenVanaf(27, 2, 2022)
+                            .opslaanWijzigingen()
+                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
+                    ;
+                    tabFormulieren.clickLink(getEvenementLink());
+                    System.out.println(" [OK]");
+                });
     }
 }

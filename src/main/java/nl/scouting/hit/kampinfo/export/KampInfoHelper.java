@@ -10,6 +10,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.List;
+import java.util.stream.Stream;
 
 public final class KampInfoHelper {
 
@@ -24,6 +25,7 @@ public final class KampInfoHelper {
 
     public static void download() {
         if (!FILE.exists()) {
+            System.out.println("Ophalen nieuw bestand");
             try {
                 final URL url = new URL("https://hit.scouting.nl/index.php?option=com_kampinfo&view=shanti&format=raw");
                 try (final ReadableByteChannel rbc = Channels.newChannel(url.openStream());
@@ -32,8 +34,10 @@ public final class KampInfoHelper {
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                 }
             } catch (final java.io.IOException e) {
-                e.printStackTrace();
+                throw new IllegalArgumentException(e);
             }
+        } else {
+            System.out.println("Hergebruik bestaand bestand!");
         }
     }
 
@@ -43,4 +47,18 @@ public final class KampInfoHelper {
         });
     }
 
+    public static List<KampInfoFormulierExportRegel> expand(final List<KampInfoFormulierExportRegel> exported) {
+        return exported.stream()
+                .flatMap(regel -> {
+                    if (regel.isOuderKindKamp() && regel.isOuderLid()) {
+                        // Uitsplitsen naar twee varianten
+                        return Stream.of(
+                                new KampInfoKindFormulierExportRegel(regel),
+                                new KampInfoOuderFormulierExportRegel(regel)
+                        );
+                    }
+                    return Stream.of(regel);
+                })
+                .toList();
+    }
 }

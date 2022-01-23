@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 public abstract class AbstractSolMetHoofdMenuPage<T extends AbstractSolMetHoofdMenuPage> extends AbstractSolPage<T> {
 
-    private HoofdMenu hoofdMenu;
+    private final HoofdMenu hoofdMenu;
 
     public AbstractSolMetHoofdMenuPage(final WebDriver driver) {
         super(driver);

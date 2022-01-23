@@ -18,9 +18,9 @@ public class Main extends AbstractWebApplication {
         final String solUsername = Util.readUsernameFromFile();
         final String solPassword = Util.readPasswordFromFile();
 
-        // KampInfoVuller.neemShantiIdOverInKampInfo(jaar, kiBaseUrl, solBaseUrl, solUsername, solPassword);
+        KampInfoVuller.neemShantiIdOverInKampInfo(jaar, kiBaseUrl, solBaseUrl, solUsername, solPassword);
 
-        testje(kiBaseUrl, solUsername, solPassword);
+        // testje(kiBaseUrl, solUsername, solPassword);
     }
 
     private static void testje(String kiBaseUrl, String solUsername, String solPassword) throws Exception {

@@ -36,9 +36,16 @@ public class KampInfoFormulierExportRegel {
     @JsonProperty("kampinfo_camp_isouder")
     protected boolean isOuderKindKamp;
 
-    //, "kampinfo_camp_ouderislid": 0
-    @JsonProperty("kampinfo_camp_ouderislid")
+    //, "kampinfo_camp_ouderlid": 0
+    @JsonProperty("kampinfo_camp_ouderlid")
     protected boolean isOuderLid;
+
+    @JsonProperty("kampinfo_camp_shanti_id")
+    protected int kampShantiID;
+    @JsonProperty("kampinfo_camp_shanti_ouder_id")
+    protected int kampShantiOuderID;
+    @JsonProperty("kampinfo_camp_shanti_extra_id")
+    protected int kampShantiExtraID;
 
     //, "frm_price": 42
     @JsonProperty("frm_price")
@@ -107,20 +114,72 @@ public class KampInfoFormulierExportRegel {
     @JsonUnwrapped(prefix = "frm_book_till_dt_")
     protected KampInfoDatum inschrijvingEind;
 
-    public String getFormulierNaam() {
-        return buildKampNaam(locatie, kampnaam, kampID);
+    protected final void copy(final KampInfoFormulierExportRegel regel) {
+        this.jaar = regel.jaar;
+        this.kampID = regel.kampID;
+        this.shantiID = regel.shantiID;
+        this.locatie = regel.locatie;
+        this.projectcode = regel.projectcode;
+        this.kampnaam = regel.kampnaam;
+        this.isOuderKindKamp = regel.isOuderKindKamp;
+        this.isOuderLid = regel.isOuderLid;
+        this.kampShantiID = regel.kampShantiID;
+        this.kampShantiOuderID = regel.kampShantiOuderID;
+        this.kampShantiExtraID = regel.kampShantiExtraID;
+        this.deelnemersprijs = regel.deelnemersprijs;
+        this.leeftijd = regel.leeftijd;
+        this.leeftijdMarge = regel.leeftijdMarge;
+        this.aantalDeelnemers = regel.aantalDeelnemers;
+        this.maximumAantalUitEenGroep = regel.maximumAantalUitEenGroep;
+        this.aantalSubgroepen = regel.aantalSubgroepen;
+        this.aantalDeelnemersInSubgroep = regel.aantalDeelnemersInSubgroep;
+        this.deelbaarDoor = regel.deelbaarDoor;
+        this.kosteloosAnnulerenTot = regel.kosteloosAnnulerenTot;
+        this.volledigeKostenAnnulerenVanaf = regel.volledigeKostenAnnulerenVanaf;
+        this.projectInningsdatum = regel.projectInningsdatum;
+        this.evenementStart = regel.evenementStart;
+        this.evenementStartTijd = regel.evenementStartTijd;
+        this.evenementEind = regel.evenementEind;
+        this.evenementEindTijd = regel.evenementEindTijd;
+        this.inschrijvingStart = regel.inschrijvingStart;
+        this.inschrijvingEind = regel.inschrijvingEind;
     }
 
-    static String buildKampNaam(final String locatie, final String kampnaam, final int kampID) {
-        final String idPart = String.format(" (%d)", kampID);
+    public String getFormulierNaam() {
+        return buildKampNaam(false);
+    }
+
+    protected final String buildKampNaam(final boolean isOuderFormulier) {
         final String firstPart = String.format("HIT %s %s"
                 , locatie
                 , cleanKampnaam(kampnaam));
+        final String specifier = getSpecifier(isOuderFormulier);
+        final String ref = getReference(isOuderFormulier);
+        final String idPart = String.format(" %s(%d)%s", specifier, kampID, ref);
+
         if (firstPart.length() + idPart.length() > 70) {
             final String truncatedFirstPart = firstPart.substring(0, 70 - idPart.length());
             return (truncatedFirstPart + idPart).replace("  ", " ");
         }
         return firstPart + idPart;
+    }
+
+    private String getReference(final boolean isOuderFormulier) {
+        if (isOuderKindKamp && isOuderLid && isOuderFormulier && kampShantiID > 0) {
+            return String.format(" ((%s))", kampShantiID);
+        }
+        return "";
+    }
+
+    private String getSpecifier(final boolean isOuderFormulier) {
+        if (isOuderKindKamp && isOuderLid) {
+            if (isOuderFormulier) {
+                return "(OUDER) ";
+            } else {
+                return "(KIND) ";
+            }
+        }
+        return "";
     }
 
     static String cleanKampnaam(final String naam) {
@@ -130,7 +189,7 @@ public class KampInfoFormulierExportRegel {
                 .replace("  ", " ");
     }
 
-    public final String getBasisformulierNaam() {
+    public String getBasisformulierNaam() {
         final String okk = "HIT %d Basisformulier Ouder-Kind (niet wijzigen)";
         final String okkOuderIsLid = "HIT %d Basisformulier Ouder-Kind (optie OUDER) (niet wijzigen)";
         final String normaal = "HIT %d Basisformulier (niet wijzigen)";
@@ -167,6 +226,18 @@ public class KampInfoFormulierExportRegel {
 
     public boolean isOuderLid() {
         return isOuderLid;
+    }
+
+    public int getKampShantiID() {
+        return kampShantiID;
+    }
+
+    public int getKampShantiOuderID() {
+        return kampShantiOuderID;
+    }
+
+    public int getKamp_ShantiExtraID() {
+        return kampShantiExtraID;
     }
 
     public int getDeelnemersprijs() {

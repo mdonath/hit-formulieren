@@ -5,6 +5,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
@@ -34,7 +35,7 @@ public class ScoutsOnline extends AbstractWebApplication {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() throws IOException {
         Files.copy(
                 ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE).toPath()
                 , new File("screenshot.png").toPath()
