@@ -134,4 +134,15 @@ public abstract class AbstractFormulierSubgroepenCategoriePage<T extends Abstrac
         return (T) this;
     }
 
+    public T vergrootMaximumAantalSubGroepen(final int factor) {
+        final String maximumAantalAsString = fieldMaximumAantalSubgroepen.getAttribute("value");
+        final int maximumAantal = Integer.parseInt(maximumAantalAsString) * factor;
+        return withMaximumAantalSubgroepen(maximumAantal);
+    }
+
+    public T verkleinMaximumAantalSubGroepen(final int factor) {
+        final String maximumAantalAsString = fieldMaximumAantalSubgroepen.getAttribute("value");
+        final int maximumAantal = Integer.parseInt(maximumAantalAsString) / factor;
+        return withMaximumAantalSubgroepen(maximumAantal);
+    }
 }

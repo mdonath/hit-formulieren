@@ -2,6 +2,10 @@ package nl.scouting.hit.kampinfo;
 
 public final class MailTekstGenerator {
 
+    private MailTekstGenerator() {
+        // Private Utility Constructor
+    }
+
     public static String annuleringsmailVanDeelnemerAanOrganisatie(final Integer hitJaar) {
         return """
                 Beste %per_fullname%
@@ -23,33 +27,35 @@ public final class MailTekstGenerator {
         final String datum = " " + datumDeelnemersInformatie + " ";
         return """
                 Betreft: Bevestiging inschrijving %evt_nm%
+                                
                 (bewaar dit mailtje goed)
-
+                                
                 Beste %per_fullname%,
-
-                Wat leuk! Je hebt je opgegeven voor een spectaculair weekend tijdens de %evt_nm% voor het onderdeel %frm_nm%. Deze activiteit start op %frm_from_dt% om %frm_from_time% uur en duurt tot %frm_till_dt% tot %frm_till_time% uur.
-
-                De deelnamekosten voor deze activiteit zijn %frm_price% euro. Als je deze via iDEAL voldaan hebt, is je inschrijving compleet. Als er iets mis ging met de betaling of je bent door iemand anders, zoals je teamleider, ingeschreven is jouw betaling nog niet compleet. Je ontvangt dan een aparte mail met een betalingsverzoek en een iDEAL-link om je betaling te voldoen. Pas dan ben je officieel ingeschreven.
-
+                                
+                Goed nieuws! Je bent ingeschreven voor een super tof weekend tijdens de %evt_nm% voor het onderdeel %frm_nm%. Deze activiteit start op %frm_from_dt% om %frm_from_time% uur en duurt tot %frm_till_dt% tot %frm_till_time% uur.
+                                
+                De deelnamekosten voor deze activiteit zijn %frm_price% euro. Je ontvangt nog een aparte mail met een betalingsverzoek en een iDEAL-link om je betaling te voldoen. Pas als je deze via iDEAL voldaan hebt, is je inschrijving compleet.
+                                
                 Na je inschrijving heb je 10 dagen bedenktijd. Binnen deze tijd kun je kosteloos annuleren. Je krijgt dan het deelnamegeld helemaal teruggestort. Dit is ook de termijn waarbinnen jouw groepje compleet moet zijn. Na 10 dagen kun je nog wel annuleren maar krijg je het deelnamegeld terug verminderd met € 10 administratiekosten. Na de sluiting van de inschrijving kun je niet meer annuleren en krijg je geen geld meer terug.
-
+                                
                 Annuleren kan alleen door in te loggen op sol.scouting.nl en in het ‘Mijn Scouting’-menu bij ‘Mijn inschrijvingen’ naar de HIT-inschrijving te gaan. Daar kun je in het tabblad ‘deelnamestatus’ jouw inschrijving annuleren. Vul altijd een reden in. Is er sprake van bijzondere omstandigheden waardoor je moet annuleren, neem dan altijd contact op met de HIT-Helpdesk. Na de sluiting vaan de inschrijving is het niet meer mogelijk om te annuleren! Wel is het mogelijk om een andere deelnemer voor jou in de plaats te laten deelnemen.
-
+                                
                 We willen je er ook op attenderen dat het soms voorkomt dat een HIT-onderdeel niet doorgaat. We geven dit dan natuurlijk zo snel mogelijk aan je door. Je krijgt dan een aantal alternatieve activiteiten aangeboden of je kunt kosteloos annuleren.
-
-                Via Scouts Online (https://sol.scouting.nl) kun je de inschrijving van jouw groepje bekijken. Klik na het inloggen op ‘Mijn Scouting’ – ‘Mijn inschrijvingen’ en kies daar de inschrijving van de HIT. Onder ‘subgroep(en)’ zie je wie zich al voor jouw groepje heeft aangemeld. Dit aanmelden moet binnen 10 dagen. Dus schud je groepje wakker en zorg dat ze zich op tijd inschrijven!\s
-
-                Zijn er problemen met inschrijven of heb je een andere vraag? Kijk dan op http://hit.scouting.nl bij het onderdeel ‘Inschrijven’ of mail de helpdesk via helpdesk@hit.scouting.nl.\s
+                                
+                Via Scouts Online (https://sol.scouting.nl) kun je de inschrijving van jouw groepje bekijken. Klik na het inloggen op ‘Mijn Scouting’ – ‘Mijn inschrijvingen’ en kies daar de inschrijving van de HIT. Onder ‘subgroep(en)’ zie je wie zich al voor jouw groepje heeft aangemeld. Dit aanmelden moet binnen 10 dagen. Dus schud je groepje wakker en zorg dat ze zich op tijd inschrijven! 
+                                
+                Zijn er problemen met inschrijven of heb je een andere vraag? Kijk dan op http://hit.scouting.nl bij het onderdeel ‘Inschrijven’ of mail de helpdesk via helpdesk@hit.scouting.nl. 
+                                
                 Rond"""
                 + datum +
                 """
                 zal de deelnemersinformatie van %frm_nm% beschikbaar zijn op de HIT-website. Daarin staat o.a. waar je moet zijn en wat je mee moet nemen. We sturen je een mail als de informatie van jouw HIT onderdeel beschikbaar is.
-
-                Tot ziens op de HIT.
-
+                                
+                Tot snel bij de %evt_nm%!
+                                
                 De HIT organisatie
                 Scouting Nederland
-
+                                
                 PS: Je lidnummer is: %per_id%
                 En je inschrijfnummer is: %prt_id%
                 """;

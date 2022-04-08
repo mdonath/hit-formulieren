@@ -190,10 +190,20 @@ public class KampInfoFormulierExportRegel {
     }
 
     public String getBasisformulierNaam() {
-        final String okk = "HIT %d Basisformulier Ouder-Kind (niet wijzigen)";
-        final String okkOuderIsLid = "HIT %d Basisformulier Ouder-Kind (optie OUDER) (niet wijzigen)";
-        final String normaal = "HIT %d Basisformulier (niet wijzigen)";
-        return String.format(isOuderKindKamp ? (isOuderLid ? okkOuderIsLid : okk) : normaal, jaar);
+        if (isOuderKindKamp) {
+            if (isOuderLid) {
+                return String.format("HIT %d Basisformulier Ouder-Kind (optie OUDER) (niet wijzigen)", jaar);
+            }
+            return String.format("HIT %d Basisformulier Ouder-Kind (niet wijzigen)", jaar);
+        }
+        return String.format("HIT %d Basisformulier (niet wijzigen)", jaar);
+    }
+
+    /**
+     * Omdat voor koppelgroepjes bij Ouder Kind kampen het aantal mensen dat zich via één formulier inschrijft in het koppelgroepjes moet staan.
+     */
+    public String getKoppelgroepjeNaam() {
+        return "Koppelgroepje";
     }
 
     public int getJaar() {
@@ -236,7 +246,7 @@ public class KampInfoFormulierExportRegel {
         return kampShantiOuderID;
     }
 
-    public int getKamp_ShantiExtraID() {
+    public int getKampShantiExtraID() {
         return kampShantiExtraID;
     }
 

@@ -19,4 +19,9 @@ public class KampInfoKindFormulierExportRegel extends KampInfoFormulierExportReg
         return String.format("HIT %d Basisformulier Ouder-Kind (niet wijzigen)", jaar);
     }
 
+    @Override
+    public String getKoppelgroepjeNaam() {
+        return super.getKoppelgroepjeNaam() + " (2)";
+    }
+
 }

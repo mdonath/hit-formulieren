@@ -30,7 +30,7 @@ public class FormulierWijzigSubgroepenPage extends AbstractFormulierPage<Formuli
     }
 
     public FormulierSubgroepenCategorieWijzigPage openSubgroepCategorie(final String s) {
-        driver.findElement(By.linkText(s)).click();
+        driver.findElement(By.partialLinkText(s)).click();
         return new FormulierSubgroepenCategorieWijzigPage(driver);
     }
 

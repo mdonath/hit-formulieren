@@ -18,18 +18,17 @@ public class Main {
                 .idEvenement("26172")
                 .naamEvenement("HIT 2022")
                 .naamSpeleenheid("HIT Helpdeskgroep")
-                .datumDeelnemersinformatie("6 maart 2022")
+                .datumDeelnemersinformatie("7 maart 2022")
                 .build();
 
         final Stopwatch stopwatch = Stopwatch.createStarted();
         try {
-            vulScoutsOnline(context);
-
-            // postfixHIT2022(context);
-
+            // vulScoutsOnline(context);
             // extraVeldenFormulier(baseUrl, username, password, naamEvenement);
             // postfixHIT2020(baseUrl, username, password, idEvenement, naamEvenement, datumDeelnemersinformatie);
             // lijstMetInschrijflinks(baseUrl, username, password, naamEvenement, naamSpeleenheid);
+
+            postfixHIT2022(context);
         } finally {
             System.out.println(stopwatch.stop());
         }
@@ -47,25 +46,21 @@ public class Main {
             //vuller.maakInitieleFormulierenVoorOuderLid();
             //vuller.vulFormulierenMetDeRestVoorOuderLid();
 
-            vuller.maakFormulierenActief(JaNee.JA);
+            // vuller.maakFormulierenActief(JaNee.JA);
 
             // vuller.maakBasisFormulieren();
-        }
-    }
-
-    protected static void extraVeldenFormulier(final String baseUrl, final String username, final String password, final String idEvenement, final String naamEvenement) throws Exception {
-        try (final ScoutsOnline sol = new ScoutsOnline(baseUrl, username, password)) {
-            final InschrijfformulierAanpasser aanpasser = new InschrijfformulierAanpasser(sol.solHomePage, idEvenement, naamEvenement, "HIT Helpdeskgroep");
-            // aanpasser.maakDieet();
-            // aanpasser.maakDieetKind();
-            // aanpasser.maakDieetOuder();
         }
     }
 
     protected static void postfixHIT2022(final HitContext context) throws IOException {
         try (final ScoutsOnline sol = new ScoutsOnline(context.baseUrl, context.username, context.password)) {
             final InschrijfformulierAanpasser aanpasser = new InschrijfformulierAanpasser(sol.solHomePage, context);
-            aanpasser.setStartTijdInschrijvingOpTwaalfEnKosteloosAnnulerenOpEindeInschrijving("12:00");
+//            aanpasser.setStartTijdInschrijvingOpTwaalfEnKosteloosAnnulerenOpEindeInschrijving("12:00");
+//            aanpasser.setSubgroepLimietenOpNul();
+//             aanpasser.testOpenenKoppelgroepjesDetailBijOuderKindKampen();
+//            aanpasser.postfixHIT2022MailTeksten();
+//            aanpasser.ronde2MetUitstel();
+            aanpasser.ronde3();
         }
     }
 

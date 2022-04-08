@@ -34,7 +34,7 @@ import static nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.Ab
  */
 public final class ScoutsOnlineVuller {
 
-    private static final String KOPPELGROEPJE = "Koppelgroepje";
+    public static final String KOPPELGROEPJE = "Koppelgroepje";
 
     private final SolHomePage solHomePage;
     private final String naamEvenement;
@@ -492,15 +492,15 @@ public final class ScoutsOnlineVuller {
         FormulierWijzigSubgroepenPage subgroepenOverzicht = geopendFormulier.submenu().openTabSubgroepen();
 
         AbstractFormulierSubgroepenCategoriePage<?> nieuwOfWijzig;
-        if (subgroepenOverzicht.hasSubgroepCategorie(KOPPELGROEPJE)) {
-            nieuwOfWijzig = subgroepenOverzicht.openSubgroepCategorie(KOPPELGROEPJE);
+        if (subgroepenOverzicht.hasSubgroepCategorie(regel.getKoppelgroepjeNaam())) {
+            nieuwOfWijzig = subgroepenOverzicht.openSubgroepCategorie(regel.getKoppelgroepjeNaam());
         } else {
             nieuwOfWijzig = subgroepenOverzicht.toevoegenSubgroepCategorie();
         }
 
         nieuwOfWijzig
                 //.withZichtbaarVoorDeelnemer(JaNee.JA)
-                .withAanduiding(KOPPELGROEPJE)
+                .withAanduiding(regel.getKoppelgroepjeNaam())
                 .withAantalSubgroepen(regel.getAantalSubgroepen())
                 .withAantalDeelnemers(regel.getAantalDeelnemersInSubgroep())
                 .withMagSubgroepAanmaken(JaNee.JA)

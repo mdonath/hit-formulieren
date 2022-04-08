@@ -18,7 +18,7 @@ public class HitFormulier extends Formulier {
 
 
     public HitFormulier(final Formulier formulier) {
-        super(formulier.shantiID, formulier.naam);
+        super(formulier.shantiID, formulier.naam, formulier.aantalDeelnemers, formulier.maximumAantalDeelnemers, formulier.gereserveerd);
         final Matcher gekoppeldFormulierMatcher = GEKOPPELD_FORMULIERNAAM_PATTERN.matcher(naam);
 
         if (gekoppeldFormulierMatcher.matches()) {
