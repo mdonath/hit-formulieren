@@ -146,15 +146,15 @@ public class KampInfoFormulierExportRegel {
     }
 
     public String getFormulierNaam() {
-        return buildKampNaam(false);
+        return buildKampNaam();
     }
 
-    protected final String buildKampNaam(final boolean isOuderFormulier) {
+    protected final String buildKampNaam() {
         final String firstPart = String.format("HIT %s %s"
                 , locatie
                 , cleanKampnaam(kampnaam));
-        final String specifier = getSpecifier(isOuderFormulier);
-        final String ref = getReference(isOuderFormulier);
+        final String specifier = getSpecifier();
+        final String ref = getReference();
         final String idPart = String.format(" %s(%d)%s", specifier, kampID, ref);
 
         if (firstPart.length() + idPart.length() > 70) {
@@ -164,16 +164,20 @@ public class KampInfoFormulierExportRegel {
         return firstPart + idPart;
     }
 
-    private String getReference(final boolean isOuderFormulier) {
-        if (isOuderKindKamp && isOuderLid && isOuderFormulier && kampShantiID > 0) {
+    protected boolean isOuderFormulier() {
+        return false;
+    }
+
+    private String getReference() {
+        if (isOuderKindKamp && isOuderLid && isOuderFormulier() && kampShantiID > 0) {
             return String.format(" ((%s))", kampShantiID);
         }
         return "";
     }
 
-    private String getSpecifier(final boolean isOuderFormulier) {
+    public String getSpecifier() {
         if (isOuderKindKamp && isOuderLid) {
-            if (isOuderFormulier) {
+            if (isOuderFormulier()) {
                 return "(OUDER) ";
             } else {
                 return "(KIND) ";

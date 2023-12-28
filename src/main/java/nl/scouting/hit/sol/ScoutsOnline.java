@@ -1,6 +1,8 @@
 package nl.scouting.hit.sol;
 
 import nl.scouting.hit.common.AbstractWebApplication;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
@@ -8,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Set;
 
 /**
  * Opent ScoutsOnline en logt in.
@@ -29,9 +32,12 @@ public class ScoutsOnline extends AbstractWebApplication {
     }
 
     private SolHomePage getHomePage(final String baseUrl, final String username, final String password) {
-        return new PreLoginPage(driver, baseUrl)
-                .login()
-                .login(username, password);
+//        if (driver.findElements(By.id("login_role_select")).isEmpty()) {
+//            return new PreLoginPage(driver, baseUrl)
+//                    .login()
+//                    .login(username, password);
+//        }
+        return new SolHomePage(driver, baseUrl);
     }
 
     @Override

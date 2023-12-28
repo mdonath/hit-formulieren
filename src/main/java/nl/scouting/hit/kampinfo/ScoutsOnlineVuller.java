@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -44,9 +45,8 @@ public final class ScoutsOnlineVuller {
 
     private final List<KampInfoFormulierExportRegel> data;
 
-    private static List<KampInfoFormulierExportRegel> readExportFromKampInfo() throws IOException {
-        KampInfoHelper.download();
-        return KampInfoHelper.expand(KampInfoHelper.readData());
+    private static List<KampInfoFormulierExportRegel> readExportFromKampInfo(String fileName) throws IOException {
+        return KampInfoHelper.downloadReadAndExpand(fileName);
     }
 
     /**
@@ -57,21 +57,20 @@ public final class ScoutsOnlineVuller {
      * @param naamSpeleenheid de naam van de organiserende speleenheid
      * @throws IOException Als er iets mis gaat
      */
-    public ScoutsOnlineVuller(final SolHomePage sol, final String naamEvenement, final String naamSpeleenheid) throws IOException {
+    public ScoutsOnlineVuller(final SolHomePage sol, final String naamEvenement, final String naamSpeleenheid, final String dataFile) throws IOException {
         this.solHomePage = sol;
         this.naamEvenement = naamEvenement;
         this.hitJaar = Integer.valueOf(naamEvenement.substring(4));
         this.naamSpeleenheid = naamSpeleenheid;
-        this.data = readExportFromKampInfo();
+        this.data = readExportFromKampInfo(Objects.requireNonNullElse(dataFile, "data") + "-" + hitJaar + ".json");
     }
-
 
     public void setDatumDeelnemersinformatie(final String datumDeelnemersinformatie) {
         this.datumDeelnemersinformatie = datumDeelnemersinformatie;
     }
 
     /**
-     * Maak alle formulieren actief of inactief.
+     * Maakt alle formulieren actief of inactief.
      * <p>
      * Als alles actief moet worden gemaakt, maak dan eerst de basisformulieren actief. Bij deactiveren moeten eerst de
      * inschrijfformulieren worden gedeactiveerd en pas daarna mogen de basisformulieren worden gedeactiveerd. Daarom
@@ -262,15 +261,6 @@ public final class ScoutsOnlineVuller {
         data.forEach(regel -> vulFormulierMetDeRest(regel.getFormulierNaam(), formulierenOverzicht, regel));
     }
 
-    public void vulFormulierenMetDeRestVoorOuderLid() {
-        final TabFormulierenOverzichtPage formulierenOverzicht = solHomePage.hoofdmenu()
-                .openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement);
-        data.stream()
-                .filter(KampInfoOuderFormulierExportRegel.class::isInstance)
-                .forEach(regel -> vulFormulierMetDeRest(regel.getFormulierNaam(), formulierenOverzicht, regel));
-    }
-
     private void vulFormulierMetDeRest(final String formulierNaam, final TabFormulierenOverzichtPage formulierenOverzicht, final KampInfoFormulierExportRegel regel) {
         if (!formulierenOverzicht.hasFormulier(regel)) {
             throw new IllegalArgumentException(String.format("Formulier %s bestaat niet!", formulierNaam));
@@ -299,7 +289,7 @@ public final class ScoutsOnlineVuller {
                 .withLinkDeelnemersvoorwaarden("https://hit.scouting.nl/startpagina/deelnemersvoorwaarden-hit-" + regel.getJaar())
                 .withEvenementStart(regel.getEvenementStart(), regel.getEvenementStartTijd())
                 .withEvenementEind(regel.getEvenementEind(), regel.getEvenementEindTijd())
-                .withInschrijvingStart(regel.getInschrijvingStart(), "12:00")
+                .withInschrijvingStart(regel.getInschrijvingStart(), "03:00")
                 .withInschrijvingEind(regel.getInschrijvingEind())
                 .withStuurTicket(JaNee.NEE)
                 .opslaanWijzigingen()
@@ -320,8 +310,9 @@ public final class ScoutsOnlineVuller {
                 .withMinimumDeelnemersaantal(delenDoorTweeBijOuderKindKamp(regel, regel.getAantalDeelnemers().getMinimum()))
                 .withMaximumDeelnemersaantal(delenDoorTweeBijOuderKindKamp(regel, regel.getAantalDeelnemers().getMaximum()))
                 .withMaximumAantalUitEengroep(delenDoorTweeBijOuderKindKamp(regel, regel.getMaximumAantalUitEenGroep()))
-                .withWachtlijst(JaNee.JA)
-                .withStandaardWachtlijst(JaNee.JA)
+                // Bij de Patsboem is die aangepast naar géén wachtlijst, daarom moet dit na de eerste totaalvulling niet meer gebeuren
+                //.withWachtlijst(JaNee.JA)
+                //.withStandaardWachtlijst(JaNee.JA)
                 .withMaximumAantalExterneDeelnemers(0)
                 .opslaanWijzigingen()
                 .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)

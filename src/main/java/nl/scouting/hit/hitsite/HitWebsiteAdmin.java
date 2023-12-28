@@ -17,12 +17,15 @@ public class HitWebsiteAdmin extends AbstractWebApplication {
     }
 
     private JoomlaAdminHomePage getJoomlaAdminPage(final String baseUrl, final String username, final String password) {
-        return new JoomlaAdminLoginPage(driver, baseUrl)
-                .withUsername(username)
-                .loginSOL(() ->
-                        new LoginScoutingPage(driver)
-                                .withPassword(password)
-                                .login(new JoomlaAdminHomePage(driver)));
+        new JoomlaAdminLoginPage(driver, baseUrl);
+        return new JoomlaAdminHomePage(driver);
+//
+//        return new JoomlaAdminLoginPage(driver, baseUrl)
+//                .withUsername(username)
+//                .loginSOL(() ->
+//                        new LoginScoutingPage(driver)
+//                                .withPassword(password)
+//                                .login(new JoomlaAdminHomePage(driver)));
     }
 
     public KampInfoInfoPage openKampInfo() {

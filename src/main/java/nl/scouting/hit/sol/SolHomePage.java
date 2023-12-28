@@ -8,6 +8,11 @@ public class SolHomePage extends AbstractSolMetHoofdMenuPage<SolHomePage> {
         super(driver);
     }
 
+    public SolHomePage(final WebDriver driver, String baseUrl) {
+        super(driver);
+        driver.get(baseUrl);
+    }
+
     public SolHomePage wijzigRol(final String rolnaam) {
         hoofdmenu().wijzigRol(rolnaam);
         return this;

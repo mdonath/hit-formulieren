@@ -11,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class KampInfoHelperTest {
 
-    private final File file = new File("data-2022.json");
+    private final String fileName = "data-2022.json";
+    private final File file = new File(fileName);
 
     @Test
     void testDownload() {
@@ -19,7 +20,7 @@ class KampInfoHelperTest {
             System.out.println("Het bestand was er al, maar nu niet meer!");
         }
         assertFalse(file.exists());
-        KampInfoHelper.download();
+        KampInfoHelper.download(fileName);
         assertTrue(file.exists());
     }
 
@@ -27,10 +28,10 @@ class KampInfoHelperTest {
     void testExpand() throws IOException {
         if (!file.exists()) {
             System.out.println("DOWNLOADING");
-            KampInfoHelper.download();
+            KampInfoHelper.download(fileName);
         }
 
-        final List<KampInfoFormulierExportRegel> data = KampInfoHelper.readData();
+        final List<KampInfoFormulierExportRegel> data = KampInfoHelper.readData(fileName);
         assertEquals(89, data.size());
 
         final List<KampInfoFormulierExportRegel> expanded = KampInfoHelper.expand(data);

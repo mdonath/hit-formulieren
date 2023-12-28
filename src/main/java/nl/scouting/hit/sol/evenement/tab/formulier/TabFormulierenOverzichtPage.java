@@ -1,6 +1,7 @@
 package nl.scouting.hit.sol.evenement.tab.formulier;
 
 import nl.scouting.hit.kampinfo.export.KampInfoFormulierExportRegel;
+import nl.scouting.hit.kampinfo.export.KampInfoKindFormulierExportRegel;
 import nl.scouting.hit.sol.evenement.AbstractEvenementPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.nieuw.FormulierSoortAanmeldingNieuwPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigBasisPage;
@@ -82,7 +83,11 @@ public class TabFormulierenOverzichtPage extends AbstractEvenementPage {
     }
 
     private By getLocatorKampID(final KampInfoFormulierExportRegel regel) {
-        return By.partialLinkText(String.format(" (%d)", regel.getKampID()));
+        return By.partialLinkText(
+                String.format("%s(%d)",
+                        regel.getSpecifier(),
+                        regel.getKampID())
+        );
     }
 
     private By getLocatorFormulierNaam(final String formulierNaam) {

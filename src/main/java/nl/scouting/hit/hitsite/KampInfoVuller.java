@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * Vult KampInfo op basis van gegevens in Scouts Online.
  */
-public class KampInfoVuller {
+public final class KampInfoVuller {
 
     private KampInfoVuller() {
         // Private Utility Constructor
@@ -27,13 +27,14 @@ public class KampInfoVuller {
      * @throws Exception Als er iets mis gaat
      */
     public static void neemShantiIdOverInKampInfo(final int jaar, final String kiBaseUrl, final String solBaseUrl, final String solUsername, final String solPassword) throws Exception {
+        final Stream<HitFormulier> hitFormulierStream = getHitFormulierenFromScoutsOnline(solBaseUrl, solUsername, solPassword, jaar)
+                .filter(HitFormulier::isInschrijfFormulier);
+
         try (final HitWebsiteAdmin hitwebsite = new HitWebsiteAdmin(kiBaseUrl, solUsername, solPassword)) {
             final HitKampenPage kampenLijst = hitwebsite.openKampInfo()
                     .submenu().openHitKampen()
                     .setListLimit(100);
-
-            getHitFormulierenFromScoutsOnline(solBaseUrl, solUsername, solPassword, jaar)
-                    .filter(HitFormulier::isInschrijfFormulier)
+            hitFormulierStream
                     .forEach(formulier ->
                             kampenLijst
                                     .setFilterJaar(jaar)

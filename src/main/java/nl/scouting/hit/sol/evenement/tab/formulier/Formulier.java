@@ -50,7 +50,7 @@ public class Formulier {
     }
 
     private static int extractGereserveerd(WebElement row) {
-        return extractAantal(row, 5);
+        return 0; // extractAantal(row, 5);
     }
 
     private static int extractAantal(WebElement row, int index) {

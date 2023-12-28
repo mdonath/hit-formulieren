@@ -10,11 +10,6 @@ public class KampInfoKindFormulierExportRegel extends KampInfoFormulierExportReg
     }
 
     @Override
-    public String getFormulierNaam() {
-        return buildKampNaam(false);
-    }
-
-    @Override
     public final String getBasisformulierNaam() {
         return String.format("HIT %d Basisformulier Ouder-Kind (niet wijzigen)", jaar);
     }

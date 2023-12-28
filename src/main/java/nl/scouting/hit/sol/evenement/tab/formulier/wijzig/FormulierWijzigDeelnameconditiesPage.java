@@ -80,6 +80,14 @@ public class FormulierWijzigDeelnameconditiesPage extends AbstractFormulierBasis
     @FindBy(name = "frm_max_outside_cooperate_orgs_ct")
     private WebElement fieldMaximumAantalExterneDeelnemers;
 
+    //
+    // Uitzonderingen
+    //
+    @FindBy(name = "per_exception_id")
+    private WebElement fieldUitzonderingLidnummer;
+    @FindBy(xpath = "//input[@value=\"Toevoegen\"]")
+    private WebElement buttonUitzonderingToevoegen;
+
     /**
      * Button Wijzigingen apply.
      */
@@ -88,6 +96,16 @@ public class FormulierWijzigDeelnameconditiesPage extends AbstractFormulierBasis
 
     public FormulierWijzigDeelnameconditiesPage(WebDriver driver) {
         super(driver);
+    }
+
+    public FormulierWijzigDeelnameconditiesPage withUitzonderingLidnummer(String lidnummer) {
+        clearAndSendKeys(fieldUitzonderingLidnummer, lidnummer);
+        return this;
+    }
+
+    public FormulierWijzigDeelnameconditiesPage toevoegenUitzondering() {
+        scrollIntoViewAndClick(buttonUitzonderingToevoegen);
+        return this; // ?
     }
 
     public FormulierWijzigDeelnameconditiesPage withEenmaalInschrijven(JaNee jaNee) {

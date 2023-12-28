@@ -10,8 +10,8 @@ public class KampInfoOuderFormulierExportRegel extends KampInfoFormulierExportRe
     }
 
     @Override
-    public String getFormulierNaam() {
-        return buildKampNaam(true);
+    protected boolean isOuderFormulier() {
+        return true;
     }
 
     @Override

@@ -15,20 +15,24 @@ public class Main {
                 .baseUrl("https://sol.scouting.nl")
                 .username(Util.readUsernameFromFile())
                 .password(Util.readPasswordFromFile())
-                .idEvenement("26172")
-                .naamEvenement("HIT 2022")
+                .idEvenement(HitConstants.ID_EVENEMENT)
+                .naamEvenement(HitConstants.NAAM_EVENEMENT)
                 .naamSpeleenheid("HIT Helpdeskgroep")
-                .datumDeelnemersinformatie("7 maart 2022")
+                .datumDeelnemersinformatie("24 februari 2023")
                 .build();
 
         final Stopwatch stopwatch = Stopwatch.createStarted();
         try {
+            // Vul alle formulieren op basis van de export
             // vulScoutsOnline(context);
-            // extraVeldenFormulier(baseUrl, username, password, naamEvenement);
-            // postfixHIT2020(baseUrl, username, password, idEvenement, naamEvenement, datumDeelnemersinformatie);
-            // lijstMetInschrijflinks(baseUrl, username, password, naamEvenement, naamSpeleenheid);
 
-            postfixHIT2022(context);
+            // Voer aanpassingen achteraf op ALLE inschrijfformulieren door
+            // postfixHIT2023(context);
+
+            doeAanpassingenVoorFase2(context);
+
+            // Deze is ergens voor nodig, maar weet niet meer waarvoor.
+            // lijstMetInschrijflinks(baseUrl, username, password, naamEvenement, naamSpeleenheid);
         } finally {
             System.out.println(stopwatch.stop());
         }
@@ -36,31 +40,62 @@ public class Main {
 
     protected static void vulScoutsOnline(final HitContext context) throws IOException {
         try (final ScoutsOnline sol = new ScoutsOnline(context.baseUrl, context.username, context.password)) {
-            final ScoutsOnlineVuller vuller = new ScoutsOnlineVuller(sol.solHomePage, context.naamEvenement, context.naamSpeleenheid);
-            vuller.setDatumDeelnemersinformatie(context.datumDeelnemersinformatie);
+            final ScoutsOnlineVuller vuller = new ScoutsOnlineVuller(sol.solHomePage, context.naamEvenement, context.naamSpeleenheid, null);
+            // vuller.setDatumDeelnemersinformatie(context.datumDeelnemersinformatie);
 
-            //vuller.verwijderAlleFormulieren();
+            // STAP 1: Verwijderen oude formulieren
+            // vuller.verwijderAlleFormulieren();
+
+            // STAP 2: Aanmaken initiele formulieren voor gewone inschrijfformulieren
             // vuller.maakInitieleFormulieren();
+
+            // STAP 3: Breng de formuliernummers weer naar KampInfo
+            // Zie hitsite/Main.java
+            // KampInfoHelper.deleteDatafile();
+
+            // STAP 4:
+            // Handmatig: neem de formuliernummers van bovenstaande formulieren over in KampInfo in het veld voor het ouder-formulier
+            // KampInfoHelper.deleteDatafile();
+
+            // STAP 5: Aanmaken Ouder-kind formulieren waarbij de ouder zich inschrijft met een niet-lid kind
+            // vuller.maakInitieleFormulierenVoorOuderLid();
+
+            // STAP 6:
             // vuller.vulFormulierenMetDeRest();
 
-            //vuller.maakInitieleFormulierenVoorOuderLid();
-            //vuller.vulFormulierenMetDeRestVoorOuderLid();
+            // STAP 7:
+            // Handmatig: maak voor de kampen waar meerdere kinderen met één ouder kunnen komen, aparte formulieren aan
+            // - kopieer de data.json naar een data-extra.json en verwijder alles behalve de betreffende ouder-kind-kampen
+            // final ScoutsOnlineVuller extraVuller = new ScoutsOnlineVuller(sol.solHomePage, context.naamEvenement, context.naamSpeleenheid, "data-extra");
+            // extraVuller.maakInitieleFormulieren();
+            // extraVuller.vulFormulierenMetDeRest();
 
+            // STAP 8: Maak alles actief
             // vuller.maakFormulierenActief(JaNee.JA);
-
-            // vuller.maakBasisFormulieren();
         }
     }
 
-    protected static void postfixHIT2022(final HitContext context) throws IOException {
+    protected static void postfixHIT2023(final HitContext context) throws IOException {
         try (final ScoutsOnline sol = new ScoutsOnline(context.baseUrl, context.username, context.password)) {
             final InschrijfformulierAanpasser aanpasser = new InschrijfformulierAanpasser(sol.solHomePage, context);
-//            aanpasser.setStartTijdInschrijvingOpTwaalfEnKosteloosAnnulerenOpEindeInschrijving("12:00");
-//            aanpasser.setSubgroepLimietenOpNul();
-//             aanpasser.testOpenenKoppelgroepjesDetailBijOuderKindKampen();
+            // Reden: De Patsboemers hebben een lijst met uitzonderingen aangeleverd. Alleen deze mensen mogen inschrijven.
+            // aanpasser.vulUitzonderingenPatsBoem();
+
+            // De subgroepen maken het formulier nu vol, dat moet niet en kan uitgeschakeld worden via een optie op de subgroep
+            aanpasser.setSubgroepLimietenVoorFase1();
+
+//           aanpasser.setStartTijdInschrijvingOpTwaalfEnKosteloosAnnulerenOpEindeInschrijving("12:00");
+//            aanpasser.testOpenenKoppelgroepjesDetailBijOuderKindKampen();
 //            aanpasser.postfixHIT2022MailTeksten();
 //            aanpasser.ronde2MetUitstel();
-            aanpasser.ronde3();
+//            aanpasser.ronde3();
+        }
+    }
+
+    protected static void doeAanpassingenVoorFase2(final HitContext context) throws IOException {
+        try (final ScoutsOnline sol = new ScoutsOnline(context.baseUrl, context.username, context.password)) {
+            final InschrijfformulierAanpasser aanpasser = new InschrijfformulierAanpasser(sol.solHomePage, context);
+            aanpasser.fase2();
         }
     }
 

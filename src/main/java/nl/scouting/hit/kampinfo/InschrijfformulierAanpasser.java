@@ -7,9 +7,18 @@ import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.common.AbstractFormulierPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigAanpassenMailsPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigBasisPage;
+import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigDeelnameconditiesPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigSamenstellenPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.CheckboxWijzigen;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.MeerdereTekstRegelsWijzigen;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Locale;
+
+import static nl.scouting.hit.kampinfo.BevestigingsTekst.FORMULIER_GEWIJZIGD;
 
 /**
  * Vult ScoutsOnline met de gegevens uit KampInfo.
@@ -59,10 +68,7 @@ public final class InschrijfformulierAanpasser {
      * - datum tot wanneer kosteloos annuleren is 29-02-2020 (gelijk aan sluitingsdatum inschrijving)
      */
     public void postfixHIT2020() {
-        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
-                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement)
-                .submenu().openTabFormulieren();
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
 
         tabFormulieren.getFormulieren().stream()
                 .map(HitFormulier::new)
@@ -72,12 +78,12 @@ public final class InschrijfformulierAanpasser {
                     tabFormulieren.openFormulier(formulier.naam)
                             .withInschrijvingStart(19, 1, 2020)
                             .opslaanWijzigingen()
-                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
+                            .controleerMelding(FORMULIER_GEWIJZIGD)
 
                             .submenu().openTabFinancien()
                             .withVolledigeKostenAnnulerenVanaf(29, 2, 2020)
                             .opslaanWijzigingen()
-                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
+                            .controleerMelding(FORMULIER_GEWIJZIGD)
                     ;
                     tabFormulieren.clickLink(getEvenementLink());
                     System.out.println(" [OK]");
@@ -89,10 +95,7 @@ public final class InschrijfformulierAanpasser {
      * - in de mailtekst bij Ouder Kind Kampen is al de totaal prijs beschikbaar in %frm_price% en dan moet er niet bij gezegd worden dat het twee keer dat bedrag is.
      */
     public void postfixHIT2020MailTeksten() {
-        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
-                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement)
-                .submenu().openTabFormulieren();
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
 
         tabFormulieren.getFormulieren().stream()
                 .map(HitFormulier::new)
@@ -326,10 +329,7 @@ public final class InschrijfformulierAanpasser {
      * Eerste aanpassing van 2022.
      */
     public void setStartTijdInschrijvingOpTwaalfEnKosteloosAnnulerenOpEindeInschrijving(final String startTijdInschrijving) {
-        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
-                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement)
-                .submenu().openTabFormulieren();
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
 
         tabFormulieren.getFormulieren().stream()
                 .map(HitFormulier::new)
@@ -339,12 +339,12 @@ public final class InschrijfformulierAanpasser {
                     tabFormulieren.openFormulier(formulier.naam)
                             .withInschrijvingStarttijd(startTijdInschrijving)
                             .opslaanWijzigingen()
-                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
+                            .controleerMelding(FORMULIER_GEWIJZIGD)
 
                             .submenu().openTabFinancien()
                             .withVolledigeKostenAnnulerenVanaf(27, 2, 2022)
                             .opslaanWijzigingen()
-                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
+                            .controleerMelding(FORMULIER_GEWIJZIGD)
                     ;
                     tabFormulieren.clickLink(getEvenementLink());
                     System.out.println(" [OK]");
@@ -354,11 +354,8 @@ public final class InschrijfformulierAanpasser {
     /**
      * Limieten op subgroepjes maken dat de wachtlijst vol is en geen deelnemers meer accepteert.
      */
-    public void setSubgroepLimietenOpNul() {
-        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
-                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement)
-                .submenu().openTabFormulieren();
+    public void setSubgroepLimietenVoorFase1() {
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
 
         tabFormulieren.getFormulieren().stream()
                 .map(HitFormulier::new)
@@ -368,7 +365,7 @@ public final class InschrijfformulierAanpasser {
                     tabFormulieren.openFormulier(formulier.naam)
                             .submenu().openTabSubgroepen()
                             .openSubgroepCategorie(ScoutsOnlineVuller.KOPPELGROEPJE)
-                            .vergrootMaximumAantalSubGroepen(100)
+                            //.vergrootMaximumAantalSubGroepen(100)
                             .withTeltHetMaxAantalMee(JaNee.NEE)
                             .opslaanGegevens()
                             .controleerMelding(BevestigingsTekst.SUBGROEPCATEGORIE_GEWIJZIGD)
@@ -379,10 +376,7 @@ public final class InschrijfformulierAanpasser {
     }
 
     public void testOpenenKoppelgroepjesDetailBijOuderKindKampen() {
-        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
-                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement)
-                .submenu().openTabFormulieren();
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
 
         tabFormulieren.getFormulieren().stream()
                 .map(HitFormulier::new)
@@ -400,10 +394,7 @@ public final class InschrijfformulierAanpasser {
     }
 
     public void postfixHIT2022MailTeksten() {
-        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
-                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement)
-                .submenu().openTabFormulieren();
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
 
         tabFormulieren.getFormulieren().stream()
                 .map(HitFormulier::new)
@@ -435,10 +426,7 @@ public final class InschrijfformulierAanpasser {
     }
 
     public void ronde2() {
-        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
-                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement)
-                .submenu().openTabFormulieren();
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
 
         tabFormulieren.getFormulieren().stream()
                 .map(HitFormulier::new)
@@ -459,13 +447,13 @@ public final class InschrijfformulierAanpasser {
                             .withInschrijvingStart(6, 2, 2022)
                             .withInschrijvingEind(13, 2, 2022)
                             .opslaanWijzigingen()
-                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);
+                            .controleerMelding(FORMULIER_GEWIJZIGD);
                     if (isVol) {
                         formulierWijzigBasisPage.submenu().openTabDeelnamecondities()
                                 .withWachtlijst(JaNee.NEE)
                                 .withStandaardWachtlijst(JaNee.NEE)
                                 .opslaanWijzigingen()
-                                .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);
+                                .controleerMelding(FORMULIER_GEWIJZIGD);
                         System.out.print(" [GEEN WACHTLIJST MEER]");
                     }
                     tabFormulieren.clickLink(getEvenementLink());
@@ -474,10 +462,7 @@ public final class InschrijfformulierAanpasser {
     }
 
     public void ronde2MetUitstel() {
-        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
-                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement)
-                .submenu().openTabFormulieren();
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
 
         tabFormulieren.getFormulieren().stream()
                 .map(HitFormulier::new)
@@ -490,7 +475,7 @@ public final class InschrijfformulierAanpasser {
                     formulierWijzigBasisPage
                             .withInschrijvingEind(15, 2, 2022)
                             .opslaanWijzigingen()
-                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);
+                            .controleerMelding(FORMULIER_GEWIJZIGD);
 
                     tabFormulieren.clickLink(getEvenementLink());
                     System.out.println(" [OK]");
@@ -498,10 +483,7 @@ public final class InschrijfformulierAanpasser {
     }
 
     public void ronde3() {
-        final TabFormulierenOverzichtPage tabFormulieren = solHomePage
-                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                .openEvenement(naamEvenement)
-                .submenu().openTabFormulieren();
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
 
         tabFormulieren.getFormulieren().stream()
                 .map(HitFormulier::new)
@@ -543,5 +525,87 @@ public final class InschrijfformulierAanpasser {
                     tabFormulieren.clickLink(getEvenementLink());
                     System.out.println(" [OK]");
                 });
+    }
+
+    public void fase2() {
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
+
+        tabFormulieren.getFormulieren().stream()
+                .map(HitFormulier::new)
+                .filter(formulier -> formulier.isInschrijfFormulier() || formulier.isGekoppeldFormulier())
+                .forEach(formulier -> {
+                    System.out.printf("Fixing formulier %s for phase 2", formulier.naam);
+                    final FormulierWijzigBasisPage formulierWijzigBasisPage = tabFormulieren
+                            .openFormulier(formulier.naam);
+
+                    System.out.printf(" (%d %d %d) ",
+                            formulier.aantalDeelnemers,
+                            formulier.gereserveerd,
+                            formulier.maximumAantalDeelnemers
+                    );
+                    // STAP EEN
+                    formulierWijzigBasisPage
+                            .withInschrijvingStart(5, 2, 2023)
+                            .withInschrijvingStarttijd("12:00")
+                            .withInschrijvingEind(13, 2, 2023)
+                            .opslaanWijzigingen()
+                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);
+
+                    // STAP TWEE
+                    formulierWijzigBasisPage.submenu().openTabDeelnamecondities()
+                            .withWachtlijst(JaNee.NEE)
+                            .withStandaardWachtlijst(JaNee.NEE)
+                            .opslaanWijzigingen()
+                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);
+
+                    // STAP DRIE
+                    formulierWijzigBasisPage.submenu().openTabSubgroepen()
+                            .openSubgroepCategorie(ScoutsOnlineVuller.KOPPELGROEPJE)
+                            .withTeltHetMaxAantalMee(JaNee.JA)
+                            .opslaanGegevens()
+                            .controleerMelding(BevestigingsTekst.SUBGROEPCATEGORIE_GEWIJZIGD)
+                    ;
+                    System.out.print(" [GEEN WACHTLIJST MEER]");
+                    tabFormulieren.clickLink(getEvenementLink());
+                    System.out.println(" [OK]");
+                });
+    }
+
+    private TabFormulierenOverzichtPage openTabFormulieren() {
+        return solHomePage
+                .hoofdmenu().openSpelVanMijnSpeleenheid(naamSpeleenheid)
+                .openEvenement(naamEvenement)
+                .submenu().openTabFormulieren();
+    }
+
+    public void vulUitzonderingenPatsBoem() {
+        final List<String> uitzonderingen = leesUitzonderingenPatsBoem();
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
+
+        tabFormulieren.getFormulieren().stream()
+                .map(HitFormulier::new)
+                .filter(formulier -> formulier.naam.contains("Pats Boem Exploratie HIT"))
+                .findFirst()
+                .ifPresent(formulier -> {
+                    System.out.printf("Vullen formulier %s met %d uitzonderingen", formulier.naam, uitzonderingen.size());
+                    final FormulierWijzigDeelnameconditiesPage formulierWijzigDeelnameconditiesPage = tabFormulieren
+                            .openFormulier(formulier.naam)
+                            .submenu().openTabDeelnamecondities();
+                    uitzonderingen.forEach(lidnummer -> {
+                        formulierWijzigDeelnameconditiesPage
+                                .withUitzonderingLidnummer(lidnummer)
+                                .toevoegenUitzondering()
+                                .controleerMelding(FORMULIER_GEWIJZIGD.toLowerCase(Locale.ROOT))
+                        ;
+                    });
+                });
+    }
+
+    private List<String> leesUitzonderingenPatsBoem() {
+        try {
+            return Files.readAllLines(Paths.get("uitzonderingen.txt"));
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }
