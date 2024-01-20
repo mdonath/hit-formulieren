@@ -3,7 +3,6 @@ package nl.scouting.hit.kampinfo;
 import nl.scouting.hit.kampinfo.basis.BasisFormulierRegel;
 import nl.scouting.hit.kampinfo.export.KampInfoFormulierExportRegel;
 import nl.scouting.hit.kampinfo.export.KampInfoHelper;
-import nl.scouting.hit.kampinfo.export.KampInfoKindFormulierExportRegel;
 import nl.scouting.hit.kampinfo.export.KampInfoOuderFormulierExportRegel;
 import nl.scouting.hit.sol.JaNee;
 import nl.scouting.hit.sol.SolHomePage;
@@ -19,14 +18,14 @@ import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.Toelichte
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.subgroepen.AbstractFormulierSubgroepenCategoriePage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.subgroepen.FormulierSubgroepenCategorieNieuwPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.subgroepen.FormulierSubgroepenCategorieWijzigPage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.AbstractVeldWijzigen.VELD_GEWIJZIGD;
 
@@ -34,6 +33,7 @@ import static nl.scouting.hit.sol.evenement.tab.formulier.wijzig.samenstellen.Ab
  * Vult ScoutsOnline met de gegevens uit KampInfo.
  */
 public final class ScoutsOnlineVuller {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScoutsOnlineVuller.class);
 
     public static final String KOPPELGROEPJE = "Koppelgroepje";
 
@@ -45,7 +45,7 @@ public final class ScoutsOnlineVuller {
 
     private final List<KampInfoFormulierExportRegel> data;
 
-    private static List<KampInfoFormulierExportRegel> readExportFromKampInfo(String fileName) throws IOException {
+    private static List<KampInfoFormulierExportRegel> readExportFromKampInfo(final String fileName) throws IOException {
         return KampInfoHelper.downloadReadAndExpand(fileName);
     }
 
@@ -123,7 +123,7 @@ public final class ScoutsOnlineVuller {
         tabFormulieren.getFormulieren().stream().map(HitFormulier::new)
                 .filter(formulier -> formulier.kampinfoID != null)
                 .forEach(formulier -> {
-                    System.out.printf("deleting %s... ", formulier.naam);
+                    System.out.printf("verwijder formulier %s... ", formulier.naam);
                     tabFormulieren.openFormulier(formulier.naam)
                             .verwijderFormulier()
                             .ja();
@@ -228,9 +228,9 @@ public final class ScoutsOnlineVuller {
 
     private void maakInitieelFormulier(final String formulierNaam, final TabFormulierenOverzichtPage formulierenOverzicht, final List<String> bestaandeFormulierNamen, final KampInfoFormulierExportRegel regel) {
         if (bestaandeFormulierNamen.contains(formulierNaam)) {
-            System.out.printf("Formulier %s bestaat al!%n", formulierNaam);
+            LOGGER.info("Formulier {} bestaat al!", formulierNaam);
         } else {
-            System.out.printf("creating %s", formulierNaam);
+            System.out.printf("aanmaken formulier %s", formulierNaam);
             formulierenOverzicht.toevoegenFormulier()
                     .withSoortAanmelding(FormulierSoortAanmeldingNieuwPage.SoortAanmelding.INDIVIDUELE_INSCHRIJVING)
                     .volgende()
@@ -264,9 +264,9 @@ public final class ScoutsOnlineVuller {
     private void vulFormulierMetDeRest(final String formulierNaam, final TabFormulierenOverzichtPage formulierenOverzicht, final KampInfoFormulierExportRegel regel) {
         if (!formulierenOverzicht.hasFormulier(regel)) {
             throw new IllegalArgumentException(String.format("Formulier %s bestaat niet!", formulierNaam));
-        } else {
-            System.out.println("Verwerking van formulier " + formulierNaam);
         }
+
+        LOGGER.info("Verwerking van formulier {}", formulierNaam);
         final AbstractFormulierPage<?> geopendFormulier = formulierenOverzicht.openFormulier(regel);
         vulTabBasis(geopendFormulier, regel);
         vulTabDeelnamecondities(geopendFormulier, regel);
@@ -289,7 +289,7 @@ public final class ScoutsOnlineVuller {
                 .withLinkDeelnemersvoorwaarden("https://hit.scouting.nl/startpagina/deelnemersvoorwaarden-hit-" + regel.getJaar())
                 .withEvenementStart(regel.getEvenementStart(), regel.getEvenementStartTijd())
                 .withEvenementEind(regel.getEvenementEind(), regel.getEvenementEindTijd())
-                .withInschrijvingStart(regel.getInschrijvingStart(), "03:00")
+                .withInschrijvingStart(regel.getInschrijvingStart(), "12:00")
                 .withInschrijvingEind(regel.getInschrijvingEind())
                 .withStuurTicket(JaNee.NEE)
                 .opslaanWijzigingen()
@@ -310,9 +310,8 @@ public final class ScoutsOnlineVuller {
                 .withMinimumDeelnemersaantal(delenDoorTweeBijOuderKindKamp(regel, regel.getAantalDeelnemers().getMinimum()))
                 .withMaximumDeelnemersaantal(delenDoorTweeBijOuderKindKamp(regel, regel.getAantalDeelnemers().getMaximum()))
                 .withMaximumAantalUitEengroep(delenDoorTweeBijOuderKindKamp(regel, regel.getMaximumAantalUitEenGroep()))
-                // Bij de Patsboem is die aangepast naar géén wachtlijst, daarom moet dit na de eerste totaalvulling niet meer gebeuren
-                //.withWachtlijst(JaNee.JA)
-                //.withStandaardWachtlijst(JaNee.JA)
+                .withWachtlijst(JaNee.JA) // In Fase 1!!!
+                .withStandaardWachtlijst(JaNee.JA) // In Fase 1!!!
                 .withMaximumAantalExterneDeelnemers(0)
                 .opslaanWijzigingen()
                 .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
@@ -490,13 +489,13 @@ public final class ScoutsOnlineVuller {
         }
 
         nieuwOfWijzig
-                //.withZichtbaarVoorDeelnemer(JaNee.JA)
                 .withAanduiding(regel.getKoppelgroepjeNaam())
                 .withAantalSubgroepen(regel.getAantalSubgroepen())
                 .withAantalDeelnemers(regel.getAantalDeelnemersInSubgroep())
+                // .withZichtbaarVoorDeelnemer(JaNee.JA)
                 .withMagSubgroepAanmaken(JaNee.JA)
                 .withSubgroepVerplicht(JaNee.JA)
-                .withTeltHetMaxAantalMee(JaNee.JA)
+                .withTeltHetMaxAantalMee(JaNee.NEE) // Nee, want bij fase 1 moet er geen limiet zijn!!!
                 .withContactpersoonVermelden(JaNee.JA)
                 .withAantalDagenIncompleet(10)
                 .withAutomatischeIncompleetMailDeelnemers(JaNee.JA)

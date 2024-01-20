@@ -10,11 +10,11 @@ import org.openqa.selenium.support.FindBy;
 
 public abstract class AbstractFormulierPage<T extends AbstractFormulierPage> extends AbstractSolMetHoofdMenuPage<T> {
 
-    public class MeerMenuPage extends AbstractPage {
+    public static class MeerMenuPage extends AbstractPage<MeerMenuPage> {
         @FindBy(linkText = "Naar alle formulieren")
         private WebElement menuNaarAlleFormulieren;
 
-        public MeerMenuPage(WebDriver driver) {
+        public MeerMenuPage(final WebDriver driver) {
             super(driver);
         }
 
@@ -29,7 +29,7 @@ public abstract class AbstractFormulierPage<T extends AbstractFormulierPage> ext
     @FindBy(css = "div#buttonbar div#extra_menu input#expand")
     private WebElement buttonMeer;
 
-    public AbstractFormulierPage(WebDriver driver) {
+    protected AbstractFormulierPage(final WebDriver driver) {
         super(driver);
         formulierSubmenu = new FormulierSubMenuPage(driver);
     }
@@ -44,6 +44,5 @@ public abstract class AbstractFormulierPage<T extends AbstractFormulierPage> ext
         activeerElement(buttonMeer);
         return new MeerMenuPage(driver);
     }
-
 
 }

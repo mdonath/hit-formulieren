@@ -2,7 +2,8 @@ package nl.scouting.hit.kampinfo.export;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.scouting.hit.sol.HitConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,7 +17,7 @@ import java.util.stream.Stream;
 
 public final class KampInfoHelper {
 
-//    private static final File FILE = new File("data-" + HitConstants.HIT_JAAR + ".json");
+    private static final Logger LOGGER = LoggerFactory.getLogger(KampInfoHelper.class);
 
     /**
      * Private constructor.
@@ -25,14 +26,15 @@ public final class KampInfoHelper {
         super();
     }
 
-    public static  List<KampInfoFormulierExportRegel> downloadReadAndExpand(String fileName) throws IOException {
+    public static List<KampInfoFormulierExportRegel> downloadReadAndExpand(final String fileName) throws IOException {
         download(fileName);
         return expand(readData(fileName));
     }
-    public static void download(String fileName) {
+
+    public static void download(final String fileName) {
         final File file = new File(fileName);
         if (!file.exists()) {
-            System.out.println("Ophalen nieuw bestand, opgeslagen in: " + file.getAbsolutePath());
+            LOGGER.info("Ophalen nieuw bestand, opgeslagen in: {}", file.getAbsolutePath());
             try {
                 final URL url = new URL("https://hit.scouting.nl/index.php?option=com_kampinfo&view=shanti&format=raw");
                 try (final ReadableByteChannel rbc = Channels.newChannel(url.openStream());
@@ -44,13 +46,13 @@ public final class KampInfoHelper {
                 throw new IllegalArgumentException(e);
             }
         } else {
-            System.out.println("Hergebruik bestaand bestand!");
+            LOGGER.info("Hergebruik bestaand bestand!");
         }
     }
 
-    public static List<KampInfoFormulierExportRegel> readData(String fileName) throws IOException {
+    public static List<KampInfoFormulierExportRegel> readData(final String fileName) throws IOException {
         final ObjectMapper om = new ObjectMapper();
-        return om.readValue(new File(fileName), new TypeReference<List<KampInfoFormulierExportRegel>>() {
+        return om.readValue(new File(fileName), new TypeReference<>() {
         });
     }
 
@@ -69,17 +71,17 @@ public final class KampInfoHelper {
                 .toList();
     }
 
-    public static void deleteDatafile(String fileName) {
-        File file = new File(fileName);
+    public static void deleteDatafile(final String fileName) {
+        final File file = new File(fileName);
         if (file.exists()) {
             try {
                 Files.delete(file.toPath());
-                System.out.printf("Bestand %s is verwijderd.", file.getName());
-            } catch (IOException e) {
-                System.out.printf("FOUT bij verwijderen databestand %s: %s", file.getName(), e.getMessage());
+                LOGGER.info("Bestand {} is verwijderd.", file.getName());
+            } catch (final IOException e) {
+                LOGGER.error("FOUT bij verwijderen databestand {}: {}", file.getName(), e.getMessage());
             }
         } else {
-            System.out.printf("Bestand %s bestaat NIET!", file.getName());
+            LOGGER.error("Bestand {} bestaat NIET!", file.getName());
         }
     }
 }

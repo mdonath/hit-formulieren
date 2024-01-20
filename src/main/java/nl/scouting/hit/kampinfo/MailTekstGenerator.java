@@ -123,22 +123,4 @@ public final class MailTekstGenerator {
                 """;
     }
 
-    public static String hit2020MailBijStatuswijzigingNaarKosteloosGeannuleerd(final Integer hitJaar) {
-        return """
-                Beste %per_fullname%,
-
-                Zoals je inmiddels al wel gehoord zult hebben is HIT 2020 helaas geannuleerd vanwege het Coronavirus (COVID-19). We hebben jouw inschrijving voor %evt_nm% (%frm_nm%) nu kosteloos geannuleerd. Het deelnemersbedrag zal uiterlijk 1 mei op de rekening waarmee je je HIT-inschrijving hebt betaald worden teruggestort.
-
-                We hopen dat je 65 jaar HIT volgend jaar opnieuw met ons meeviert! Daarom gaan we ervoor zorgen dat je je volgend jaar opnieuw kunt inschrijven op de HIT die je dit jaar had gekozen. Ook de leeftijdsgrenzen passen we daar, indien nodig, op aan. Hoe dat precies in z’n werk gaat, hoor je begin 2021.
-
-                Heb je vragen? Dan kun je die altijd stellen aan de helpdesk via helpdesk@hit.scouting.nl.
-
-                Tot in 2021!
-
-                Met vriendelijke groet,
-
-                Het HIT organisatieteam
-                """;
-    }
-
 }

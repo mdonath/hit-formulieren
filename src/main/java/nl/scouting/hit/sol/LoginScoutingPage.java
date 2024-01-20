@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.StringTokenizer;
@@ -51,7 +52,7 @@ public class LoginScoutingPage extends AbstractPage<LoginScoutingPage> {
     }
 
     public LoginScoutingPage withPassword(final String password) {
-        new WebDriverWait(driver, 5)
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(fieldPassword));
 
         fieldPassword.sendKeys(password);

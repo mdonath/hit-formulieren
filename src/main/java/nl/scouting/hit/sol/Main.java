@@ -4,13 +4,18 @@ import com.google.common.base.Stopwatch;
 import nl.scouting.hit.common.Util;
 import nl.scouting.hit.kampinfo.InschrijfformulierAanpasser;
 import nl.scouting.hit.kampinfo.ScoutsOnlineVuller;
-import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
+import nl.scouting.hit.kampinfo.export.KampInfoHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class Main {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
     public static void main(final String[] args) throws Exception {
+        LOGGER.info("START");
         final HitContext context = HitContext.Builder.create()
                 .baseUrl("https://sol.scouting.nl")
                 .username(Util.readUsernameFromFile())
@@ -18,52 +23,52 @@ public class Main {
                 .idEvenement(HitConstants.ID_EVENEMENT)
                 .naamEvenement(HitConstants.NAAM_EVENEMENT)
                 .naamSpeleenheid("HIT Helpdeskgroep")
-                .datumDeelnemersinformatie("24 februari 2023")
+                .datumDeelnemersinformatie(HitConstants.DATUM_DEELNEMERSINFORMATIE)
                 .build();
 
         final Stopwatch stopwatch = Stopwatch.createStarted();
         try {
             // Vul alle formulieren op basis van de export
-            // vulScoutsOnline(context);
+            vulScoutsOnline(context);
 
             // Voer aanpassingen achteraf op ALLE inschrijfformulieren door
             // postfixHIT2023(context);
 
-            doeAanpassingenVoorFase2(context);
+            // doeAanpassingenVoorFase2(context);
 
-            // Deze is ergens voor nodig, maar weet niet meer waarvoor.
-            // lijstMetInschrijflinks(baseUrl, username, password, naamEvenement, naamSpeleenheid);
         } finally {
-            System.out.println(stopwatch.stop());
+            LOGGER.info(stopwatch.stop().toString());
         }
     }
 
     protected static void vulScoutsOnline(final HitContext context) throws IOException {
         try (final ScoutsOnline sol = new ScoutsOnline(context.baseUrl, context.username, context.password)) {
             final ScoutsOnlineVuller vuller = new ScoutsOnlineVuller(sol.solHomePage, context.naamEvenement, context.naamSpeleenheid, null);
-            // vuller.setDatumDeelnemersinformatie(context.datumDeelnemersinformatie);
+            vuller.setDatumDeelnemersinformatie(context.datumDeelnemersinformatie);
 
-            // STAP 1: Verwijderen oude formulieren
+            // [x] STAP 0: Handmatig: In SOL kopiëren van HIT jaar-1 naar HIT jaar.
+
+            // [x] STAP 1: Verwijderen oude formulieren
             // vuller.verwijderAlleFormulieren();
 
-            // STAP 2: Aanmaken initiele formulieren voor gewone inschrijfformulieren
+            // [x] STAP 2: Aanmaken initiele formulieren voor gewone inschrijfformulieren
             // vuller.maakInitieleFormulieren();
 
-            // STAP 3: Breng de formuliernummers weer naar KampInfo
+            // [x] STAP 3: Breng de formuliernummers weer naar KampInfo; de OUDERLID-met-kind formulieren hebben het SOL-formuliernummer nodig in hun naam
             // Zie hitsite/Main.java
-            // KampInfoHelper.deleteDatafile();
+            // deleteCurrentDataFile();
 
-            // STAP 4:
-            // Handmatig: neem de formuliernummers van bovenstaande formulieren over in KampInfo in het veld voor het ouder-formulier
-            // KampInfoHelper.deleteDatafile();
-
-            // STAP 5: Aanmaken Ouder-kind formulieren waarbij de ouder zich inschrijft met een niet-lid kind
+            // [x] STAP 4: Aanmaken Ouder-kind formulieren waarbij de ouder zich inschrijft met een niet-lid kind, haal opnieuw data op uit KampInfo!!!
             // vuller.maakInitieleFormulierenVoorOuderLid();
 
-            // STAP 6:
-            // vuller.vulFormulierenMetDeRest();
+            // [X] STAP 5: Breng ook de formuliernummers van deze nieuwe formulieren over naar Kampinfo.
+            // Handmatig: neem de formuliernummers van de OUDERLID-met-kind formulieren over in KampInfo in het veld voor het ouder-formulier
+            // deleteCurrentDataFile();
 
-            // STAP 7:
+            // [ ] STAP 6:
+            vuller.vulFormulierenMetDeRest();
+
+            // [-] STAP 7:
             // Handmatig: maak voor de kampen waar meerdere kinderen met één ouder kunnen komen, aparte formulieren aan
             // - kopieer de data.json naar een data-extra.json en verwijder alles behalve de betreffende ouder-kind-kampen
             // final ScoutsOnlineVuller extraVuller = new ScoutsOnlineVuller(sol.solHomePage, context.naamEvenement, context.naamSpeleenheid, "data-extra");
@@ -75,20 +80,12 @@ public class Main {
         }
     }
 
-    protected static void postfixHIT2023(final HitContext context) throws IOException {
+    protected static void postfixHIT2024(final HitContext context) throws IOException {
         try (final ScoutsOnline sol = new ScoutsOnline(context.baseUrl, context.username, context.password)) {
             final InschrijfformulierAanpasser aanpasser = new InschrijfformulierAanpasser(sol.solHomePage, context);
-            // Reden: De Patsboemers hebben een lijst met uitzonderingen aangeleverd. Alleen deze mensen mogen inschrijven.
-            // aanpasser.vulUitzonderingenPatsBoem();
 
-            // De subgroepen maken het formulier nu vol, dat moet niet en kan uitgeschakeld worden via een optie op de subgroep
-            aanpasser.setSubgroepLimietenVoorFase1();
+            // Placeholder
 
-//           aanpasser.setStartTijdInschrijvingOpTwaalfEnKosteloosAnnulerenOpEindeInschrijving("12:00");
-//            aanpasser.testOpenenKoppelgroepjesDetailBijOuderKindKampen();
-//            aanpasser.postfixHIT2022MailTeksten();
-//            aanpasser.ronde2MetUitstel();
-//            aanpasser.ronde3();
         }
     }
 
@@ -99,20 +96,8 @@ public class Main {
         }
     }
 
-    protected static void lijstMetInschrijflinks(final String baseUrl, final String username, final String password, final String naamEvenement, final String naamSpeleenheid) {
-        try (final ScoutsOnline sol = new ScoutsOnline(baseUrl, username, password)) {
-            final TabFormulierenOverzichtPage formulierenOverzicht = sol.solHomePage.hoofdmenu()
-                    .openSpelVanMijnSpeleenheid(naamSpeleenheid)
-                    .openEvenement(naamEvenement);
-
-            formulierenOverzicht.getFormulieren()
-                    .forEach(formulier ->
-                            System.out.printf("%s\t%s%n"
-                                    , formulier.naam
-                                    , formulier.inschrijfLink(baseUrl + "/as/form/%s/participant/new/")
-                            ));
-        } catch (final IOException e) {
-            throw new IllegalArgumentException(e);
-        }
+    private static void deleteCurrentDataFile() {
+        KampInfoHelper.deleteDatafile("data-" + HitConstants.HIT_JAAR + ".json");
     }
+
 }

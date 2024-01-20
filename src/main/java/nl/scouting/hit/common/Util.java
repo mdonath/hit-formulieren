@@ -40,7 +40,7 @@ public final class Util {
 
         final WebDriver driver = new ChromeDriver(options);
 
-        driver.manage().window().setSize(new Dimension(1200, 900));
+        driver.manage().window().setSize(new Dimension(1400, 900));
         return driver;
     }
 
