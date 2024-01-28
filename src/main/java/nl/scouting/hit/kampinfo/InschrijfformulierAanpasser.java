@@ -5,6 +5,9 @@ import nl.scouting.hit.sol.JaNee;
 import nl.scouting.hit.sol.SolHomePage;
 import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigBasisPage;
+import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigSubgroepenPage;
+
+import java.util.Locale;
 
 /**
  * Vult ScoutsOnline met de gegevens uit KampInfo.
@@ -32,6 +35,13 @@ public final class InschrijfformulierAanpasser {
     /*
      * Aanpassingen van 2023:
      * - subgroepjes maken de wachtlijst vol waardoor deelnemers zich niet meer kunnen aanmelden in fase 1
+     */
+
+    /*
+     * Aanpassingen van 2024:
+     * - starttijdstip is 03:00 uur.
+     * - subgroepjesgrootte van ouder-kind-kampen moeten altijd op 1 staan, ongeacht wat ingevuld is in KampInfo.
+     * - Bij de ouder-is-lid formulieren is het handig om in fase 1 de minmax van aantal deelnemers op 0/0 te zetten zodat de statistieken niet vertroebeld worden.
      */
 
     /**
@@ -64,6 +74,50 @@ public final class InschrijfformulierAanpasser {
     }
 
     /**
+     * - FIX 1: Zet begintijdstip inschrijving op 03:00 uur -> beter dan 's middags 12:00 uur
+     * - FIX 2: Zet de koppelgroepgrootte op 1 bij alle ouder-kind kampen -> elk subgroepje mag maar uit één formulier (met daarop 2 personen) bestaan
+     */
+    public void foutjesInAanmakenFormulieren2024() {
+
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
+        tabFormulieren.getFormulieren().stream()
+                .map(HitFormulier::new)
+                .filter(formulier -> formulier.isInschrijfFormulier() || formulier.isGekoppeldFormulier())
+                .filter(formulier -> formulier.naam.contains("HIT Heerenveen")
+                        || formulier.naam.contains("HIT Mook")
+                        || formulier.naam.contains("HIT Ommen")
+                        || formulier.naam.contains("HIT Zeeland")
+                )
+                .forEach(formulier -> {
+                    System.out.printf("Reparatie formulier %s na aanmaken 2024", formulier.naam);
+
+                    final FormulierWijzigBasisPage formulierWijzigBasisPage = tabFormulieren
+                            .openFormulier(formulier.naam);
+
+                    // FIX 1: begintijdstip inschrijving op 03:00
+                    formulierWijzigBasisPage
+                            .withInschrijvingStarttijd("03:00")
+                            .opslaanWijzigingen()
+                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);
+
+                    // FIX 2: koppelgroepgrootte op 1 bij alle ouder-kind kampen
+                    if (formulier.naam.toLowerCase(Locale.ROOT).contains("ouder")) {
+                        formulierWijzigBasisPage.submenu().openTabSubgroepen()
+                                .openSubgroepCategorie(ScoutsOnlineVuller.KOPPELGROEPJE)
+                                .withMinimumAantalDeelnemers(1)
+                                .withMaximumAantalDeelnemers(1)
+                                .opslaanGegevens()
+                                .controleerMelding(BevestigingsTekst.SUBGROEPCATEGORIE_GEWIJZIGD);
+                    }
+
+                    System.out.println(" [OK]");
+
+                    // Terug naar overzicht met alle formulieren
+                    formulierWijzigBasisPage.meer().naarAlleFormulieren();
+                });
+    }
+
+    /**
      * Past de inschrijfformulieren aan voor fase 2 waarbij er geen wachtlijsten meer zijn.
      */
     public void fase2() {
@@ -84,9 +138,9 @@ public final class InschrijfformulierAanpasser {
                     );
                     // STAP EEN: inschrijfperiode FIXME: Dit zijn nog de datums van 2023
                     formulierWijzigBasisPage
-                            .withInschrijvingStart(5, 2, 2023)
-                            .withInschrijvingStarttijd("12:00")
-                            .withInschrijvingEind(13, 2, 2023)
+                            .withInschrijvingStart(4, 2, 2024)
+                            .withInschrijvingStarttijd("03:00")
+                            .withInschrijvingEind(11, 2, 2024)
                             .opslaanWijzigingen()
                             .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);
 

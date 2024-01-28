@@ -32,7 +32,7 @@ public class Main {
             vulScoutsOnline(context);
 
             // Voer aanpassingen achteraf op ALLE inschrijfformulieren door
-            // postfixHIT2023(context);
+            // postfixHIT2024(context);
 
             // doeAanpassingenVoorFase2(context);
 
@@ -65,8 +65,8 @@ public class Main {
             // Handmatig: neem de formuliernummers van de OUDERLID-met-kind formulieren over in KampInfo in het veld voor het ouder-formulier
             // deleteCurrentDataFile();
 
-            // [ ] STAP 6:
-            vuller.vulFormulierenMetDeRest();
+            // [X] STAP 6:
+            // vuller.vulFormulierenMetDeRest();
 
             // [-] STAP 7:
             // Handmatig: maak voor de kampen waar meerdere kinderen met één ouder kunnen komen, aparte formulieren aan
@@ -76,7 +76,7 @@ public class Main {
             // extraVuller.vulFormulierenMetDeRest();
 
             // STAP 8: Maak alles actief
-            // vuller.maakFormulierenActief(JaNee.JA);
+            vuller.maakFormulierenActief(JaNee.JA);
         }
     }
 
@@ -84,7 +84,7 @@ public class Main {
         try (final ScoutsOnline sol = new ScoutsOnline(context.baseUrl, context.username, context.password)) {
             final InschrijfformulierAanpasser aanpasser = new InschrijfformulierAanpasser(sol.solHomePage, context);
 
-            // Placeholder
+            aanpasser.foutjesInAanmakenFormulieren2024();
 
         }
     }
