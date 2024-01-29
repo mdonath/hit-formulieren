@@ -29,10 +29,11 @@ public class Main {
         final Stopwatch stopwatch = Stopwatch.createStarted();
         try {
             // Vul alle formulieren op basis van de export
-            vulScoutsOnline(context);
+            // vulScoutsOnline(context);
 
-            // Voer aanpassingen achteraf op ALLE inschrijfformulieren door
+            // Voer aanpassingen achteraf door op ALLE inschrijfformulieren
             // postfixHIT2024(context);
+            voorbereidingLoterij(context);
 
             // doeAanpassingenVoorFase2(context);
 
@@ -76,16 +77,21 @@ public class Main {
             // extraVuller.vulFormulierenMetDeRest();
 
             // STAP 8: Maak alles actief
-            vuller.maakFormulierenActief(JaNee.JA);
+            // vuller.maakFormulierenActief(JaNee.JA);
         }
     }
 
     protected static void postfixHIT2024(final HitContext context) throws IOException {
         try (final ScoutsOnline sol = new ScoutsOnline(context.baseUrl, context.username, context.password)) {
             final InschrijfformulierAanpasser aanpasser = new InschrijfformulierAanpasser(sol.solHomePage, context);
-
             aanpasser.foutjesInAanmakenFormulieren2024();
+        }
+    }
 
+    private static void voorbereidingLoterij(final HitContext context) throws IOException {
+        try (final ScoutsOnline sol = new ScoutsOnline(context.baseUrl, context.username, context.password)) {
+            final InschrijfformulierAanpasser aanpasser = new InschrijfformulierAanpasser(sol.solHomePage, context);
+            aanpasser.voorbereidingLoterij();
         }
     }
 

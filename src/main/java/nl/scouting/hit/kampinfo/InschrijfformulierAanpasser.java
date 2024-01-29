@@ -1,11 +1,12 @@
 package nl.scouting.hit.kampinfo;
 
 import nl.scouting.hit.sol.HitContext;
+import nl.scouting.hit.sol.HitInschrijvingFase;
 import nl.scouting.hit.sol.JaNee;
 import nl.scouting.hit.sol.SolHomePage;
 import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
+import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigAanpassenMailsPage;
 import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigBasisPage;
-import nl.scouting.hit.sol.evenement.tab.formulier.wijzig.FormulierWijzigSubgroepenPage;
 
 import java.util.Locale;
 
@@ -18,7 +19,7 @@ public final class InschrijfformulierAanpasser {
     private final String naamEvenement;
     private final String idEvenement;
     private final String naamSpeleenheid;
-    private final String jaar;
+    private final Integer jaar;
     private String datumDeelnemersinformatie;
 
     /*
@@ -56,7 +57,7 @@ public final class InschrijfformulierAanpasser {
         this.solHomePage = sol;
         this.idEvenement = idEvenement;
         this.naamEvenement = naamEvenement;
-        this.jaar = naamEvenement.split(" ")[1];
+        this.jaar = Integer.valueOf(naamEvenement.split(" ")[1]);
         this.naamSpeleenheid = naamSpeleenheid;
     }
 
@@ -118,6 +119,68 @@ public final class InschrijfformulierAanpasser {
     }
 
     /**
+     * Past de bevestiging en annulering e-mails aan.
+     */
+    public void voorbereidingLoterij() {
+        final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
+        tabFormulieren.getFormulieren().stream()
+                .map(HitFormulier::new)
+                .filter(formulier -> formulier.isInschrijfFormulier() || formulier.isGekoppeldFormulier())
+                .forEach(formulier -> {
+                    System.out.printf("Aanpassen formulier %s voor loterij", formulier.naam);
+                    final FormulierWijzigBasisPage formulierWijzigBasisPage = tabFormulieren
+                            .openFormulier(formulier.naam);
+
+                    formulierWijzigBasisPage
+                            .withInschrijvingStart(6, 2, 2024)
+                            .withInschrijvingStarttijd("12:00")
+                            .withInschrijvingEind(11, 2, 2024)
+                            .opslaanWijzigingen()
+                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
+                    ;
+
+                    // STAP TWEE: verwijder wachtlijst
+                    formulierWijzigBasisPage.submenu().openTabDeelnamecondities()
+                            .withWachtlijst(JaNee.NEE)
+                            .withStandaardWachtlijst(JaNee.NEE)
+                            .opslaanWijzigingen()
+                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD)
+                    ;
+
+                    // STAP DRIE: aanpassen mails voor afwerken loterij
+                    formulierWijzigBasisPage
+                            .submenu().openTabAanpassenMails()
+
+                            .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.STATUSWIJZIGING_NAAR_KOSTELOOS_GEANNULEERD)
+                            .laadBericht()
+                            .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
+                            .withGewijzigdBericht(MailTekstGenerator.mailBijStatuswijzigingNaarKosteloosGeannuleerd(HitInschrijvingFase.FASE_1_LOTERIJ))
+                            .wijzigingenOpslaan()
+                            .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
+
+                            .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.BEVESTIGING_INSCHRIJVING_AAN_DEELNEMER)
+                            .laadBericht()
+                            .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
+                            .withGewijzigdBericht(MailTekstGenerator.bevestigingVanInschrijvingAanDeelnemer())
+                            .wijzigingenOpslaan()
+                            .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
+                    ;
+
+                    // STAP DRIE: herstel limiet op aantal koppelgroepjes
+                    formulierWijzigBasisPage.submenu().openTabSubgroepen()
+                            .openSubgroepCategorie(ScoutsOnlineVuller.KOPPELGROEPJE)
+                            .withTeltHetMaxAantalMee(JaNee.JA)
+                            .opslaanGegevens()
+                            .controleerMelding(BevestigingsTekst.SUBGROEPCATEGORIE_GEWIJZIGD)
+                    ;
+
+                    System.out.print(" [GEEN WACHTLIJST MEER]");
+                    tabFormulieren.clickLink(getEvenementLink());
+                    System.out.println(" [OK]");
+                });
+    }
+
+    /**
      * Past de inschrijfformulieren aan voor fase 2 waarbij er geen wachtlijsten meer zijn.
      */
     public void fase2() {
@@ -136,10 +199,9 @@ public final class InschrijfformulierAanpasser {
                             formulier.gereserveerd,
                             formulier.maximumAantalDeelnemers
                     );
-                    // STAP EEN: inschrijfperiode FIXME: Dit zijn nog de datums van 2023
                     formulierWijzigBasisPage
-                            .withInschrijvingStart(4, 2, 2024)
-                            .withInschrijvingStarttijd("03:00")
+                            .withInschrijvingStart(6, 2, 2024)
+                            .withInschrijvingStarttijd("12:00")
                             .withInschrijvingEind(11, 2, 2024)
                             .opslaanWijzigingen()
                             .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);

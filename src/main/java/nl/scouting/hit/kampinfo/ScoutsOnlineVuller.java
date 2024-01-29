@@ -4,6 +4,7 @@ import nl.scouting.hit.kampinfo.basis.BasisFormulierRegel;
 import nl.scouting.hit.kampinfo.export.KampInfoFormulierExportRegel;
 import nl.scouting.hit.kampinfo.export.KampInfoHelper;
 import nl.scouting.hit.kampinfo.export.KampInfoOuderFormulierExportRegel;
+import nl.scouting.hit.sol.HitInschrijvingFase;
 import nl.scouting.hit.sol.JaNee;
 import nl.scouting.hit.sol.SolHomePage;
 import nl.scouting.hit.sol.evenement.tab.formulier.TabFormulierenOverzichtPage;
@@ -552,7 +553,7 @@ public final class ScoutsOnlineVuller {
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.BEVESTIGING_INSCHRIJVING_AAN_DEELNEMER)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht(MailTekstGenerator.bevestigingVanInschrijvingAanDeelnemer(datumDeelnemersInformatie))
+                .withGewijzigdBericht(MailTekstGenerator.bevestigingVanInschrijvingAanDeelnemer())
                 .wijzigingenOpslaan()
                 .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
 
@@ -566,7 +567,7 @@ public final class ScoutsOnlineVuller {
                 .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.STATUSWIJZIGING_NAAR_KOSTELOOS_GEANNULEERD)
                 .laadBericht()
                 .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
-                .withGewijzigdBericht(MailTekstGenerator.mailBijStatuswijzigingNaarKosteloosGeannuleerd())
+                .withGewijzigdBericht(MailTekstGenerator.mailBijStatuswijzigingNaarKosteloosGeannuleerd(HitInschrijvingFase.FASE_1_WACHTLIJST))
                 .wijzigingenOpslaan()
                 .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
 
