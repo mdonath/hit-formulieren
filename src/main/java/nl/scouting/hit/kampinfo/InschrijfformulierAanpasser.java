@@ -181,7 +181,7 @@ public final class InschrijfformulierAanpasser {
     }
 
     /**
-     * Past de inschrijfformulieren aan voor fase 2 waarbij er geen wachtlijsten meer zijn.
+     * Past de inschrijfformulieren aan voor fase 2 - vrije inschrijving; alleen annuleringsmail herstellen naar standaard.
      */
     public void fase2() {
         final TabFormulierenOverzichtPage tabFormulieren = openTabFormulieren();
@@ -191,36 +191,19 @@ public final class InschrijfformulierAanpasser {
                 .filter(formulier -> formulier.isInschrijfFormulier() || formulier.isGekoppeldFormulier())
                 .forEach(formulier -> {
                     System.out.printf("Aanpassen formulier %s voor fase 2", formulier.naam);
-                    final FormulierWijzigBasisPage formulierWijzigBasisPage = tabFormulieren
-                            .openFormulier(formulier.naam);
 
-                    System.out.printf(" (%d %d %d) ",
-                            formulier.aantalDeelnemers,
-                            formulier.gereserveerd,
-                            formulier.maximumAantalDeelnemers
-                    );
-                    formulierWijzigBasisPage
-                            .withInschrijvingStart(6, 2, 2024)
-                            .withInschrijvingStarttijd("12:00")
-                            .withInschrijvingEind(11, 2, 2024)
-                            .opslaanWijzigingen()
-                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);
+                    tabFormulieren
+                            .openFormulier(formulier.naam)
+                            .submenu().openTabAanpassenMails()
 
-                    // STAP TWEE: verwijder wachtlijst
-                    formulierWijzigBasisPage.submenu().openTabDeelnamecondities()
-                            .withWachtlijst(JaNee.NEE)
-                            .withStandaardWachtlijst(JaNee.NEE)
-                            .opslaanWijzigingen()
-                            .controleerMelding(BevestigingsTekst.FORMULIER_GEWIJZIGD);
-
-                    // STAP DRIE: herstel limiet op aantal koppelgroepjes
-                    formulierWijzigBasisPage.submenu().openTabSubgroepen()
-                            .openSubgroepCategorie(ScoutsOnlineVuller.KOPPELGROEPJE)
-                            .withTeltHetMaxAantalMee(JaNee.JA)
-                            .opslaanGegevens()
-                            .controleerMelding(BevestigingsTekst.SUBGROEPCATEGORIE_GEWIJZIGD)
+                            .withSelecteerBericht(FormulierWijzigAanpassenMailsPage.Bericht.STATUSWIJZIGING_NAAR_KOSTELOOS_GEANNULEERD)
+                            .laadBericht()
+                            .withSoortBericht(FormulierWijzigAanpassenMailsPage.SoortBericht.GEWIJZIGD_BERICHT)
+                            .withGewijzigdBericht(MailTekstGenerator.mailBijStatuswijzigingNaarKosteloosGeannuleerd(HitInschrijvingFase.FASE_2_VRIJE_INSCHRIJVING))
+                            .wijzigingenOpslaan()
+                            .controleerMelding(BevestigingsTekst.MAIL_GEWIJZIGD)
                     ;
-                    System.out.print(" [GEEN WACHTLIJST MEER]");
+
                     tabFormulieren.clickLink(getEvenementLink());
                     System.out.println(" [OK]");
                 });

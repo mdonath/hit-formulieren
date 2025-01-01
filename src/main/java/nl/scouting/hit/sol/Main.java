@@ -33,9 +33,9 @@ public class Main {
 
             // Voer aanpassingen achteraf door op ALLE inschrijfformulieren
             // postfixHIT2024(context);
-            voorbereidingLoterij(context);
+            // voorbereidingLoterij(context);
 
-            // doeAanpassingenVoorFase2(context);
+            doeAanpassingenVoorFase2(context);
 
         } finally {
             LOGGER.info(stopwatch.stop().toString());
